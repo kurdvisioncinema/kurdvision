@@ -1324,7 +1324,10 @@
                 <div class="list-item">
                     <div class="list-item-info">
                         <div class="list-item-title">${slide.title}</div>
-                        <div class="list-item-meta">${slide.description || 'بێ وەسف'}</div>
+                        <div class="list-item-meta">
+                            ${slide.description || 'بێ وەسف'}
+                            ${slide.link ? ` • <span style="color: var(--success);">✓ لینک کراوە بە فیلم</span>` : ''}
+                        </div>
                     </div>
                     <div class="list-item-actions">
                         <button class="btn btn-secondary" onclick="editSlide('${slide.id}')">
@@ -1338,6 +1341,22 @@
             `).join('');
         }
 
+        // Copy Movie ID Function
+        window.copyMovieId = (id) => {
+            navigator.clipboard.writeText(id).then(() => {
+                showToast('✅ ID کۆپی کرا: ' + id);
+            }).catch(() => {
+                // Fallback for older browsers
+                const input = document.createElement('input');
+                input.value = id;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                showToast('✅ ID کۆپی کرا: ' + id);
+            });
+        };
+
         function displayMoviesManager() {
             const manager = document.getElementById('moviesManager');
             if (allMovies.length === 0) {
@@ -1348,9 +1367,15 @@
                 <div class="list-item">
                     <div class="list-item-info">
                         <div class="list-item-title">${movie.title}</div>
-                        <div class="list-item-meta">${movie.year} • ${movie.type === 'subtitle' ? 'ژێرنووس' : 'دۆبلاژ'}</div>
+                        <div class="list-item-meta">
+                            ${movie.year} • ${movie.type === 'subtitle' ? 'ژێرنووس' : 'دۆبلاژ'} • 
+                            <span style="color: var(--accent-primary); font-family: monospace;">ID: ${movie.id}</span>
+                        </div>
                     </div>
                     <div class="list-item-actions">
+                        <button class="btn" style="background: #2196F3; color: white;" onclick="copyMovieId('${movie.id}')">
+                            <i class="fas fa-copy"></i> ID
+                        </button>
                         <button class="btn btn-secondary" onclick="editMovie('${movie.id}')">
                             <i class="fas fa-edit"></i> دەستکاری
                         </button>
