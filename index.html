@@ -6,12 +6,9 @@
     <meta name="description" content="پلاتفۆرمی بینینی فیلم و زنجیرە بە ژێرنووسی کوردی">
     <title>کورد ڤیژن Pro</title>
     
-    <!-- Kurdish Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -92,7 +89,6 @@
             }
         }
 
-        /* Header */
         header {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(20px);
@@ -232,7 +228,6 @@
             color: white;
         }
 
-        /* Hero */
         .hero {
             position: relative;
             height: 85vh;
@@ -304,7 +299,6 @@
             display: flex;
         }
 
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -323,7 +317,6 @@
             font-weight: 700;
         }
 
-        /* Filters */
         .filters {
             display: flex;
             gap: 10px;
@@ -349,7 +342,6 @@
             color: white;
         }
 
-        /* Movies Grid */
         .movies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -471,7 +463,6 @@
             color: var(--text-secondary);
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -613,7 +604,6 @@
             padding: 12px;
         }
 
-        /* Admin Panel */
         .admin-panel {
             display: none;
             max-width: 1200px;
@@ -711,7 +701,6 @@
             color: white;
         }
 
-        /* Footer */
         footer {
             background: var(--bg-secondary);
             border-top: 1px solid rgba(233, 69, 96, 0.1);
@@ -725,7 +714,6 @@
             font-size: 13px;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -744,14 +732,12 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-secondary);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero { 
                 height: 65vh; 
@@ -775,7 +761,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <nav>
             <div class="logo">
@@ -807,12 +792,9 @@
         </nav>
     </header>
 
-    <!-- Home Section -->
     <div id="homeSection">
-        <!-- Hero -->
         <section class="hero" id="heroSection"></section>
 
-        <!-- Main Content -->
         <div class="container">
             <div class="filters" id="filterTabs">
                 <button class="filter-btn active" onclick="setFilter('all')">هەموو</button>
@@ -841,14 +823,12 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="container">
             <h2 style="margin-bottom: 30px; font-size: 28px;">
                 <i class="fas fa-cog"></i> پانێڵی بەڕێوەبردن
             </h2>
 
-            <!-- Slides Management -->
             <div class="admin-section">
                 <h3><i class="fas fa-images"></i> بەڕێوەبردنی Slider</h3>
                 <button class="btn btn-primary" onclick="openSlideModal()">
@@ -857,7 +837,6 @@
                 <div id="slidesManager" style="margin-top: 20px;"></div>
             </div>
 
-            <!-- Movies Management -->
             <div class="admin-section">
                 <h3><i class="fas fa-film"></i> بەڕێوەبردنی فیلمەکان</h3>
                 <button class="btn btn-primary" onclick="openMovieModal()">
@@ -866,7 +845,6 @@
                 <div id="moviesManager" style="margin-top: 20px;"></div>
             </div>
 
-            <!-- Menu Management -->
             <div class="admin-section">
                 <h3><i class="fas fa-bars"></i> بەڕێوەبردنی Menu</h3>
                 <button class="btn btn-primary" onclick="openMenuModal()">
@@ -875,7 +853,6 @@
                 <div id="menuManager" style="margin-top: 20px;"></div>
             </div>
 
-            <!-- Countries Management -->
             <div class="admin-section">
                 <h3><i class="fas fa-globe"></i> بەڕێوەبردنی وڵاتەکان</h3>
                 <button class="btn btn-primary" onclick="openCountryModal()">
@@ -886,7 +863,7 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
+    <!-- LOGIN MODAL - تەنها بۆ چوونە ژوورەوە -->
     <div class="modal" id="loginModal">
         <div class="modal-content" style="max-width: 400px;">
             <button class="modal-close" onclick="closeModal('loginModal')">×</button>
@@ -911,7 +888,7 @@
         </div>
     </div>
 
-    <!-- Slide Modal -->
+    <!-- SLIDE MODAL -->
     <div class="modal" id="slideModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('slideModal')">×</button>
@@ -949,3 +926,925 @@
                         </button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> پاشەکەوتکردن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOVIE MODAL - تەنها بۆ زیادکردنی فیلم -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('movieModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="movieModalTitle">
+                    <i class="fas fa-plus"></i> زیادکردنی فیلم
+                </h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveMovie(event)">
+                    <input type="hidden" id="movieEditId">
+                    
+                    <div class="form-group">
+                        <label>جۆر *</label>
+                        <select id="movieType" required>
+                            <option value="subtitle">ژێرنووسکراو</option>
+                            <option value="dubbed">دۆبلاژکراو</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ناوی فیلم *</label>
+                        <input type="text" id="movieTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ژانر * (هەڵبژێرە)</label>
+                        <div class="checkbox-group" id="genreCheckboxes">
+                            <div class="checkbox-item"><input type="checkbox" value="دراما"> دراما</div>
+                            <div class="checkbox-item"><input type="checkbox" value="کۆمیدی"> کۆمیدی</div>
+                            <div class="checkbox-item"><input type="checkbox" value="ئەکشن"> ئەکشن</div>
+                            <div class="checkbox-item"><input type="checkbox" value="ڕۆمانسی"> ڕۆمانسی</div>
+                            <div class="checkbox-item"><input type="checkbox" value="تۆقێنەر"> تۆقێنەر</div>
+                            <div class="checkbox-item"><input type="checkbox" value="زانستی خەیاڵی"> زانستی خەیاڵی</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>وڵات *</label>
+                        <select id="movieCountry" required>
+                            <option value="">هەڵبژێرە...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ساڵ *</label>
+                        <input type="text" id="movieYear" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>⭐ ڕەیتینگ (لە 10)</label>
+                        <input type="number" id="movieRating" min="0" max="10" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>لینکی پۆستەر (HTTPS) *</label>
+                        <input type="url" id="moviePoster" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 1 (Upstream) *</label>
+                        <input type="url" id="movieServer1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 2 (Filemoon)</label>
+                        <input type="url" id="movieServer2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 3 (MixDrop)</label>
+                        <input type="url" id="movieServer3">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 4 (VidMoly)</label>
+                        <input type="url" id="movieServer4">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📄 ژێرنووس SRT 1</label>
+                        <input type="url" id="movieSrt1" placeholder="https://...">
+                        <small>لینکی فایلی .srt (Google Drive یان GitHub)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📄 ژێرنووس SRT 2</label>
+                        <input type="url" id="movieSrt2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>وردەکاری</label>
+                        <textarea id="movieDescription"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>پێشنیارکراو؟</label>
+                        <select id="movieFeatured">
+                            <option value="false">نەخێر</option>
+                            <option value="true">بەڵێ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('movieModal')">
+                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> پاشەکەوتکردن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENU MODAL -->
+    <div class="modal" id="menuModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeModal('menuModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title">➕ زیادکردنی بەشی Menu</h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveMenu(event)">
+                    <input type="hidden" id="menuEditId">
+                    <div class="form-group">
+                        <label>ناوی بەش *</label>
+                        <input type="text" id="menuName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Filter Value *</label>
+                        <input type="text" id="menuValue" required>
+                        <small>بۆ فلتەرکردن - بە ئینگلیزی بنووسە</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('menuModal')">
+                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> پاشەکەوتکردن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- COUNTRY MODAL -->
+    <div class="modal" id="countryModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" onclick="closeModal('countryModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title">➕ زیادکردنی وڵات</h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveCountry(event)">
+                    <input type="hidden" id="countryEditId">
+                    <div class="form-group">
+                        <label>ناوی وڵات *</label>
+                        <input type="text" id="countryName" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('countryModal')">
+                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> پاشەکەوتکردن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- WATCH MODAL -->
+    <div class="modal" id="watchModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('watchModal')">×</button>
+            <div id="watchContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 کورد ڤیژن - هەموو مافێک پارێزراوە</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaE1v9PcHGsSgF1IlnDrygX5TT2-zii8o",
+            authDomain: "kurdvision-f9d3e.firebaseapp.com",
+            databaseURL: "https://kurdvision-f9d3e-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "kurdvision-f9d3e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        let allMovies = [];
+        let allSlides = [];
+        let allMenus = [];
+        let allCountries = [];
+        let currentFilter = 'all';
+        let isAdmin = false;
+
+        // ✅ پشکنینی URL بۆ ?admin=true
+        const urlParams = new URLSearchParams(window.location.search);
+        const showAdminButton = urlParams.get('admin') === 'true';
+
+        // ✅ پیشاندانی دووگمەی ئەدمین تەنها بە ?admin=true
+        if (showAdminButton) {
+            document.getElementById('adminLoginBtn').style.display = 'block';
+        }
+
+        // Check Auth
+        onAuthStateChanged(auth, (user) => {
+            isAdmin = !!user;
+            document.getElementById('adminControls').classList.toggle('show', isAdmin);
+            
+            // ئەگەر لۆگین بوویت، دووگمەی لۆگین بشارەوە
+            if (isAdmin) {
+                document.getElementById('adminLoginBtn').style.display = 'none';
+            }
+            
+            document.body.classList.toggle('admin-mode', isAdmin);
+        });
+
+        // Load Data
+        function loadData() {
+            onValue(ref(db, 'movies'), (snapshot) => {
+                allMovies = [];
+                snapshot.forEach((child) => {
+                    allMovies.push({ id: child.key, ...child.val() });
+                });
+                displayMovies();
+                displayFeatured();
+                displayMoviesManager();
+            });
+
+            onValue(ref(db, 'slides'), (snapshot) => {
+                allSlides = [];
+                snapshot.forEach((child) => {
+                    allSlides.push({ id: child.key, ...child.val() });
+                });
+                loadHero();
+                displaySlidesManager();
+            });
+
+            onValue(ref(db, 'menuItems'), (snapshot) => {
+                allMenus = [];
+                snapshot.forEach((child) => {
+                    allMenus.push({ id: child.key, ...child.val() });
+                });
+                displayMenuManager();
+            });
+
+            onValue(ref(db, 'countries'), (snapshot) => {
+                allCountries = [];
+                snapshot.forEach((child) => {
+                    allCountries.push({ id: child.key, ...child.val() });
+                });
+                updateCountrySelect();
+                displayCountriesManager();
+            });
+        }
+
+        function displayMovies() {
+            const grid = document.getElementById('moviesGrid');
+            let filtered = [...allMovies];
+
+            if (currentFilter === 'latest') {
+                filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
+            } else if (currentFilter === 'popular') {
+                filtered = filtered.sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 12);
+            } else if (currentFilter === 'subtitle' || currentFilter === 'dubbed') {
+                filtered = filtered.filter(m => m.type === currentFilter);
+            } else if (currentFilter !== 'all') {
+                filtered = filtered.filter(m => m.genres?.includes(currentFilter));
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="loading">هیچ فیلمێک نەدۆزرایەوە</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.slice(0, 24).map(movie => `
+                <div class="movie-card" onclick='openWatch(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
+                    <div class="admin-card-btns">
+                        <button class="admin-card-btn" style="background: #4CAF50;" onclick="event.stopPropagation(); editMovie('${movie.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="admin-card-btn" style="background: #ff4444;" onclick="event.stopPropagation(); deleteMovie('${movie.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="movie-poster">
+                        <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
+                        <div class="play-icon"><i class="fas fa-play"></i></div>
+                        ${movie.rating ? `<div class="movie-badge"><i class="fas fa-star"></i> ${movie.rating}</div>` : ''}
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-meta">
+                            <span>${movie.year || '2024'}</span>
+                            <span><i class="fas fa-eye"></i> ${movie.views || 0}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayFeatured() {
+            const grid = document.getElementById('featuredGrid');
+            const featured = allMovies.filter(m => m.featured).slice(0, 6);
+            grid.innerHTML = featured.map(movie => `
+                <div class="movie-card" onclick='openWatch(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
+                    <div class="movie-poster">
+                        <img src="${movie.poster}" alt="${movie.title}">
+                        <div class="play-icon"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-meta">
+                            <span>${movie.year}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadHero() {
+            const hero = document.getElementById('heroSection');
+            const featured = allSlides.slice(0, 5);
+            
+            if (featured.length === 0) {
+                hero.style.display = 'none';
+                return;
+            }
+
+            hero.style.display = 'block';
+            let currentSlide = 0;
+            
+            hero.innerHTML = featured.map((slide, index) => `
+                <div class="hero-slide ${index === 0 ? 'active' : ''}">
+                    <img src="${slide.image}" class="hero-bg">
+                    <div class="hero-content">
+                        <h1 class="hero-title">${slide.title}</h1>
+                        <div class="hero-meta">
+                            ${slide.year ? `<span>${slide.year}</span>` : ''}
+                        </div>
+                        ${slide.description ? `<p style="margin-bottom: 20px; color: var(--text-secondary);">${slide.description}</p>` : ''}
+                        <div class="hero-actions">
+                            ${slide.link ? `<button class="btn btn-primary" onclick="openMovieById('${slide.link}')"><i class="fas fa-play"></i> بینین</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="admin-slide-controls">
+                        <button class="admin-card-btn" style="background: #4CAF50;" onclick="event.stopPropagation(); editSlide('${slide.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="admin-card-btn" style="background: #ff4444;" onclick="event.stopPropagation(); deleteSlide('${slide.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            setInterval(() => {
+                const slides = document.querySelectorAll('.hero-slide');
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+        }
+
+        // Admin Managers
+        function displaySlidesManager() {
+            const manager = document.getElementById('slidesManager');
+            if (allSlides.length === 0) {
+                manager.innerHTML = '<p class="loading">هیچ Slide ێک نییە</p>';
+                return;
+            }
+            manager.innerHTML = allSlides.map(slide => `
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <div class="list-item-title">${slide.title}</div>
+                        <div class="list-item-meta">${slide.description || 'بێ وەسف'}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn btn-secondary" onclick="editSlide('${slide.id}')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteSlide('${slide.id}')">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayMoviesManager() {
+            const manager = document.getElementById('moviesManager');
+            if (allMovies.length === 0) {
+                manager.innerHTML = '<p class="loading">هیچ فیلمێک نییە</p>';
+                return;
+            }
+            manager.innerHTML = allMovies.slice(0, 10).map(movie => `
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <div class="list-item-title">${movie.title}</div>
+                        <div class="list-item-meta">${movie.year} • ${movie.type === 'subtitle' ? 'ژێرنووس' : 'دۆبلاژ'}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn btn-secondary" onclick="editMovie('${movie.id}')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMovie('${movie.id}')">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayMenuManager() {
+            const manager = document.getElementById('menuManager');
+            if (allMenus.length === 0) {
+                manager.innerHTML = '<p class="loading">هیچ بەشێک نییە</p>';
+                return;
+            }
+            manager.innerHTML = allMenus.map(menu => `
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <div class="list-item-title">${menu.name}</div>
+                        <div class="list-item-meta">Filter: ${menu.value}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn btn-secondary" onclick="editMenu('${menu.id}')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMenu('${menu.id}')">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayCountriesManager() {
+            const manager = document.getElementById('countriesManager');
+            if (allCountries.length === 0) {
+                manager.innerHTML = '<p class="loading">هیچ وڵاتێک نییە</p>';
+                return;
+            }
+            manager.innerHTML = allCountries.map(country => `
+                <div class="list-item">
+                    <div class="list-item-info">
+                        <div class="list-item-title">${country.name}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn btn-secondary" onclick="editCountry('${country.id}')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteCountry('${country.id}')">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCountrySelect() {
+            const select = document.getElementById('movieCountry');
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">هەڵبژێرە...</option>' + 
+                allCountries.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            select.value = currentValue;
+        }
+
+        // Modal Functions
+        window.openLoginModal = () => openModal('loginModal');
+        
+        window.openSlideModal = () => {
+            document.getElementById('slideModalTitle').innerHTML = '<i class="fas fa-plus"></i> زیادکردنی Slide';
+            document.getElementById('slideEditId').value = '';
+            document.getElementById('slideTitle').value = '';
+            document.getElementById('slideYear').value = '';
+            document.getElementById('slideDescription').value = '';
+            document.getElementById('slideImage').value = '';
+            document.getElementById('slideMovieId').value = '';
+            openModal('slideModal');
+        };
+
+        window.openMovieModal = () => {
+            document.getElementById('movieModalTitle').innerHTML = '<i class="fas fa-plus"></i> زیادکردنی فیلم';
+            document.getElementById('movieEditId').value = '';
+            document.getElementById('movieModal').querySelectorAll('input, select, textarea').forEach(el => {
+                if (el.type !== 'hidden') el.value = '';
+            });
+            document.querySelectorAll('#genreCheckboxes input').forEach(cb => cb.checked = false);
+            openModal('movieModal');
+        };
+
+        window.openMenuModal = () => {
+            document.getElementById('menuEditId').value = '';
+            document.getElementById('menuName').value = '';
+            document.getElementById('menuValue').value = '';
+            openModal('menuModal');
+        };
+
+        window.openCountryModal = () => {
+            document.getElementById('countryEditId').value = '';
+            document.getElementById('countryName').value = '';
+            openModal('countryModal');
+        };
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = (id) => {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+            if (id === 'watchModal') {
+                document.getElementById('watchContent').innerHTML = '';
+            }
+        };
+
+        // Save Functions
+        window.saveSlide = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('slideEditId').value;
+            const data = {
+                title: document.getElementById('slideTitle').value,
+                year: document.getElementById('slideYear').value,
+                description: document.getElementById('slideDescription').value,
+                image: document.getElementById('slideImage').value,
+                link: document.getElementById('slideMovieId').value,
+                date: new Date().toISOString()
+            };
+
+            try {
+                if (id) {
+                    await update(ref(db, `slides/${id}`), data);
+                    showToast('✅ Slide دەستکاری کرا');
+                } else {
+                    await push(ref(db, 'slides'), data);
+                    showToast('✅ Slide زیاد کرا');
+                }
+                closeModal('slideModal');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.saveMovie = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('movieEditId').value;
+            const genres = Array.from(document.querySelectorAll('#genreCheckboxes input:checked'))
+                .map(cb => cb.value).join(', ');
+
+            if (!genres) {
+                showToast('⚠️ تکایە لایەنی کەم یەک ژانر هەڵبژێرە');
+                return;
+            }
+
+            const data = {
+                type: document.getElementById('movieType').value,
+                title: document.getElementById('movieTitle').value,
+                genres: genres,
+                country: document.getElementById('movieCountry').value,
+                year: document.getElementById('movieYear').value,
+                rating: parseFloat(document.getElementById('movieRating').value) || 0,
+                poster: document.getElementById('moviePoster').value,
+                servers: {
+                    server1: document.getElementById('movieServer1').value,
+                    server2: document.getElementById('movieServer2').value || '',
+                    server3: document.getElementById('movieServer3').value || '',
+                    server4: document.getElementById('movieServer4').value || ''
+                },
+                subtitles: {
+                    srt1: document.getElementById('movieSrt1').value || '',
+                    srt2: document.getElementById('movieSrt2').value || ''
+                },
+                description: document.getElementById('movieDescription').value,
+                featured: document.getElementById('movieFeatured').value === 'true',
+                date: new Date().toISOString(),
+                views: 0
+            };
+
+            try {
+                if (id) {
+                    const existing = allMovies.find(m => m.id === id);
+                    data.views = existing?.views || 0;
+                    await update(ref(db, `movies/${id}`), data);
+                    showToast('✅ فیلم دەستکاری کرا');
+                } else {
+                    await push(ref(db, 'movies'), data);
+                    showToast('✅ فیلم زیاد کرا');
+                }
+                closeModal('movieModal');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.saveMenu = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('menuEditId').value;
+            const data = {
+                name: document.getElementById('menuName').value,
+                value: document.getElementById('menuValue').value
+            };
+
+            try {
+                if (id) {
+                    await update(ref(db, `menuItems/${id}`), data);
+                } else {
+                    await push(ref(db, 'menuItems'), data);
+                }
+                closeModal('menuModal');
+                showToast('✅ بەش پاشەکەوت کرا');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.saveCountry = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('countryEditId').value;
+            const data = { name: document.getElementById('countryName').value };
+
+            try {
+                if (id) {
+                    await update(ref(db, `countries/${id}`), data);
+                } else {
+                    await push(ref(db, 'countries'), data);
+                }
+                closeModal('countryModal');
+                showToast('✅ وڵات پاشەکەوت کرا');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        // Edit Functions
+        window.editSlide = (id) => {
+            const slide = allSlides.find(s => s.id === id);
+            if (!slide) return;
+            document.getElementById('slideModalTitle').innerHTML = '<i class="fas fa-edit"></i> دەستکاریکردنی Slide';
+            document.getElementById('slideEditId').value = id;
+            document.getElementById('slideTitle').value = slide.title;
+            document.getElementById('slideYear').value = slide.year || '';
+            document.getElementById('slideDescription').value = slide.description || '';
+            document.getElementById('slideImage').value = slide.image;
+            document.getElementById('slideMovieId').value = slide.link || '';
+            openModal('slideModal');
+        };
+
+        window.editMovie = (id) => {
+            const movie = allMovies.find(m => m.id === id);
+            if (!movie) return;
+            document.getElementById('movieModalTitle').innerHTML = '<i class="fas fa-edit"></i> دەستکاریکردنی فیلم';
+            document.getElementById('movieEditId').value = id;
+            document.getElementById('movieType').value = movie.type;
+            document.getElementById('movieTitle').value = movie.title;
+            document.getElementById('movieCountry').value = movie.country;
+            document.getElementById('movieYear').value = movie.year;
+            document.getElementById('movieRating').value = movie.rating || '';
+            document.getElementById('moviePoster').value = movie.poster;
+            document.getElementById('movieServer1').value = movie.servers?.server1 || '';
+            document.getElementById('movieServer2').value = movie.servers?.server2 || '';
+            document.getElementById('movieServer3').value = movie.servers?.server3 || '';
+            document.getElementById('movieServer4').value = movie.servers?.server4 || '';
+            document.getElementById('movieSrt1').value = movie.subtitles?.srt1 || '';
+            document.getElementById('movieSrt2').value = movie.subtitles?.srt2 || '';
+            document.getElementById('movieDescription').value = movie.description || '';
+            document.getElementById('movieFeatured').value = movie.featured ? 'true' : 'false';
+            
+            const genres = movie.genres?.split(', ') || [];
+            document.querySelectorAll('#genreCheckboxes input').forEach(cb => {
+                cb.checked = genres.includes(cb.value);
+            });
+            
+            openModal('movieModal');
+        };
+
+        window.editMenu = (id) => {
+            const menu = allMenus.find(m => m.id === id);
+            if (!menu) return;
+            document.getElementById('menuEditId').value = id;
+            document.getElementById('menuName').value = menu.name;
+            document.getElementById('menuValue').value = menu.value;
+            openModal('menuModal');
+        };
+
+        window.editCountry = (id) => {
+            const country = allCountries.find(c => c.id === id);
+            if (!country) return;
+            document.getElementById('countryEditId').value = id;
+            document.getElementById('countryName').value = country.name;
+            openModal('countryModal');
+        };
+
+        // Delete Functions
+        window.deleteSlide = async (id) => {
+            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
+            try {
+                await remove(ref(db, `slides/${id}`));
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.deleteMovie = async (id) => {
+            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
+            try {
+                await remove(ref(db, `movies/${id}`));
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.deleteMenu = async (id) => {
+            if (!confirm('دڵنیایت؟')) return;
+            try {
+                await remove(ref(db, `menuItems/${id}`));
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.deleteCountry = async (id) => {
+            if (!confirm('دڵنیایت؟')) return;
+            try {
+                await remove(ref(db, `countries/${id}`));
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        // Auth
+        window.login = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                closeModal('loginModal');
+                showToast('✅ بە سەرکەوتوویی چوویتە ژوورەوە');
+                showSection('admin');
+            } catch (error) {
+                showToast('❌ ئیمەیڵ یان پاسوۆرد هەڵەیە');
+            }
+        };
+
+        window.logout = async () => {
+            await signOut(auth);
+            showToast('✅ چوویتە دەرەوە');
+            showSection('home');
+        };
+
+        // Watch Movie
+        window.openWatch = (movie) => {
+            if (movie.id) {
+                update(ref(db, `movies/${movie.id}`), { views: (movie.views || 0) + 1 });
+            }
+
+            const servers = [];
+            if (movie.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: movie.servers.server1 });
+            if (movie.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: movie.servers.server2 });
+            if (movie.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: movie.servers.server3 });
+            if (movie.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: movie.servers.server4 });
+
+            document.getElementById('watchContent').innerHTML = `
+                <div class="video-container">
+                    <iframe id="videoPlayer" class="video-player" src="${servers[0]?.url || ''}" allowfullscreen allow="autoplay"></iframe>
+                </div>
+                <div class="modal-body">
+                    <h2 style="font-size: 24px; margin-bottom: 15px;">${movie.title}</h2>
+                    <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-secondary);">
+                        <span>📅 ${movie.year}</span>
+                        <span>🌍 ${movie.country || 'نەناسراو'}</span>
+                        ${movie.rating ? `<span>⭐ ${movie.rating}/10</span>` : ''}
+                        <span>👁️ ${(movie.views || 0).toLocaleString()}</span>
+                    </div>
+
+                    ${servers.length > 1 ? `
+                        <div class="server-tabs">
+                            ${servers.map((s, i) => `
+                                <button class="server-tab ${i === 0 ? 'active' : ''}" 
+                                        onclick="switchServer('${s.url}', this)">
+                                    ${s.name}
+                                </button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${movie.subtitles?.srt1 || movie.subtitles?.srt2 ? `
+                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
+                            <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                ${movie.subtitles.srt1 ? `<a href="${movie.subtitles.srt1}" download class="btn btn-secondary">⬇️ داگرتنی SRT 1</a>` : ''}
+                                ${movie.subtitles.srt2 ? `<a href="${movie.subtitles.srt2}" download class="btn btn-secondary">⬇️ داگرتنی SRT 2</a>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-top: 15px;">
+                        <strong style="color: var(--accent-primary);">ژانر:</strong> 
+                        <span style="color: var(--text-secondary);">${movie.genres || 'نەناسراو'}</span>
+                    </div>
+
+                    ${movie.description ? `
+                        <div style="margin-top: 20px; line-height: 1.8; color: var(--text-secondary);">
+                            <strong style="color: var(--accent-primary); display: block; margin-bottom: 10px;">کورتە:</strong>
+                            ${movie.description}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            openModal('watchModal');
+        };
+
+        window.switchServer = (url, btn) => {
+            document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('videoPlayer').src = url;
+        };
+
+        window.openMovieById = (id) => {
+            const movie = allMovies.find(m => m.id === id);
+            if (movie) openWatch(movie);
+        };
+
+        // Filters & Search
+        window.setFilter = (filter) => {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            if (event?.target) event.target.classList.add('active');
+            displayMovies();
+        };
+
+        window.performSearch = () => {
+            const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!term) {
+                currentFilter = 'all';
+                displayMovies();
+                return;
+            }
+
+            const grid = document.getElementById('moviesGrid');
+            const filtered = allMovies.filter(m => 
+                m.title?.toLowerCase().includes(term) ||
+                m.genres?.toLowerCase().includes(term) ||
+                m.country?.toLowerCase().includes(term)
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="loading">هیچ ئەنجامێک نەدۆزرایەوە</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(movie => `
+                <div class="movie-card" onclick='openWatch(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
+                    <div class="movie-poster">
+                        <img src="${movie.poster}" alt="${movie.title}">
+                        <div class="play-icon"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-meta"><span>${movie.year}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        // Section Navigation
+        window.showSection = (section) => {
+            if (section === 'admin') {
+                document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('adminPanel').classList.add('show');
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            } else {
+                document.getElementById('homeSection').style.display = 'block';
+                document.getElementById('adminPanel').classList.remove('show');
+            }
+        };
+
+        // Toast
+        window.showToast = (message) => {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        };
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
