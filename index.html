@@ -417,6 +417,18 @@
             font-weight: 600;
         }
 
+        .series-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            background: rgba(0, 255, 136, 0.95);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #000;
+        }
+
         .admin-card-btns {
             position: absolute;
             top: 10px;
@@ -659,6 +671,38 @@
             gap: 8px;
         }
 
+        .episodes-list {
+            width: 100%;
+            margin-top: 15px;
+            padding-right: 20px;
+        }
+
+        .episode-item {
+            background: var(--bg-primary);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .episode-item:hover {
+            background: var(--accent-secondary);
+            transform: translateX(-5px);
+        }
+
+        .episode-number {
+            background: var(--accent-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
         .video-container {
             position: relative;
             width: 100%;
@@ -778,6 +822,7 @@
                 <li><a href="#" onclick="setFilter('trending')"><i class="fas fa-fire"></i> ترێند</a></li>
                 <li><a href="#" onclick="setFilter('subtitle')"><i class="fas fa-closed-captioning"></i> ژێرنووس</a></li>
                 <li><a href="#" onclick="setFilter('dubbed')"><i class="fas fa-microphone"></i> دۆبلاژ</a></li>
+                <li><a href="#" onclick="setFilter('series')"><i class="fas fa-tv"></i> زنجیرە</a></li>
                 <li id="adminLoginBtn" style="display: none;"><a href="#" onclick="openLoginModal()"><i class="fas fa-lock"></i> ئەدمین</a></li>
             </ul>
 
@@ -846,6 +891,14 @@
             </div>
 
             <div class="admin-section">
+                <h3><i class="fas fa-tv"></i> بەڕێوەبردنی زنجیرەکان</h3>
+                <button class="btn btn-primary" onclick="openSeriesModal()">
+                    <i class="fas fa-plus"></i> زیادکردنی زنجیرەی نوێ
+                </button>
+                <div id="seriesManager" style="margin-top: 20px;"></div>
+            </div>
+
+            <div class="admin-section">
                 <h3><i class="fas fa-bars"></i> بەڕێوەبردنی Menu</h3>
                 <button class="btn btn-primary" onclick="openMenuModal()">
                     <i class="fas fa-plus"></i> زیادکردنی بەشی نوێ
@@ -863,7 +916,7 @@
         </div>
     </div>
 
-    <!-- LOGIN MODAL - تەنها بۆ چوونە ژوورەوە -->
+    <!-- LOGIN MODAL -->
     <div class="modal" id="loginModal">
         <div class="modal-content" style="max-width: 400px;">
             <button class="modal-close" onclick="closeModal('loginModal')">×</button>
@@ -933,7 +986,7 @@
         </div>
     </div>
 
-    <!-- MOVIE MODAL - تەنها بۆ زیادکردنی فیلم -->
+    <!-- MOVIE MODAL -->
     <div class="modal" id="movieModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('movieModal')">×</button>
@@ -1050,6 +1103,157 @@
         </div>
     </div>
 
+    <!-- SERIES MODAL -->
+    <div class="modal" id="seriesModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('seriesModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="seriesModalTitle">
+                    <i class="fas fa-plus"></i> زیادکردنی زنجیرە
+                </h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveSeries(event)">
+                    <input type="hidden" id="seriesEditId">
+                    
+                    <div class="form-group">
+                        <label>جۆر *</label>
+                        <select id="seriesType" required>
+                            <option value="subtitle">ژێرنووسکراو</option>
+                            <option value="dubbed">دۆبلاژکراو</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ناوی زنجیرە *</label>
+                        <input type="text" id="seriesTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ژانر * (هەڵبژێرە)</label>
+                        <div class="checkbox-group" id="seriesGenreCheckboxes">
+                            <div class="checkbox-item"><input type="checkbox" value="دراما"> دراما</div>
+                            <div class="checkbox-item"><input type="checkbox" value="کۆمیدی"> کۆمیدی</div>
+                            <div class="checkbox-item"><input type="checkbox" value="ئەکشن"> ئەکشن</div>
+                            <div class="checkbox-item"><input type="checkbox" value="ڕۆمانسی"> ڕۆمانسی</div>
+                            <div class="checkbox-item"><input type="checkbox" value="تۆقێنەر"> تۆقێنەر</div>
+                            <div class="checkbox-item"><input type="checkbox" value="زانستی خەیاڵی"> زانستی خەیاڵی</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>وڵات *</label>
+                        <select id="seriesCountry" required>
+                            <option value="">هەڵبژێرە...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ساڵ *</label>
+                        <input type="text" id="seriesYear" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>⭐ ڕەیتینگ (لە 10)</label>
+                        <input type="number" id="seriesRating" min="0" max="10" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>لینکی پۆستەر (HTTPS) *</label>
+                        <input type="url" id="seriesPoster" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>وردەکاری</label>
+                        <textarea id="seriesDescription"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>پێشنیارکراو؟</label>
+                        <select id="seriesFeatured">
+                            <option value="false">نەخێر</option>
+                            <option value="true">بەڵێ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('seriesModal')">
+                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> پاشەکەوتکردن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EPISODE MODAL -->
+    <div class="modal" id="episodeModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('episodeModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="episodeModalTitle">زیادکردنی ئەڵقە</h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveEpisode(event)">
+                    <input type="hidden" id="episodeSeriesId">
+                    <input type="hidden" id="episodeEditId">
+                    
+                    <div class="form-group">
+                        <label>ژمارەی ئەڵقە *</label>
+                        <input type="number" id="episodeNumber" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ناوی ئەڵقە</label>
+                        <input type="text" id="episodeTitle">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 1 (Upstream) *</label>
+                        <input type="url" id="episodeServer1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 2 (Filemoon)</label>
+                        <input type="url" id="episodeServer2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 3 (MixDrop)</label>
+                        <input type="url" id="episodeServer3">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎥 سێرڤەر 4 (VidMoly)</label>
+                        <input type="url" id="episodeServer4">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📄 ژێرنووس SRT 1</label>
+                        <input type="url" id="episodeSrt1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📄 ژێرنووس SRT 2</label>
+                        <input type="url" id="episodeSrt2">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('episodeModal')">
+                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> پاشەکەوتکردن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- MENU MODAL -->
     <div class="modal" id="menuModal">
         <div class="modal-content" style="max-width: 500px;">
@@ -1117,6 +1321,14 @@
         </div>
     </div>
 
+    <!-- SERIES VIEW MODAL -->
+    <div class="modal" id="seriesViewModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('seriesViewModal')">×</button>
+            <div id="seriesViewContent"></div>
+        </div>
+    </div>
+
     <footer>
         <p>© 2024 کورد ڤیژن - هەموو مافێک پارێزراوە</p>
     </footer>
@@ -1138,44 +1350,57 @@
         const auth = getAuth(app);
 
         let allMovies = [];
+        let allSeries = [];
+        let allEpisodes = [];
         let allSlides = [];
         let allMenus = [];
         let allCountries = [];
         let currentFilter = 'all';
         let isAdmin = false;
 
-        // ✅ پشکنینی URL بۆ ?admin=true
         const urlParams = new URLSearchParams(window.location.search);
         const showAdminButton = urlParams.get('admin') === 'true';
 
-        // ✅ پیشاندانی دووگمەی ئەدمین تەنها بە ?admin=true
         if (showAdminButton) {
             document.getElementById('adminLoginBtn').style.display = 'block';
         }
 
-        // Check Auth
         onAuthStateChanged(auth, (user) => {
             isAdmin = !!user;
             document.getElementById('adminControls').classList.toggle('show', isAdmin);
-            
-            // ئەگەر لۆگین بوویت، دووگمەی لۆگین بشارەوە
             if (isAdmin) {
                 document.getElementById('adminLoginBtn').style.display = 'none';
             }
-            
             document.body.classList.toggle('admin-mode', isAdmin);
         });
 
-        // Load Data
         function loadData() {
             onValue(ref(db, 'movies'), (snapshot) => {
                 allMovies = [];
                 snapshot.forEach((child) => {
-                    allMovies.push({ id: child.key, ...child.val() });
+                    allMovies.push({ id: child.key, ...child.val(), contentType: 'movie' });
                 });
                 displayMovies();
                 displayFeatured();
                 displayMoviesManager();
+            });
+
+            onValue(ref(db, 'series'), (snapshot) => {
+                allSeries = [];
+                snapshot.forEach((child) => {
+                    allSeries.push({ id: child.key, ...child.val(), contentType: 'series' });
+                });
+                displayMovies();
+                displayFeatured();
+                displaySeriesManager();
+            });
+
+            onValue(ref(db, 'episodes'), (snapshot) => {
+                allEpisodes = [];
+                snapshot.forEach((child) => {
+                    allEpisodes.push({ id: child.key, ...child.val() });
+                });
+                displaySeriesManager();
             });
 
             onValue(ref(db, 'slides'), (snapshot) => {
@@ -1200,14 +1425,15 @@
                 snapshot.forEach((child) => {
                     allCountries.push({ id: child.key, ...child.val() });
                 });
-                updateCountrySelect();
+                updateCountrySelects();
                 displayCountriesManager();
             });
         }
 
         function displayMovies() {
             const grid = document.getElementById('moviesGrid');
-            let filtered = [...allMovies];
+            let allContent = [...allMovies, ...allSeries];
+            let filtered = [...allContent];
 
             if (currentFilter === 'latest') {
                 filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
@@ -1215,6 +1441,8 @@
                 filtered = filtered.sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 12);
             } else if (currentFilter === 'subtitle' || currentFilter === 'dubbed') {
                 filtered = filtered.filter(m => m.type === currentFilter);
+            } else if (currentFilter === 'series') {
+                filtered = allSeries;
             } else if (currentFilter !== 'all') {
                 filtered = filtered.filter(m => m.genres?.includes(currentFilter));
             }
@@ -1224,49 +1452,62 @@
                 return;
             }
 
-            grid.innerHTML = filtered.slice(0, 24).map(movie => `
-                <div class="movie-card" onclick='openWatch(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
-                    <div class="admin-card-btns">
-                        <button class="admin-card-btn" style="background: #4CAF50;" onclick="event.stopPropagation(); editMovie('${movie.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="admin-card-btn" style="background: #ff4444;" onclick="event.stopPropagation(); deleteMovie('${movie.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    <div class="movie-poster">
-                        <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
-                        <div class="play-icon"><i class="fas fa-play"></i></div>
-                        ${movie.rating ? `<div class="movie-badge"><i class="fas fa-star"></i> ${movie.rating}</div>` : ''}
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        <div class="movie-meta">
-                            <span>${movie.year || '2024'}</span>
-                            <span><i class="fas fa-eye"></i> ${movie.views || 0}</span>
+            grid.innerHTML = filtered.slice(0, 24).map(content => {
+                const isSeries = content.contentType === 'series';
+                const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
+                
+                return `
+                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
+                        <div class="admin-card-btns">
+                            <button class="admin-card-btn" style="background: #4CAF50;" onclick="event.stopPropagation(); ${isSeries ? `editSeries('${content.id}')` : `editMovie('${content.id}')`}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="admin-card-btn" style="background: #ff4444;" onclick="event.stopPropagation(); ${isSeries ? `deleteSeries('${content.id}')` : `deleteMovie('${content.id}')`}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="movie-poster">
+                            <img src="${content.poster}" alt="${content.title}" loading="lazy">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            ${isSeries ? `<div class="series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : content.rating ? `<div class="movie-badge"><i class="fas fa-star"></i> ${content.rating}</div>` : ''}
+                        </div>
+                        <div class="movie-info">
+                            <div class="movie-title">${content.title}</div>
+                            <div class="movie-meta">
+                                <span>${content.year || '2024'}</span>
+                                <span><i class="fas fa-eye"></i> ${content.views || 0}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function displayFeatured() {
             const grid = document.getElementById('featuredGrid');
-            const featured = allMovies.filter(m => m.featured).slice(0, 6);
-            grid.innerHTML = featured.map(movie => `
-                <div class="movie-card" onclick='openWatch(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
-                    <div class="movie-poster">
-                        <img src="${movie.poster}" alt="${movie.title}">
-                        <div class="play-icon"><i class="fas fa-play"></i></div>
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        <div class="movie-meta">
-                            <span>${movie.year}</span>
+            const allContent = [...allMovies, ...allSeries];
+            const featured = allContent.filter(m => m.featured).slice(0, 6);
+            
+            grid.innerHTML = featured.map(content => {
+                const isSeries = content.contentType === 'series';
+                const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
+                
+                return `
+                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
+                        <div class="movie-poster">
+                            <img src="${content.poster}" alt="${content.title}">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            ${isSeries ? `<div class="series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : ''}
+                        </div>
+                        <div class="movie-info">
+                            <div class="movie-title">${content.title}</div>
+                            <div class="movie-meta">
+                                <span>${content.year}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function loadHero() {
@@ -1291,7 +1532,7 @@
                         </div>
                         ${slide.description ? `<p style="margin-bottom: 20px; color: var(--text-secondary);">${slide.description}</p>` : ''}
                         <div class="hero-actions">
-                            ${slide.link ? `<button class="btn btn-primary" onclick="openMovieById('${slide.link}')"><i class="fas fa-play"></i> بینین</button>` : ''}
+                            ${slide.link ? `<button class="btn btn-primary" onclick="openContentById('${slide.link}')"><i class="fas fa-play"></i> بینین</button>` : ''}
                         </div>
                     </div>
                     <div class="admin-slide-controls">
@@ -1313,7 +1554,6 @@
             }, 5000);
         }
 
-        // Admin Managers
         function displaySlidesManager() {
             const manager = document.getElementById('slidesManager');
             if (allSlides.length === 0) {
@@ -1341,12 +1581,10 @@
             `).join('');
         }
 
-        // Copy Movie ID Function
         window.copyMovieId = (id) => {
             navigator.clipboard.writeText(id).then(() => {
                 showToast('✅ ID کۆپی کرا: ' + id);
             }).catch(() => {
-                // Fallback for older browsers
                 const input = document.createElement('input');
                 input.value = id;
                 document.body.appendChild(input);
@@ -1385,6 +1623,64 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function displaySeriesManager() {
+            const manager = document.getElementById('seriesManager');
+            if (allSeries.length === 0) {
+                manager.innerHTML = '<p class="loading">هیچ زنجیرەیەک نییە</p>';
+                return;
+            }
+            manager.innerHTML = allSeries.map(series => {
+                const episodes = allEpisodes.filter(ep => ep.seriesId === series.id).sort((a, b) => a.number - b.number);
+                return `
+                    <div class="list-item" style="flex-direction: column; align-items: flex-start;">
+                        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                            <div class="list-item-info">
+                                <div class="list-item-title">${series.title}</div>
+                                <div class="list-item-meta">
+                                    ${series.year} • ${series.type === 'subtitle' ? 'ژێرنووس' : 'دۆبلاژ'} • ${episodes.length} ئەڵقە • 
+                                    <span style="color: var(--accent-primary); font-family: monospace;">ID: ${series.id}</span>
+                                </div>
+                            </div>
+                            <div class="list-item-actions">
+                                <button class="btn" style="background: #2196F3; color: white;" onclick="copyMovieId('${series.id}')">
+                                    <i class="fas fa-copy"></i> ID
+                                </button>
+                                <button class="btn" style="background: #9C27B0; color: white;" onclick="openEpisodeModal('${series.id}')">
+                                    <i class="fas fa-plus"></i> ئەڵقە
+                                </button>
+                                <button class="btn btn-secondary" onclick="editSeries('${series.id}')">
+                                    <i class="fas fa-edit"></i> دەستکاری
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteSeries('${series.id}')">
+                                    <i class="fas fa-trash"></i> سڕینەوە
+                                </button>
+                            </div>
+                        </div>
+                        ${episodes.length > 0 ? `
+                            <div class="episodes-list">
+                                ${episodes.map(ep => `
+                                    <div class="episode-item">
+                                        <div>
+                                            <span class="episode-number">ئەڵقەی ${ep.number}</span>
+                                            ${ep.title ? ` - ${ep.title}` : ''}
+                                        </div>
+                                        <div style="display: flex; gap: 5px;">
+                                            <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 11px;" onclick="event.stopPropagation(); editEpisode('${series.id}', '${ep.id}')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger" style="padding: 4px 12px; font-size: 11px;" onclick="event.stopPropagation(); deleteEpisode('${ep.id}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
         }
 
         function displayMenuManager() {
@@ -1434,15 +1730,21 @@
             `).join('');
         }
 
-        function updateCountrySelect() {
-            const select = document.getElementById('movieCountry');
-            const currentValue = select.value;
-            select.innerHTML = '<option value="">هەڵبژێرە...</option>' + 
+        function updateCountrySelects() {
+            const movieSelect = document.getElementById('movieCountry');
+            const seriesSelect = document.getElementById('seriesCountry');
+            const currentMovie = movieSelect.value;
+            const currentSeries = seriesSelect.value;
+            
+            const options = '<option value="">هەڵبژێرە...</option>' + 
                 allCountries.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
-            select.value = currentValue;
+            
+            movieSelect.innerHTML = options;
+            seriesSelect.innerHTML = options;
+            movieSelect.value = currentMovie;
+            seriesSelect.value = currentSeries;
         }
 
-        // Modal Functions
         window.openLoginModal = () => openModal('loginModal');
         
         window.openSlideModal = () => {
@@ -1466,6 +1768,16 @@
             openModal('movieModal');
         };
 
+        window.openSeriesModal = () => {
+            document.getElementById('seriesModalTitle').innerHTML = '<i class="fas fa-plus"></i> زیادکردنی زنجیرە';
+            document.getElementById('seriesEditId').value = '';
+            document.getElementById('seriesModal').querySelectorAll('input, select, textarea').forEach(el => {
+                if (el.type !== 'hidden') el.value = '';
+            });
+            document.querySelectorAll('#seriesGenreCheckboxes input').forEach(cb => cb.checked = false);
+            openModal('seriesModal');
+        };
+
         window.openMenuModal = () => {
             document.getElementById('menuEditId').value = '';
             document.getElementById('menuName').value = '';
@@ -1479,6 +1791,38 @@
             openModal('countryModal');
         };
 
+        window.openEpisodeModal = (seriesId, episodeId = null) => {
+            document.getElementById('episodeSeriesId').value = seriesId;
+            document.getElementById('episodeEditId').value = episodeId || '';
+            
+            if (episodeId) {
+                const episode = allEpisodes.find(ep => ep.id === episodeId);
+                if (episode) {
+                    document.getElementById('episodeNumber').value = episode.number;
+                    document.getElementById('episodeTitle').value = episode.title || '';
+                    document.getElementById('episodeServer1').value = episode.servers?.server1 || '';
+                    document.getElementById('episodeServer2').value = episode.servers?.server2 || '';
+                    document.getElementById('episodeServer3').value = episode.servers?.server3 || '';
+                    document.getElementById('episodeServer4').value = episode.servers?.server4 || '';
+                    document.getElementById('episodeSrt1').value = episode.subtitles?.srt1 || '';
+                    document.getElementById('episodeSrt2').value = episode.subtitles?.srt2 || '';
+                    document.getElementById('episodeModalTitle').textContent = 'دەستکاریکردنی ئەڵقە';
+                }
+            } else {
+                document.getElementById('episodeNumber').value = '';
+                document.getElementById('episodeTitle').value = '';
+                document.getElementById('episodeServer1').value = '';
+                document.getElementById('episodeServer2').value = '';
+                document.getElementById('episodeServer3').value = '';
+                document.getElementById('episodeServer4').value = '';
+                document.getElementById('episodeSrt1').value = '';
+                document.getElementById('episodeSrt2').value = '';
+                document.getElementById('episodeModalTitle').textContent = 'زیادکردنی ئەڵقە';
+            }
+            
+            openModal('episodeModal');
+        };
+
         function openModal(id) {
             document.getElementById(id).classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1490,9 +1834,11 @@
             if (id === 'watchModal') {
                 document.getElementById('watchContent').innerHTML = '';
             }
+            if (id === 'seriesViewModal') {
+                document.getElementById('seriesViewContent').innerHTML = '';
+            }
         };
 
-        // Save Functions
         window.saveSlide = async (e) => {
             e.preventDefault();
             const id = document.getElementById('slideEditId').value;
@@ -1570,6 +1916,82 @@
             }
         };
 
+        window.saveSeries = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('seriesEditId').value;
+            const genres = Array.from(document.querySelectorAll('#seriesGenreCheckboxes input:checked'))
+                .map(cb => cb.value).join(', ');
+
+            if (!genres) {
+                showToast('⚠️ تکایە لایەنی کەم یەک ژانر هەڵبژێرە');
+                return;
+            }
+
+            const data = {
+                type: document.getElementById('seriesType').value,
+                title: document.getElementById('seriesTitle').value,
+                genres: genres,
+                country: document.getElementById('seriesCountry').value,
+                year: document.getElementById('seriesYear').value,
+                rating: parseFloat(document.getElementById('seriesRating').value) || 0,
+                poster: document.getElementById('seriesPoster').value,
+                description: document.getElementById('seriesDescription').value,
+                featured: document.getElementById('seriesFeatured').value === 'true',
+                date: new Date().toISOString(),
+                views: 0
+            };
+
+            try {
+                if (id) {
+                    const existing = allSeries.find(s => s.id === id);
+                    data.views = existing?.views || 0;
+                    await update(ref(db, `series/${id}`), data);
+                    showToast('✅ زنجیرە دەستکاری کرا');
+                } else {
+                    await push(ref(db, 'series'), data);
+                    showToast('✅ زنجیرە زیاد کرا');
+                }
+                closeModal('seriesModal');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.saveEpisode = async (e) => {
+            e.preventDefault();
+            const seriesId = document.getElementById('episodeSeriesId').value;
+            const episodeId = document.getElementById('episodeEditId').value;
+            const data = {
+                seriesId: seriesId,
+                number: parseInt(document.getElementById('episodeNumber').value),
+                title: document.getElementById('episodeTitle').value,
+                servers: {
+                    server1: document.getElementById('episodeServer1').value,
+                    server2: document.getElementById('episodeServer2').value || '',
+                    server3: document.getElementById('episodeServer3').value || '',
+                    server4: document.getElementById('episodeServer4').value || ''
+                },
+                subtitles: {
+                    srt1: document.getElementById('episodeSrt1').value || '',
+                    srt2: document.getElementById('episodeSrt2').value || ''
+                },
+                date: new Date().toISOString()
+            };
+
+            try {
+                if (episodeId) {
+                    await update(ref(db, `episodes/${episodeId}`), data);
+                    showToast('✅ ئەڵقە دەستکاری کرا');
+                } else {
+                    await push(ref(db, 'episodes'), data);
+                    showToast('✅ ئەڵقە زیاد کرا');
+                }
+                closeModal('episodeModal');
+            } catch (error) {
+                showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
         window.saveMenu = async (e) => {
             e.preventDefault();
             const id = document.getElementById('menuEditId').value;
@@ -1609,7 +2031,6 @@
             }
         };
 
-        // Edit Functions
         window.editSlide = (id) => {
             const slide = allSlides.find(s => s.id === id);
             if (!slide) return;
@@ -1651,6 +2072,32 @@
             openModal('movieModal');
         };
 
+        window.editSeries = (id) => {
+            const series = allSeries.find(s => s.id === id);
+            if (!series) return;
+            document.getElementById('seriesModalTitle').innerHTML = '<i class="fas fa-edit"></i> دەستکاریکردنی زنجیرە';
+            document.getElementById('seriesEditId').value = id;
+            document.getElementById('seriesType').value = series.type;
+            document.getElementById('seriesTitle').value = series.title;
+            document.getElementById('seriesCountry').value = series.country;
+            document.getElementById('seriesYear').value = series.year;
+            document.getElementById('seriesRating').value = series.rating || '';
+            document.getElementById('seriesPoster').value = series.poster;
+            document.getElementById('seriesDescription').value = series.description || '';
+            document.getElementById('seriesFeatured').value = series.featured ? 'true' : 'false';
+            
+            const genres = series.genres?.split(', ') || [];
+            document.querySelectorAll('#seriesGenreCheckboxes input').forEach(cb => {
+                cb.checked = genres.includes(cb.value);
+            });
+            
+            openModal('seriesModal');
+        };
+
+        window.editEpisode = (seriesId, episodeId) => {
+            openEpisodeModal(seriesId, episodeId);
+        };
+
         window.editMenu = (id) => {
             const menu = allMenus.find(m => m.id === id);
             if (!menu) return;
@@ -1668,7 +2115,6 @@
             openModal('countryModal');
         };
 
-        // Delete Functions
         window.deleteSlide = async (id) => {
             if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
             try {
@@ -1686,6 +2132,30 @@
                 showToast('✅ سڕایەوە');
             } catch (error) {
                 showToast('❌ هەڵە: ' + error.message);
+            }
+        };
+
+        window.deleteSeries = async (id) => {
+            if (!confirm('دڵنیایت؟ هەموو ئەڵقەکانیش دەسڕێنەوە')) return;
+            try {
+                await remove(ref(db, `series/${id}`));
+                const episodes = allEpisodes.filter(ep => ep.seriesId === id);
+                for (const ep of episodes) {
+                    await remove(ref(db, `episodes/${ep.id}`));
+                }
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.deleteEpisode = async (id) => {
+            if (!confirm('دڵنیایت؟')) return;
+            try {
+                await remove(ref(db, `episodes/${id}`));
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
             }
         };
 
@@ -1709,7 +2179,6 @@
             }
         };
 
-        // Auth
         window.login = async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -1731,29 +2200,31 @@
             showSection('home');
         };
 
-        // Watch Movie
-        window.openWatch = (movie) => {
-            if (movie.id) {
-                update(ref(db, `movies/${movie.id}`), { views: (movie.views || 0) + 1 });
+        window.openWatch = (id, type) => {
+            const content = type === 'movie' ? allMovies.find(m => m.id === id) : null;
+            if (!content) return;
+
+            if (content.id) {
+                update(ref(db, `movies/${content.id}`), { views: (content.views || 0) + 1 });
             }
 
             const servers = [];
-            if (movie.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: movie.servers.server1 });
-            if (movie.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: movie.servers.server2 });
-            if (movie.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: movie.servers.server3 });
-            if (movie.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: movie.servers.server4 });
+            if (content.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: content.servers.server1 });
+            if (content.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: content.servers.server2 });
+            if (content.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: content.servers.server3 });
+            if (content.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: content.servers.server4 });
 
             document.getElementById('watchContent').innerHTML = `
                 <div class="video-container">
                     <iframe id="videoPlayer" class="video-player" src="${servers[0]?.url || ''}" allowfullscreen allow="autoplay"></iframe>
                 </div>
                 <div class="modal-body">
-                    <h2 style="font-size: 24px; margin-bottom: 15px;">${movie.title}</h2>
+                    <h2 style="font-size: 24px; margin-bottom: 15px;">${content.title}</h2>
                     <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-secondary);">
-                        <span>📅 ${movie.year}</span>
-                        <span>🌍 ${movie.country || 'نەناسراو'}</span>
-                        ${movie.rating ? `<span>⭐ ${movie.rating}/10</span>` : ''}
-                        <span>👁️ ${(movie.views || 0).toLocaleString()}</span>
+                        <span>📅 ${content.year}</span>
+                        <span>🌍 ${content.country || 'نەناسراو'}</span>
+                        ${content.rating ? `<span>⭐ ${content.rating}/10</span>` : ''}
+                        <span>👁️ ${(content.views || 0).toLocaleString()}</span>
                     </div>
 
                     ${servers.length > 1 ? `
@@ -1767,25 +2238,25 @@
                         </div>
                     ` : ''}
 
-                    ${movie.subtitles?.srt1 || movie.subtitles?.srt2 ? `
+                    ${content.subtitles?.srt1 || content.subtitles?.srt2 ? `
                         <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
                             <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
                             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                ${movie.subtitles.srt1 ? `<a href="${movie.subtitles.srt1}" download class="btn btn-secondary">⬇️ داگرتنی SRT 1</a>` : ''}
-                                ${movie.subtitles.srt2 ? `<a href="${movie.subtitles.srt2}" download class="btn btn-secondary">⬇️ داگرتنی SRT 2</a>` : ''}
+                                ${content.subtitles.srt1 ? `<a href="${content.subtitles.srt1}" download class="btn btn-secondary">⬇️ داگرتنی SRT 1</a>` : ''}
+                                ${content.subtitles.srt2 ? `<a href="${content.subtitles.srt2}" download class="btn btn-secondary">⬇️ داگرتنی SRT 2</a>` : ''}
                             </div>
                         </div>
                     ` : ''}
 
                     <div style="margin-top: 15px;">
                         <strong style="color: var(--accent-primary);">ژانر:</strong> 
-                        <span style="color: var(--text-secondary);">${movie.genres || 'نەناسراو'}</span>
+                        <span style="color: var(--text-secondary);">${content.genres || 'نەناسراو'}</span>
                     </div>
 
-                    ${movie.description ? `
+                    ${content.description ? `
                         <div style="margin-top: 20px; line-height: 1.8; color: var(--text-secondary);">
                             <strong style="color: var(--accent-primary); display: block; margin-bottom: 10px;">کورتە:</strong>
-                            ${movie.description}
+                            ${content.description}
                         </div>
                     ` : ''}
                 </div>
@@ -1800,12 +2271,132 @@
             document.getElementById('videoPlayer').src = url;
         };
 
-        window.openMovieById = (id) => {
-            const movie = allMovies.find(m => m.id === id);
-            if (movie) openWatch(movie);
+        window.openSeriesView = (id) => {
+            const series = allSeries.find(s => s.id === id);
+            if (!series) return;
+
+            if (series.id) {
+                update(ref(db, `series/${series.id}`), { views: (series.views || 0) + 1 });
+            }
+
+            const episodes = allEpisodes.filter(ep => ep.seriesId === series.id).sort((a, b) => a.number - b.number);
+
+            document.getElementById('seriesViewContent').innerHTML = `
+                <div class="modal-body">
+                    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+                        <img src="${series.poster}" style="width: 200px; height: 300px; object-fit: cover; border-radius: 8px;">
+                        <div style="flex: 1;">
+                            <h2 style="font-size: 28px; margin-bottom: 15px;">${series.title}</h2>
+                            <div style="display: flex; gap: 15px; margin-bottom: 20px; color: var(--text-secondary);">
+                                <span>📅 ${series.year}</span>
+                                <span>🌍 ${series.country || 'نەناسراو'}</span>
+                                <span>📺 ${episodes.length} ئەڵقە</span>
+                                ${series.rating ? `<span>⭐ ${series.rating}/10</span>` : ''}
+                                <span>👁️ ${(series.views || 0).toLocaleString()}</span>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: var(--accent-primary);">ژانر:</strong> 
+                                <span style="color: var(--text-secondary);">${series.genres || 'نەناسراو'}</span>
+                            </div>
+                            ${series.description ? `<p style="line-height: 1.8; color: var(--text-secondary);">${series.description}</p>` : ''}
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-bottom: 20px; color: var(--accent-primary);">
+                        <i class="fas fa-list"></i> ئەڵقەکان
+                    </h3>
+                    
+                    ${episodes.length > 0 ? `
+                        <div class="episodes-list">
+                            ${episodes.map(ep => `
+                                <div class="episode-item" onclick='openEpisodeWatch("${series.id}", "${ep.id}")'>
+                                    <div>
+                                        <span class="episode-number">ئەڵقەی ${ep.number}</span>
+                                        ${ep.title ? ` - ${ep.title}` : ''}
+                                    </div>
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : '<p style="text-align: center; color: var(--text-secondary);">هیچ ئەڵقەیەک زیاد نەکراوە</p>'}
+                </div>
+            `;
+
+            openModal('seriesViewModal');
         };
 
-        // Filters & Search
+        window.openEpisodeWatch = (seriesId, episodeId) => {
+            const series = allSeries.find(s => s.id === seriesId);
+            const episode = allEpisodes.find(ep => ep.id === episodeId);
+            if (!series || !episode) return;
+
+            const servers = [];
+            if (episode.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: episode.servers.server1 });
+            if (episode.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: episode.servers.server2 });
+            if (episode.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: episode.servers.server3 });
+            if (episode.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: episode.servers.server4 });
+
+            document.getElementById('watchContent').innerHTML = `
+                <div class="video-container">
+                    <iframe id="videoPlayer" class="video-player" src="${servers[0]?.url || ''}" allowfullscreen allow="autoplay"></iframe>
+                </div>
+                <div class="modal-body">
+                    <h2 style="font-size: 24px; margin-bottom: 15px;">
+                        ${series.title} - ئەڵقەی ${episode.number}
+                        ${episode.title ? ` - ${episode.title}` : ''}
+                    </h2>
+                    <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-secondary);">
+                        <span>📅 ${series.year}</span>
+                        <span>🌍 ${series.country || 'نەناسراو'}</span>
+                        ${series.rating ? `<span>⭐ ${series.rating}/10</span>` : ''}
+                    </div>
+
+                    ${servers.length > 1 ? `
+                        <div class="server-tabs">
+                            ${servers.map((s, i) => `
+                                <button class="server-tab ${i === 0 ? 'active' : ''}" 
+                                        onclick="switchServer('${s.url}', this)">
+                                    ${s.name}
+                                </button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${episode.subtitles?.srt1 || episode.subtitles?.srt2 ? `
+                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
+                            <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                ${episode.subtitles.srt1 ? `<a href="${episode.subtitles.srt1}" download class="btn btn-secondary">⬇️ داگرتنی SRT 1</a>` : ''}
+                                ${episode.subtitles.srt2 ? `<a href="${episode.subtitles.srt2}" download class="btn btn-secondary">⬇️ داگرتنی SRT 2</a>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="closeModal('watchModal'); openSeriesView('${seriesId}')">
+                            <i class="fas fa-arrow-right"></i> گەڕانەوە بۆ لیستی ئەڵقەکان
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            closeModal('seriesViewModal');
+            openModal('watchModal');
+        };
+
+        window.openContentById = (id) => {
+            const movie = allMovies.find(m => m.id === id);
+            if (movie) {
+                openWatch(id, 'movie');
+                return;
+            }
+            
+            const series = allSeries.find(s => s.id === id);
+            if (series) {
+                openSeriesView(id);
+            }
+        };
+
         window.setFilter = (filter) => {
             currentFilter = filter;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -1822,7 +2413,8 @@
             }
 
             const grid = document.getElementById('moviesGrid');
-            const filtered = allMovies.filter(m => 
+            const allContent = [...allMovies, ...allSeries];
+            const filtered = allContent.filter(m => 
                 m.title?.toLowerCase().includes(term) ||
                 m.genres?.toLowerCase().includes(term) ||
                 m.country?.toLowerCase().includes(term)
@@ -1833,21 +2425,26 @@
                 return;
             }
 
-            grid.innerHTML = filtered.map(movie => `
-                <div class="movie-card" onclick='openWatch(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
-                    <div class="movie-poster">
-                        <img src="${movie.poster}" alt="${movie.title}">
-                        <div class="play-icon"><i class="fas fa-play"></i></div>
+            grid.innerHTML = filtered.map(content => {
+                const isSeries = content.contentType === 'series';
+                const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
+                
+                return `
+                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
+                        <div class="movie-poster">
+                            <img src="${content.poster}" alt="${content.title}">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            ${isSeries ? `<div class="series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : ''}
+                        </div>
+                        <div class="movie-info">
+                            <div class="movie-title">${content.title}</div>
+                            <div class="movie-meta"><span>${content.year}</span></div>
+                        </div>
                     </div>
-                    <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        <div class="movie-meta"><span>${movie.year}</span></div>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         };
 
-        // Section Navigation
         window.showSection = (section) => {
             if (section === 'admin') {
                 document.getElementById('homeSection').style.display = 'none';
@@ -1859,7 +2456,6 @@
             }
         };
 
-        // Toast
         window.showToast = (message) => {
             const toast = document.createElement('div');
             toast.className = 'toast';
@@ -1868,7 +2464,6 @@
             setTimeout(() => toast.remove(), 3000);
         };
 
-        // Initialize
         loadData();
     </script>
 </body>
