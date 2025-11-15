@@ -8,12 +8,10 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
@@ -29,7 +27,7 @@
         }
         
         body {
-            font-family: 'Aref Ruqaa', 'IBM Plex Sans Arabic', serif;
+            font-family: 'Cairo', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.8;
@@ -39,54 +37,8 @@
         }
 
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Aref Ruqaa', serif;
+            font-family: 'Cairo', sans-serif;
             font-weight: 700;
-            letter-spacing: -0.3px;
-            line-height: 1.4;
-        }
-
-        .logo {
-            font-family: 'Aref Ruqaa', serif;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            font-size: 26px;
-        }
-
-        .movie-title, .list-item-title {
-            font-family: 'Aref Ruqaa', serif;
-            font-weight: 700;
-            line-height: 1.5;
-        }
-
-        .nav-links a, .btn, .filter-btn {
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
-        }
-
-        input, textarea, select {
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
-        }
-
-        .hero-title {
-            font-size: 48px;
-            line-height: 1.3;
-        }
-
-        .section-title {
-            font-size: 26px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                font-size: 15px;
-            }
-            
-            .hero-title {
-                font-size: 32px;
-            }
-            
-            .logo {
-                font-size: 22px;
-            }
         }
 
         header {
@@ -116,11 +68,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .logo i {
-            font-size: 28px;
         }
 
         .nav-search {
@@ -139,11 +86,6 @@
             font-size: 14px;
         }
 
-        .nav-search input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
         .nav-search button {
             position: absolute;
             left: 10px;
@@ -153,7 +95,6 @@
             border: none;
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 16px;
         }
 
         .nav-links {
@@ -170,7 +111,6 @@
             text-decoration: none;
             border-radius: 6px;
             font-size: 14px;
-            font-weight: 500;
             transition: all 0.3s;
         }
 
@@ -179,13 +119,14 @@
             background: rgba(233, 69, 96, 0.1);
         }
 
-        .admin-controls {
+        .admin-controls, .user-controls {
             display: none;
             gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
-        .admin-controls.show {
+        .admin-controls.show, .user-controls.show {
             display: flex;
         }
 
@@ -200,12 +141,7 @@
             align-items: center;
             gap: 6px;
             transition: all 0.3s;
-            white-space: nowrap;
             font-family: inherit;
-        }
-
-        .btn i {
-            font-size: 14px;
         }
 
         .btn-primary {
@@ -215,7 +151,6 @@
 
         .btn-primary:hover {
             background: #d63850;
-            transform: translateY(-2px);
         }
 
         .btn-secondary {
@@ -228,10 +163,50 @@
             color: white;
         }
 
+        .btn-google {
+            background: #4285F4;
+            color: white;
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .btn-facebook {
+            background: #1877F2;
+            color: white;
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .divider span {
+            background: var(--bg-secondary);
+            padding: 0 15px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
         .hero {
             position: relative;
-            height: 85vh;
-            min-height: 600px;
+            height: 60vh;
+            min-height: 400px;
             overflow: hidden;
             margin-bottom: 40px;
         }
@@ -249,8 +224,10 @@
         .hero-bg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: brightness(0.4);
+            object-fit: contain;
+            object-position: center;
+            filter: brightness(0.5);
+            background: var(--bg-primary);
         }
 
         .hero-content {
@@ -258,15 +235,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 80px 60px;
+            padding: 40px 60px;
             background: linear-gradient(transparent, rgba(15, 15, 30, 0.98));
         }
 
         .hero-title {
-            font-size: 56px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 15px;
         }
 
         .hero-meta {
@@ -275,6 +251,7 @@
             margin-bottom: 20px;
             font-size: 16px;
             color: var(--text-secondary);
+            flex-wrap: wrap;
         }
 
         .hero-actions {
@@ -287,16 +264,54 @@
             font-size: 16px;
         }
 
-        .admin-slide-controls {
+        .hero-navigation {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            display: none;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .hero-nav-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(233, 69, 96, 0.8);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hero-nav-btn:hover {
+            background: var(--accent-primary);
+            transform: scale(1.1);
+        }
+
+        .hero-dots {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            display: flex;
             gap: 10px;
         }
 
-        .admin-mode .admin-slide-controls {
-            display: flex;
+        .hero-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hero-dot.active {
+            background: var(--accent-primary);
+            width: 30px;
+            border-radius: 6px;
         }
 
         .container {
@@ -305,24 +320,11 @@
             padding: 0 20px;
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 40px 0 25px;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
         .filters {
             display: flex;
             gap: 10px;
             margin-bottom: 30px;
             overflow-x: auto;
-            padding-bottom: 10px;
         }
 
         .filter-btn {
@@ -356,12 +358,10 @@
             cursor: pointer;
             transition: all 0.4s;
             position: relative;
-            border: 1px solid transparent;
         }
 
         .movie-card:hover {
             transform: translateY(-8px);
-            border-color: var(--accent-primary);
             box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
         }
 
@@ -383,7 +383,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
+            transform: translate(-50%, -50%);
             width: 50px;
             height: 50px;
             background: rgba(233, 69, 96, 0.9);
@@ -391,67 +391,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            color: white;
             opacity: 0;
             transition: all 0.3s;
         }
 
-        .play-icon i {
-            margin-right: 2px;
-        }
-
         .movie-card:hover .play-icon {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .movie-badge, .series-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
         }
 
         .movie-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
             background: rgba(233, 69, 96, 0.95);
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
         }
 
         .series-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
             background: rgba(0, 255, 136, 0.95);
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
             color: #000;
-        }
-
-        .admin-card-btns {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: none;
-            gap: 5px;
-        }
-
-        .admin-mode .movie-card:hover .admin-card-btns {
-            display: flex;
-        }
-
-        .admin-card-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
         }
 
         .movie-info {
@@ -497,7 +461,6 @@
             max-width: 900px;
             width: 100%;
             position: relative;
-            border: 1px solid rgba(233, 69, 96, 0.1);
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -514,13 +477,11 @@
             color: white;
             font-size: 24px;
             cursor: pointer;
-            z-index: 10;
             transition: all 0.3s;
         }
 
         .modal-close:hover {
             background: var(--accent-primary);
-            transform: rotate(90deg);
         }
 
         .modal-header {
@@ -530,7 +491,6 @@
 
         .modal-title {
             font-size: 24px;
-            font-weight: 700;
             color: var(--accent-primary);
         }
 
@@ -550,9 +510,7 @@
             color: var(--text-secondary);
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px;
             background: var(--bg-card);
@@ -563,23 +521,9 @@
             font-family: inherit;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--accent-primary);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-group small {
-            display: block;
-            margin-top: 5px;
-            color: var(--text-secondary);
-            font-size: 12px;
         }
 
         .checkbox-group {
@@ -599,11 +543,6 @@
             gap: 8px;
         }
 
-        .checkbox-item input {
-            width: auto;
-            cursor: pointer;
-        }
-
         .form-actions {
             display: flex;
             gap: 10px;
@@ -614,93 +553,6 @@
             flex: 1;
             justify-content: center;
             padding: 12px;
-        }
-
-        .admin-panel {
-            display: none;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .admin-panel.show {
-            display: block;
-        }
-
-        .admin-section {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(233, 69, 96, 0.1);
-        }
-
-        .admin-section h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--accent-primary);
-        }
-
-        .list-item {
-            background: var(--bg-secondary);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .list-item-info {
-            flex: 1;
-        }
-
-        .list-item-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .list-item-meta {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .list-item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .episodes-list {
-            width: 100%;
-            margin-top: 15px;
-            padding-right: 20px;
-        }
-
-        .episode-item {
-            background: var(--bg-primary);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .episode-item:hover {
-            background: var(--accent-secondary);
-            transform: translateX(-5px);
-        }
-
-        .episode-number {
-            background: var(--accent-primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
         }
 
         .video-container {
@@ -732,10 +584,8 @@
         .server-tab {
             padding: 10px 20px;
             background: var(--bg-card);
-            border: 1px solid transparent;
             border-radius: 8px;
             color: var(--text-secondary);
-            font-size: 13px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -745,16 +595,123 @@
             color: white;
         }
 
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid rgba(233, 69, 96, 0.1);
-            padding: 30px 20px;
-            margin-top: 80px;
-            text-align: center;
+        .comments-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: var(--bg-card);
+            border-radius: 12px;
         }
 
-        footer p {
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: var(--text-primary);
+            min-height: 100px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+
+        .comment-item {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        .comment-date {
+            font-size: 12px;
             color: var(--text-secondary);
+        }
+
+        .comment-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 30px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .admin-panel {
+            display: none;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .admin-panel.show {
+            display: block;
+        }
+
+        .admin-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .list-item {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .list-item-info {
+            flex: 1;
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .episodes-list {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .episode-item {
+            background: var(--bg-primary);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .episode-item:hover {
+            background: var(--accent-secondary);
+        }
+
+        .episode-number {
+            background: var(--accent-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 13px;
         }
 
@@ -772,35 +729,26 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
         }
 
-        .loading {
+        footer {
+            background: var(--bg-secondary);
+            padding: 30px 20px;
+            margin-top: 80px;
             text-align: center;
-            padding: 60px 20px;
             color: var(--text-secondary);
         }
 
         @media (max-width: 768px) {
-            .hero { 
-                height: 65vh; 
-                min-height: 450px; 
-            }
-            .hero-content { 
-                padding: 40px 25px; 
-            }
-            .hero-title { 
-                font-size: 36px; 
-            }
-            .hero-actions .btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
+            .hero { height: 50vh; min-height: 350px; }
+            .hero-content { padding: 30px 25px; }
+            .hero-title { font-size: 24px; }
             .movies-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
             .nav-search { display: none; }
-            .admin-controls { width: 100%; justify-content: center; }
-            .list-item { flex-direction: column; align-items: flex-start; }
+            .hero-navigation { bottom: 20px; }
+            .hero-dots { bottom: 50px; left: 50%; transform: translateX(-50%); }
         }
     </style>
 </head>
@@ -820,18 +768,24 @@
             <ul class="nav-links">
                 <li><a href="#" onclick="showSection('home')" class="active"><i class="fas fa-home"></i> سەرەکی</a></li>
                 <li><a href="#" onclick="setFilter('trending')"><i class="fas fa-fire"></i> ترێند</a></li>
-                <li><a href="#" onclick="setFilter('subtitle')"><i class="fas fa-closed-captioning"></i> ژێرنووس</a></li>
-                <li><a href="#" onclick="setFilter('dubbed')"><i class="fas fa-microphone"></i> دۆبلاژ</a></li>
                 <li><a href="#" onclick="setFilter('series')"><i class="fas fa-tv"></i> زنجیرە</a></li>
-                <li id="adminLoginBtn" style="display: none;"><a href="#" onclick="openLoginModal()"><i class="fas fa-lock"></i> ئەدمین</a></li>
+                <li id="adminLoginBtn" style="display: none;"><a href="#" onclick="openAdminLoginModal()"><i class="fas fa-lock"></i> ئەدمین</a></li>
+                <li id="userLoginBtn"><a href="#" onclick="openUserLoginModal()"><i class="fas fa-user"></i> چوونە ژوورەوە</a></li>
             </ul>
+
+            <div class="user-controls" id="userControls">
+                <span style="color: var(--success); font-size: 14px;" id="userDisplayName"></span>
+                <button class="btn btn-danger" onclick="userLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
 
             <div class="admin-controls" id="adminControls">
                 <button class="btn btn-secondary" onclick="showSection('admin')">
                     <i class="fas fa-cog"></i> پانێڵ
                 </button>
-                <button class="btn btn-danger" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> چوونە دەرەوە
+                <button class="btn btn-danger" onclick="adminLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
         </nav>
@@ -841,473 +795,49 @@
         <section class="hero" id="heroSection"></section>
 
         <div class="container">
-            <div class="filters" id="filterTabs">
+            <div class="filters">
                 <button class="filter-btn active" onclick="setFilter('all')">هەموو</button>
                 <button class="filter-btn" onclick="setFilter('latest')">نوێترین</button>
                 <button class="filter-btn" onclick="setFilter('popular')">بەناوبانگ</button>
-                <button class="filter-btn" onclick="setFilter('action')">ئەکشن</button>
-                <button class="filter-btn" onclick="setFilter('drama')">دراما</button>
-                <button class="filter-btn" onclick="setFilter('comedy')">کۆمیدی</button>
             </div>
 
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-fire"></i> پێشنیارکراو
-                </h2>
-            </div>
+            <h2 style="margin: 40px 0 25px; font-size: 24px;"><i class="fas fa-fire"></i> پێشنیارکراو</h2>
             <div class="movies-grid" id="featuredGrid"></div>
 
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-star"></i> نوێترین
-                </h2>
-            </div>
+            <h2 style="margin: 40px 0 25px; font-size: 24px;"><i class="fas fa-star"></i> نوێترین</h2>
             <div class="movies-grid" id="moviesGrid">
-                <div class="loading">چاوەڕێ بکە...</div>
+                <div style="text-align: center; padding: 60px; color: var(--text-secondary);">چاوەڕێ بکە...</div>
             </div>
         </div>
     </div>
 
-    <div class="admin-panel" id="adminPanel">
-        <div class="container">
-            <h2 style="margin-bottom: 30px; font-size: 28px;">
-                <i class="fas fa-cog"></i> پانێڵی بەڕێوەبردن
-            </h2>
+    <div class="admin-panel" id="adminPanel"></div>
 
-            <div class="admin-section">
-                <h3><i class="fas fa-images"></i> بەڕێوەبردنی Slider</h3>
-                <button class="btn btn-primary" onclick="openSlideModal()">
-                    <i class="fas fa-plus"></i> زیادکردنی Slide نوێ
-                </button>
-                <div id="slidesManager" style="margin-top: 20px;"></div>
-            </div>
-
-            <div class="admin-section">
-                <h3><i class="fas fa-film"></i> بەڕێوەبردنی فیلمەکان</h3>
-                <button class="btn btn-primary" onclick="openMovieModal()">
-                    <i class="fas fa-plus"></i> زیادکردنی فیلمی نوێ
-                </button>
-                <div id="moviesManager" style="margin-top: 20px;"></div>
-            </div>
-
-            <div class="admin-section">
-                <h3><i class="fas fa-tv"></i> بەڕێوەبردنی زنجیرەکان</h3>
-                <button class="btn btn-primary" onclick="openSeriesModal()">
-                    <i class="fas fa-plus"></i> زیادکردنی زنجیرەی نوێ
-                </button>
-                <div id="seriesManager" style="margin-top: 20px;"></div>
-            </div>
-
-            <div class="admin-section">
-                <h3><i class="fas fa-bars"></i> بەڕێوەبردنی Menu</h3>
-                <button class="btn btn-primary" onclick="openMenuModal()">
-                    <i class="fas fa-plus"></i> زیادکردنی بەشی نوێ
-                </button>
-                <div id="menuManager" style="margin-top: 20px;"></div>
-            </div>
-
-            <div class="admin-section">
-                <h3><i class="fas fa-globe"></i> بەڕێوەبردنی وڵاتەکان</h3>
-                <button class="btn btn-primary" onclick="openCountryModal()">
-                    <i class="fas fa-plus"></i> زیادکردنی وڵاتی نوێ
-                </button>
-                <div id="countriesManager" style="margin-top: 20px;"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LOGIN MODAL -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content" style="max-width: 400px;">
-            <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+    <!-- USER LOGIN MODAL -->
+    <div class="modal" id="userLoginModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <button class="modal-close" onclick="closeModal('userLoginModal')">×</button>
             <div class="modal-header">
-                <h2 class="modal-title">🔒 چوونە ژوورەوە</h2>
+                <h2 class="modal-title">🔐 چوونە ژوورەوە</h2>
             </div>
             <div class="modal-body">
-                <form onsubmit="login(event)">
-                    <div class="form-group">
-                        <label>ئیمەیڵ</label>
-                        <input type="email" id="loginEmail" required>
-                    </div>
+                <button class="btn btn-google" onclick="loginWithGoogle()">
+                    <i class="fab fa-google"></i> بەردەوامبوون لەگەڵ Google
+                </button>
+                <button class="btn btn-facebook" onclick="loginWithFacebook()" style="margin-top: 10px;">
+                    <i class="fab fa-facebook-f"></i> بەردەوامبوون لەگەڵ Facebook
+                </button>
+                
+                <div class="divider"><span>یان</span></div>
+                
+                <form onsubmit="userLogin(event)">
                     <div class="form-group">
                         <label>پاسوۆرد</label>
-                        <input type="password" id="loginPassword" required>
+                        <input type="password" id="adminLoginPassword" required>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
                         چوونە ژوورەوە
                     </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE MODAL -->
-    <div class="modal" id="slideModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('slideModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title" id="slideModalTitle">
-                    <i class="fas fa-plus"></i> زیادکردنی Slide
-                </h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="saveSlide(event)">
-                    <input type="hidden" id="slideEditId">
-                    <div class="form-group">
-                        <label>ناونیشان *</label>
-                        <input type="text" id="slideTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ساڵ</label>
-                        <input type="text" id="slideYear">
-                    </div>
-                    <div class="form-group">
-                        <label>وەسف</label>
-                        <textarea id="slideDescription"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>لینکی وێنە (HTTPS) *</label>
-                        <input type="url" id="slideImage" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ID ی فیلم (بۆ دوگمەی بینین)</label>
-                        <input type="text" id="slideMovieId">
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('slideModal')">
-                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> پاشەکەوتکردن
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- MOVIE MODAL -->
-    <div class="modal" id="movieModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('movieModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title" id="movieModalTitle">
-                    <i class="fas fa-plus"></i> زیادکردنی فیلم
-                </h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="saveMovie(event)">
-                    <input type="hidden" id="movieEditId">
-                    
-                    <div class="form-group">
-                        <label>جۆر *</label>
-                        <select id="movieType" required>
-                            <option value="subtitle">ژێرنووسکراو</option>
-                            <option value="dubbed">دۆبلاژکراو</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>ناوی فیلم *</label>
-                        <input type="text" id="movieTitle" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>ژانر * (هەڵبژێرە)</label>
-                        <div class="checkbox-group" id="genreCheckboxes">
-                            <div class="checkbox-item"><input type="checkbox" value="دراما"> دراما</div>
-                            <div class="checkbox-item"><input type="checkbox" value="کۆمیدی"> کۆمیدی</div>
-                            <div class="checkbox-item"><input type="checkbox" value="ئەکشن"> ئەکشن</div>
-                            <div class="checkbox-item"><input type="checkbox" value="ڕۆمانسی"> ڕۆمانسی</div>
-                            <div class="checkbox-item"><input type="checkbox" value="تۆقێنەر"> تۆقێنەر</div>
-                            <div class="checkbox-item"><input type="checkbox" value="زانستی خەیاڵی"> زانستی خەیاڵی</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>وڵات *</label>
-                        <select id="movieCountry" required>
-                            <option value="">هەڵبژێرە...</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>ساڵ *</label>
-                        <input type="text" id="movieYear" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>⭐ ڕەیتینگ (لە 10)</label>
-                        <input type="number" id="movieRating" min="0" max="10" step="0.1">
-                    </div>
-
-                    <div class="form-group">
-                        <label>لینکی پۆستەر (HTTPS) *</label>
-                        <input type="url" id="moviePoster" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 1 (Upstream) *</label>
-                        <input type="url" id="movieServer1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 2 (Filemoon)</label>
-                        <input type="url" id="movieServer2">
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 3 (MixDrop)</label>
-                        <input type="url" id="movieServer3">
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 4 (VidMoly)</label>
-                        <input type="url" id="movieServer4">
-                    </div>
-
-                    <div class="form-group">
-                        <label>📄 ژێرنووس SRT 1</label>
-                        <input type="url" id="movieSrt1" placeholder="https://...">
-                        <small>لینکی فایلی .srt (Google Drive یان GitHub)</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label>📄 ژێرنووس SRT 2</label>
-                        <input type="url" id="movieSrt2">
-                    </div>
-
-                    <div class="form-group">
-                        <label>وردەکاری</label>
-                        <textarea id="movieDescription"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>پێشنیارکراو؟</label>
-                        <select id="movieFeatured">
-                            <option value="false">نەخێر</option>
-                            <option value="true">بەڵێ</option>
-                        </select>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('movieModal')">
-                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> پاشەکەوتکردن
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- SERIES MODAL -->
-    <div class="modal" id="seriesModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('seriesModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title" id="seriesModalTitle">
-                    <i class="fas fa-plus"></i> زیادکردنی زنجیرە
-                </h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="saveSeries(event)">
-                    <input type="hidden" id="seriesEditId">
-                    
-                    <div class="form-group">
-                        <label>جۆر *</label>
-                        <select id="seriesType" required>
-                            <option value="subtitle">ژێرنووسکراو</option>
-                            <option value="dubbed">دۆبلاژکراو</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>ناوی زنجیرە *</label>
-                        <input type="text" id="seriesTitle" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>ژانر * (هەڵبژێرە)</label>
-                        <div class="checkbox-group" id="seriesGenreCheckboxes">
-                            <div class="checkbox-item"><input type="checkbox" value="دراما"> دراما</div>
-                            <div class="checkbox-item"><input type="checkbox" value="کۆمیدی"> کۆمیدی</div>
-                            <div class="checkbox-item"><input type="checkbox" value="ئەکشن"> ئەکشن</div>
-                            <div class="checkbox-item"><input type="checkbox" value="ڕۆمانسی"> ڕۆمانسی</div>
-                            <div class="checkbox-item"><input type="checkbox" value="تۆقێنەر"> تۆقێنەر</div>
-                            <div class="checkbox-item"><input type="checkbox" value="زانستی خەیاڵی"> زانستی خەیاڵی</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>وڵات *</label>
-                        <select id="seriesCountry" required>
-                            <option value="">هەڵبژێرە...</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>ساڵ *</label>
-                        <input type="text" id="seriesYear" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>⭐ ڕەیتینگ (لە 10)</label>
-                        <input type="number" id="seriesRating" min="0" max="10" step="0.1">
-                    </div>
-
-                    <div class="form-group">
-                        <label>لینکی پۆستەر (HTTPS) *</label>
-                        <input type="url" id="seriesPoster" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>وردەکاری</label>
-                        <textarea id="seriesDescription"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>پێشنیارکراو؟</label>
-                        <select id="seriesFeatured">
-                            <option value="false">نەخێر</option>
-                            <option value="true">بەڵێ</option>
-                        </select>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('seriesModal')">
-                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> پاشەکەوتکردن
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- EPISODE MODAL -->
-    <div class="modal" id="episodeModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('episodeModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title" id="episodeModalTitle">زیادکردنی ئەڵقە</h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="saveEpisode(event)">
-                    <input type="hidden" id="episodeSeriesId">
-                    <input type="hidden" id="episodeEditId">
-                    
-                    <div class="form-group">
-                        <label>ژمارەی ئەڵقە *</label>
-                        <input type="number" id="episodeNumber" min="1" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>ناوی ئەڵقە</label>
-                        <input type="text" id="episodeTitle">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 1 (Upstream) *</label>
-                        <input type="url" id="episodeServer1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 2 (Filemoon)</label>
-                        <input type="url" id="episodeServer2">
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 3 (MixDrop)</label>
-                        <input type="url" id="episodeServer3">
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎥 سێرڤەر 4 (VidMoly)</label>
-                        <input type="url" id="episodeServer4">
-                    </div>
-
-                    <div class="form-group">
-                        <label>📄 ژێرنووس SRT 1</label>
-                        <input type="url" id="episodeSrt1">
-                    </div>
-
-                    <div class="form-group">
-                        <label>📄 ژێرنووس SRT 2</label>
-                        <input type="url" id="episodeSrt2">
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('episodeModal')">
-                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> پاشەکەوتکردن
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- MENU MODAL -->
-    <div class="modal" id="menuModal">
-        <div class="modal-content" style="max-width: 500px;">
-            <button class="modal-close" onclick="closeModal('menuModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title">➕ زیادکردنی بەشی Menu</h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="saveMenu(event)">
-                    <input type="hidden" id="menuEditId">
-                    <div class="form-group">
-                        <label>ناوی بەش *</label>
-                        <input type="text" id="menuName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Filter Value *</label>
-                        <input type="text" id="menuValue" required>
-                        <small>بۆ فلتەرکردن - بە ئینگلیزی بنووسە</small>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('menuModal')">
-                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> پاشەکەوتکردن
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- COUNTRY MODAL -->
-    <div class="modal" id="countryModal">
-        <div class="modal-content" style="max-width: 500px;">
-            <button class="modal-close" onclick="closeModal('countryModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title">➕ زیادکردنی وڵات</h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="saveCountry(event)">
-                    <input type="hidden" id="countryEditId">
-                    <div class="form-group">
-                        <label>ناوی وڵات *</label>
-                        <input type="text" id="countryName" required>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('countryModal')">
-                            <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> پاشەکەوتکردن
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>
@@ -1336,7 +866,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyAaE1v9PcHGsSgF1IlnDrygX5TT2-zii8o",
@@ -1353,25 +883,44 @@
         let allSeries = [];
         let allEpisodes = [];
         let allSlides = [];
-        let allMenus = [];
-        let allCountries = [];
+        let allComments = [];
         let currentFilter = 'all';
         let isAdmin = false;
+        let currentUser = null;
+        let currentSlideIndex = 0;
+        let slideInterval;
 
         const urlParams = new URLSearchParams(window.location.search);
-        const showAdminButton = urlParams.get('admin') === 'true';
-
-        if (showAdminButton) {
+        if (urlParams.get('admin') === 'true') {
             document.getElementById('adminLoginBtn').style.display = 'block';
         }
 
         onAuthStateChanged(auth, (user) => {
-            isAdmin = !!user;
-            document.getElementById('adminControls').classList.toggle('show', isAdmin);
-            if (isAdmin) {
-                document.getElementById('adminLoginBtn').style.display = 'none';
+            if (user) {
+                if (user.email && user.email.includes('admin')) {
+                    isAdmin = true;
+                    currentUser = null;
+                    document.getElementById('adminControls').classList.add('show');
+                    document.getElementById('userControls').classList.remove('show');
+                    document.getElementById('userLoginBtn').style.display = 'none';
+                    document.getElementById('adminLoginBtn').style.display = 'none';
+                    document.body.classList.add('admin-mode');
+                } else {
+                    currentUser = user;
+                    isAdmin = false;
+                    document.getElementById('userControls').classList.add('show');
+                    document.getElementById('adminControls').classList.remove('show');
+                    document.getElementById('userLoginBtn').style.display = 'none';
+                    document.getElementById('userDisplayName').textContent = user.displayName || user.email.split('@')[0];
+                }
+            } else {
+                isAdmin = false;
+                currentUser = null;
+                document.getElementById('adminControls').classList.remove('show');
+                document.getElementById('userControls').classList.remove('show');
+                document.getElementById('userLoginBtn').style.display = 'block';
+                document.body.classList.remove('admin-mode');
             }
-            document.body.classList.toggle('admin-mode', isAdmin);
         });
 
         function loadData() {
@@ -1382,7 +931,6 @@
                 });
                 displayMovies();
                 displayFeatured();
-                displayMoviesManager();
             });
 
             onValue(ref(db, 'series'), (snapshot) => {
@@ -1392,7 +940,6 @@
                 });
                 displayMovies();
                 displayFeatured();
-                displaySeriesManager();
             });
 
             onValue(ref(db, 'episodes'), (snapshot) => {
@@ -1400,7 +947,6 @@
                 snapshot.forEach((child) => {
                     allEpisodes.push({ id: child.key, ...child.val() });
                 });
-                displaySeriesManager();
             });
 
             onValue(ref(db, 'slides'), (snapshot) => {
@@ -1409,24 +955,13 @@
                     allSlides.push({ id: child.key, ...child.val() });
                 });
                 loadHero();
-                displaySlidesManager();
             });
 
-            onValue(ref(db, 'menuItems'), (snapshot) => {
-                allMenus = [];
+            onValue(ref(db, 'comments'), (snapshot) => {
+                allComments = [];
                 snapshot.forEach((child) => {
-                    allMenus.push({ id: child.key, ...child.val() });
+                    allComments.push({ id: child.key, ...child.val() });
                 });
-                displayMenuManager();
-            });
-
-            onValue(ref(db, 'countries'), (snapshot) => {
-                allCountries = [];
-                snapshot.forEach((child) => {
-                    allCountries.push({ id: child.key, ...child.val() });
-                });
-                updateCountrySelects();
-                displayCountriesManager();
             });
         }
 
@@ -1439,8 +974,6 @@
                 filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
             } else if (currentFilter === 'popular') {
                 filtered = filtered.sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 12);
-            } else if (currentFilter === 'subtitle' || currentFilter === 'dubbed') {
-                filtered = filtered.filter(m => m.type === currentFilter);
             } else if (currentFilter === 'series') {
                 filtered = allSeries;
             } else if (currentFilter !== 'all') {
@@ -1448,7 +981,7 @@
             }
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="loading">هیچ فیلمێک نەدۆزرایەوە</div>';
+                grid.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">هیچ ناوەڕۆکێک نەدۆزرایەوە</div>';
                 return;
             }
 
@@ -1458,14 +991,6 @@
                 
                 return `
                     <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
-                        <div class="admin-card-btns">
-                            <button class="admin-card-btn" style="background: #4CAF50;" onclick="event.stopPropagation(); ${isSeries ? `editSeries('${content.id}')` : `editMovie('${content.id}')`}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="admin-card-btn" style="background: #ff4444;" onclick="event.stopPropagation(); ${isSeries ? `deleteSeries('${content.id}')` : `deleteMovie('${content.id}')`}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
                         <div class="movie-poster">
                             <img src="${content.poster}" alt="${content.title}" loading="lazy">
                             <div class="play-icon"><i class="fas fa-play"></i></div>
@@ -1475,7 +1000,7 @@
                             <div class="movie-title">${content.title}</div>
                             <div class="movie-meta">
                                 <span>${content.year || '2024'}</span>
-                                <span><i class="fas fa-eye"></i> ${content.views || 0}</span>
+                                <span>${content.duration || ''}</span>
                             </div>
                         </div>
                     </div>
@@ -1520,7 +1045,7 @@
             }
 
             hero.style.display = 'block';
-            let currentSlide = 0;
+            currentSlideIndex = 0;
             
             hero.innerHTML = featured.map((slide, index) => `
                 <div class="hero-slide ${index === 0 ? 'active' : ''}">
@@ -1528,300 +1053,82 @@
                     <div class="hero-content">
                         <h1 class="hero-title">${slide.title}</h1>
                         <div class="hero-meta">
-                            ${slide.year ? `<span>${slide.year}</span>` : ''}
+                            ${slide.year ? `<span>📅 ${slide.year}</span>` : ''}
+                            ${slide.rating ? `<span>⭐ ${slide.rating}</span>` : ''}
+                            ${slide.duration ? `<span>🕒 ${slide.duration}</span>` : ''}
                         </div>
                         ${slide.description ? `<p style="margin-bottom: 20px; color: var(--text-secondary);">${slide.description}</p>` : ''}
                         <div class="hero-actions">
-                            ${slide.link ? `<button class="btn btn-primary" onclick="openContentById('${slide.link}')"><i class="fas fa-play"></i> بینین</button>` : ''}
+                            ${slide.link ? `<button class="btn btn-primary" onclick="event.stopPropagation(); openContentById('${slide.link}')"><i class="fas fa-play"></i> بینین</button>` : ''}
                         </div>
                     </div>
-                    <div class="admin-slide-controls">
-                        <button class="admin-card-btn" style="background: #4CAF50;" onclick="event.stopPropagation(); editSlide('${slide.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="admin-card-btn" style="background: #ff4444;" onclick="event.stopPropagation(); deleteSlide('${slide.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
                 </div>
-            `).join('');
+            `).join('') + `
+                <div class="hero-navigation">
+                    <button class="hero-nav-btn" onclick="prevSlide()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="hero-nav-btn" onclick="nextSlide()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div class="hero-dots">
+                    ${featured.map((_, i) => `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('')}
+                </div>
+            `;
 
-            setInterval(() => {
-                const slides = document.querySelectorAll('.hero-slide');
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
+            startSlideshow();
+        }
+
+        function startSlideshow() {
+            if (slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                nextSlide();
             }, 5000);
         }
 
-        function displaySlidesManager() {
-            const manager = document.getElementById('slidesManager');
-            if (allSlides.length === 0) {
-                manager.innerHTML = '<p class="loading">هیچ Slide ێک نییە</p>';
-                return;
-            }
-            manager.innerHTML = allSlides.map(slide => `
-                <div class="list-item">
-                    <div class="list-item-info">
-                        <div class="list-item-title">${slide.title}</div>
-                        <div class="list-item-meta">
-                            ${slide.description || 'بێ وەسف'}
-                            ${slide.link ? ` • <span style="color: var(--success);">✓ لینک کراوە بە فیلم</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="list-item-actions">
-                        <button class="btn btn-secondary" onclick="editSlide('${slide.id}')">
-                            <i class="fas fa-edit"></i> دەستکاری
-                        </button>
-                        <button class="btn btn-danger" onclick="deleteSlide('${slide.id}')">
-                            <i class="fas fa-trash"></i> سڕینەوە
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        window.copyMovieId = (id) => {
-            navigator.clipboard.writeText(id).then(() => {
-                showToast('✅ ID کۆپی کرا: ' + id);
-            }).catch(() => {
-                const input = document.createElement('input');
-                input.value = id;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-                showToast('✅ ID کۆپی کرا: ' + id);
-            });
-        };
-
-        function displayMoviesManager() {
-            const manager = document.getElementById('moviesManager');
-            if (allMovies.length === 0) {
-                manager.innerHTML = '<p class="loading">هیچ فیلمێک نییە</p>';
-                return;
-            }
-            manager.innerHTML = allMovies.slice(0, 10).map(movie => `
-                <div class="list-item">
-                    <div class="list-item-info">
-                        <div class="list-item-title">${movie.title}</div>
-                        <div class="list-item-meta">
-                            ${movie.year} • ${movie.type === 'subtitle' ? 'ژێرنووس' : 'دۆبلاژ'} • 
-                            <span style="color: var(--accent-primary); font-family: monospace;">ID: ${movie.id}</span>
-                        </div>
-                    </div>
-                    <div class="list-item-actions">
-                        <button class="btn" style="background: #2196F3; color: white;" onclick="copyMovieId('${movie.id}')">
-                            <i class="fas fa-copy"></i> ID
-                        </button>
-                        <button class="btn btn-secondary" onclick="editMovie('${movie.id}')">
-                            <i class="fas fa-edit"></i> دەستکاری
-                        </button>
-                        <button class="btn btn-danger" onclick="deleteMovie('${movie.id}')">
-                            <i class="fas fa-trash"></i> سڕینەوە
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function displaySeriesManager() {
-            const manager = document.getElementById('seriesManager');
-            if (allSeries.length === 0) {
-                manager.innerHTML = '<p class="loading">هیچ زنجیرەیەک نییە</p>';
-                return;
-            }
-            manager.innerHTML = allSeries.map(series => {
-                const episodes = allEpisodes.filter(ep => ep.seriesId === series.id).sort((a, b) => a.number - b.number);
-                return `
-                    <div class="list-item" style="flex-direction: column; align-items: flex-start;">
-                        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                            <div class="list-item-info">
-                                <div class="list-item-title">${series.title}</div>
-                                <div class="list-item-meta">
-                                    ${series.year} • ${series.type === 'subtitle' ? 'ژێرنووس' : 'دۆبلاژ'} • ${episodes.length} ئەڵقە • 
-                                    <span style="color: var(--accent-primary); font-family: monospace;">ID: ${series.id}</span>
-                                </div>
-                            </div>
-                            <div class="list-item-actions">
-                                <button class="btn" style="background: #2196F3; color: white;" onclick="copyMovieId('${series.id}')">
-                                    <i class="fas fa-copy"></i> ID
-                                </button>
-                                <button class="btn" style="background: #9C27B0; color: white;" onclick="openEpisodeModal('${series.id}')">
-                                    <i class="fas fa-plus"></i> ئەڵقە
-                                </button>
-                                <button class="btn btn-secondary" onclick="editSeries('${series.id}')">
-                                    <i class="fas fa-edit"></i> دەستکاری
-                                </button>
-                                <button class="btn btn-danger" onclick="deleteSeries('${series.id}')">
-                                    <i class="fas fa-trash"></i> سڕینەوە
-                                </button>
-                            </div>
-                        </div>
-                        ${episodes.length > 0 ? `
-                            <div class="episodes-list">
-                                ${episodes.map(ep => `
-                                    <div class="episode-item">
-                                        <div>
-                                            <span class="episode-number">ئەڵقەی ${ep.number}</span>
-                                            ${ep.title ? ` - ${ep.title}` : ''}
-                                        </div>
-                                        <div style="display: flex; gap: 5px;">
-                                            <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 11px;" onclick="event.stopPropagation(); editEpisode('${series.id}', '${ep.id}')">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-danger" style="padding: 4px 12px; font-size: 11px;" onclick="event.stopPropagation(); deleteEpisode('${ep.id}')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function displayMenuManager() {
-            const manager = document.getElementById('menuManager');
-            if (allMenus.length === 0) {
-                manager.innerHTML = '<p class="loading">هیچ بەشێک نییە</p>';
-                return;
-            }
-            manager.innerHTML = allMenus.map(menu => `
-                <div class="list-item">
-                    <div class="list-item-info">
-                        <div class="list-item-title">${menu.name}</div>
-                        <div class="list-item-meta">Filter: ${menu.value}</div>
-                    </div>
-                    <div class="list-item-actions">
-                        <button class="btn btn-secondary" onclick="editMenu('${menu.id}')">
-                            <i class="fas fa-edit"></i> دەستکاری
-                        </button>
-                        <button class="btn btn-danger" onclick="deleteMenu('${menu.id}')">
-                            <i class="fas fa-trash"></i> سڕینەوە
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function displayCountriesManager() {
-            const manager = document.getElementById('countriesManager');
-            if (allCountries.length === 0) {
-                manager.innerHTML = '<p class="loading">هیچ وڵاتێک نییە</p>';
-                return;
-            }
-            manager.innerHTML = allCountries.map(country => `
-                <div class="list-item">
-                    <div class="list-item-info">
-                        <div class="list-item-title">${country.name}</div>
-                    </div>
-                    <div class="list-item-actions">
-                        <button class="btn btn-secondary" onclick="editCountry('${country.id}')">
-                            <i class="fas fa-edit"></i> دەستکاری
-                        </button>
-                        <button class="btn btn-danger" onclick="deleteCountry('${country.id}')">
-                            <i class="fas fa-trash"></i> سڕینەوە
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateCountrySelects() {
-            const movieSelect = document.getElementById('movieCountry');
-            const seriesSelect = document.getElementById('seriesCountry');
-            const currentMovie = movieSelect.value;
-            const currentSeries = seriesSelect.value;
+        window.nextSlide = () => {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.hero-dot');
+            if (slides.length === 0) return;
             
-            const options = '<option value="">هەڵبژێرە...</option>' + 
-                allCountries.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+            startSlideshow();
+        };
+
+        window.prevSlide = () => {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.hero-dot');
+            if (slides.length === 0) return;
             
-            movieSelect.innerHTML = options;
-            seriesSelect.innerHTML = options;
-            movieSelect.value = currentMovie;
-            seriesSelect.value = currentSeries;
-        }
-
-        window.openLoginModal = () => openModal('loginModal');
-        
-        window.openSlideModal = () => {
-            document.getElementById('slideModalTitle').innerHTML = '<i class="fas fa-plus"></i> زیادکردنی Slide';
-            document.getElementById('slideEditId').value = '';
-            document.getElementById('slideTitle').value = '';
-            document.getElementById('slideYear').value = '';
-            document.getElementById('slideDescription').value = '';
-            document.getElementById('slideImage').value = '';
-            document.getElementById('slideMovieId').value = '';
-            openModal('slideModal');
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+            startSlideshow();
         };
 
-        window.openMovieModal = () => {
-            document.getElementById('movieModalTitle').innerHTML = '<i class="fas fa-plus"></i> زیادکردنی فیلم';
-            document.getElementById('movieEditId').value = '';
-            document.getElementById('movieModal').querySelectorAll('input, select, textarea').forEach(el => {
-                if (el.type !== 'hidden') el.value = '';
-            });
-            document.querySelectorAll('#genreCheckboxes input').forEach(cb => cb.checked = false);
-            openModal('movieModal');
-        };
-
-        window.openSeriesModal = () => {
-            document.getElementById('seriesModalTitle').innerHTML = '<i class="fas fa-plus"></i> زیادکردنی زنجیرە';
-            document.getElementById('seriesEditId').value = '';
-            document.getElementById('seriesModal').querySelectorAll('input, select, textarea').forEach(el => {
-                if (el.type !== 'hidden') el.value = '';
-            });
-            document.querySelectorAll('#seriesGenreCheckboxes input').forEach(cb => cb.checked = false);
-            openModal('seriesModal');
-        };
-
-        window.openMenuModal = () => {
-            document.getElementById('menuEditId').value = '';
-            document.getElementById('menuName').value = '';
-            document.getElementById('menuValue').value = '';
-            openModal('menuModal');
-        };
-
-        window.openCountryModal = () => {
-            document.getElementById('countryEditId').value = '';
-            document.getElementById('countryName').value = '';
-            openModal('countryModal');
-        };
-
-        window.openEpisodeModal = (seriesId, episodeId = null) => {
-            document.getElementById('episodeSeriesId').value = seriesId;
-            document.getElementById('episodeEditId').value = episodeId || '';
+        window.goToSlide = (index) => {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.hero-dot');
+            if (slides.length === 0) return;
             
-            if (episodeId) {
-                const episode = allEpisodes.find(ep => ep.id === episodeId);
-                if (episode) {
-                    document.getElementById('episodeNumber').value = episode.number;
-                    document.getElementById('episodeTitle').value = episode.title || '';
-                    document.getElementById('episodeServer1').value = episode.servers?.server1 || '';
-                    document.getElementById('episodeServer2').value = episode.servers?.server2 || '';
-                    document.getElementById('episodeServer3').value = episode.servers?.server3 || '';
-                    document.getElementById('episodeServer4').value = episode.servers?.server4 || '';
-                    document.getElementById('episodeSrt1').value = episode.subtitles?.srt1 || '';
-                    document.getElementById('episodeSrt2').value = episode.subtitles?.srt2 || '';
-                    document.getElementById('episodeModalTitle').textContent = 'دەستکاریکردنی ئەڵقە';
-                }
-            } else {
-                document.getElementById('episodeNumber').value = '';
-                document.getElementById('episodeTitle').value = '';
-                document.getElementById('episodeServer1').value = '';
-                document.getElementById('episodeServer2').value = '';
-                document.getElementById('episodeServer3').value = '';
-                document.getElementById('episodeServer4').value = '';
-                document.getElementById('episodeSrt1').value = '';
-                document.getElementById('episodeSrt2').value = '';
-                document.getElementById('episodeModalTitle').textContent = 'زیادکردنی ئەڵقە';
-            }
-            
-            openModal('episodeModal');
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            currentSlideIndex = index;
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+            startSlideshow();
         };
+
+        window.openUserLoginModal = () => openModal('userLoginModal');
+        window.openUserRegisterModal = () => openModal('userRegisterModal');
+        window.openAdminLoginModal = () => openModal('adminLoginModal');
 
         function openModal(id) {
             document.getElementById(id).classList.add('active');
@@ -1831,362 +1138,74 @@
         window.closeModal = (id) => {
             document.getElementById(id).classList.remove('active');
             document.body.style.overflow = 'auto';
-            if (id === 'watchModal') {
-                document.getElementById('watchContent').innerHTML = '';
-            }
-            if (id === 'seriesViewModal') {
-                document.getElementById('seriesViewContent').innerHTML = '';
-            }
         };
 
-        window.saveSlide = async (e) => {
+        window.userLogin = async (e) => {
             e.preventDefault();
-            const id = document.getElementById('slideEditId').value;
-            const data = {
-                title: document.getElementById('slideTitle').value,
-                year: document.getElementById('slideYear').value,
-                description: document.getElementById('slideDescription').value,
-                image: document.getElementById('slideImage').value,
-                link: document.getElementById('slideMovieId').value,
-                date: new Date().toISOString()
-            };
-
-            try {
-                if (id) {
-                    await update(ref(db, `slides/${id}`), data);
-                    showToast('✅ Slide دەستکاری کرا');
-                } else {
-                    await push(ref(db, 'slides'), data);
-                    showToast('✅ Slide زیاد کرا');
-                }
-                closeModal('slideModal');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.saveMovie = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('movieEditId').value;
-            const genres = Array.from(document.querySelectorAll('#genreCheckboxes input:checked'))
-                .map(cb => cb.value).join(', ');
-
-            if (!genres) {
-                showToast('⚠️ تکایە لایەنی کەم یەک ژانر هەڵبژێرە');
-                return;
-            }
-
-            const data = {
-                type: document.getElementById('movieType').value,
-                title: document.getElementById('movieTitle').value,
-                genres: genres,
-                country: document.getElementById('movieCountry').value,
-                year: document.getElementById('movieYear').value,
-                rating: parseFloat(document.getElementById('movieRating').value) || 0,
-                poster: document.getElementById('moviePoster').value,
-                servers: {
-                    server1: document.getElementById('movieServer1').value,
-                    server2: document.getElementById('movieServer2').value || '',
-                    server3: document.getElementById('movieServer3').value || '',
-                    server4: document.getElementById('movieServer4').value || ''
-                },
-                subtitles: {
-                    srt1: document.getElementById('movieSrt1').value || '',
-                    srt2: document.getElementById('movieSrt2').value || ''
-                },
-                description: document.getElementById('movieDescription').value,
-                featured: document.getElementById('movieFeatured').value === 'true',
-                date: new Date().toISOString(),
-                views: 0
-            };
-
-            try {
-                if (id) {
-                    const existing = allMovies.find(m => m.id === id);
-                    data.views = existing?.views || 0;
-                    await update(ref(db, `movies/${id}`), data);
-                    showToast('✅ فیلم دەستکاری کرا');
-                } else {
-                    await push(ref(db, 'movies'), data);
-                    showToast('✅ فیلم زیاد کرا');
-                }
-                closeModal('movieModal');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.saveSeries = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('seriesEditId').value;
-            const genres = Array.from(document.querySelectorAll('#seriesGenreCheckboxes input:checked'))
-                .map(cb => cb.value).join(', ');
-
-            if (!genres) {
-                showToast('⚠️ تکایە لایەنی کەم یەک ژانر هەڵبژێرە');
-                return;
-            }
-
-            const data = {
-                type: document.getElementById('seriesType').value,
-                title: document.getElementById('seriesTitle').value,
-                genres: genres,
-                country: document.getElementById('seriesCountry').value,
-                year: document.getElementById('seriesYear').value,
-                rating: parseFloat(document.getElementById('seriesRating').value) || 0,
-                poster: document.getElementById('seriesPoster').value,
-                description: document.getElementById('seriesDescription').value,
-                featured: document.getElementById('seriesFeatured').value === 'true',
-                date: new Date().toISOString(),
-                views: 0
-            };
-
-            try {
-                if (id) {
-                    const existing = allSeries.find(s => s.id === id);
-                    data.views = existing?.views || 0;
-                    await update(ref(db, `series/${id}`), data);
-                    showToast('✅ زنجیرە دەستکاری کرا');
-                } else {
-                    await push(ref(db, 'series'), data);
-                    showToast('✅ زنجیرە زیاد کرا');
-                }
-                closeModal('seriesModal');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.saveEpisode = async (e) => {
-            e.preventDefault();
-            const seriesId = document.getElementById('episodeSeriesId').value;
-            const episodeId = document.getElementById('episodeEditId').value;
-            const data = {
-                seriesId: seriesId,
-                number: parseInt(document.getElementById('episodeNumber').value),
-                title: document.getElementById('episodeTitle').value,
-                servers: {
-                    server1: document.getElementById('episodeServer1').value,
-                    server2: document.getElementById('episodeServer2').value || '',
-                    server3: document.getElementById('episodeServer3').value || '',
-                    server4: document.getElementById('episodeServer4').value || ''
-                },
-                subtitles: {
-                    srt1: document.getElementById('episodeSrt1').value || '',
-                    srt2: document.getElementById('episodeSrt2').value || ''
-                },
-                date: new Date().toISOString()
-            };
-
-            try {
-                if (episodeId) {
-                    await update(ref(db, `episodes/${episodeId}`), data);
-                    showToast('✅ ئەڵقە دەستکاری کرا');
-                } else {
-                    await push(ref(db, 'episodes'), data);
-                    showToast('✅ ئەڵقە زیاد کرا');
-                }
-                closeModal('episodeModal');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.saveMenu = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('menuEditId').value;
-            const data = {
-                name: document.getElementById('menuName').value,
-                value: document.getElementById('menuValue').value
-            };
-
-            try {
-                if (id) {
-                    await update(ref(db, `menuItems/${id}`), data);
-                } else {
-                    await push(ref(db, 'menuItems'), data);
-                }
-                closeModal('menuModal');
-                showToast('✅ بەش پاشەکەوت کرا');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.saveCountry = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('countryEditId').value;
-            const data = { name: document.getElementById('countryName').value };
-
-            try {
-                if (id) {
-                    await update(ref(db, `countries/${id}`), data);
-                } else {
-                    await push(ref(db, 'countries'), data);
-                }
-                closeModal('countryModal');
-                showToast('✅ وڵات پاشەکەوت کرا');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.editSlide = (id) => {
-            const slide = allSlides.find(s => s.id === id);
-            if (!slide) return;
-            document.getElementById('slideModalTitle').innerHTML = '<i class="fas fa-edit"></i> دەستکاریکردنی Slide';
-            document.getElementById('slideEditId').value = id;
-            document.getElementById('slideTitle').value = slide.title;
-            document.getElementById('slideYear').value = slide.year || '';
-            document.getElementById('slideDescription').value = slide.description || '';
-            document.getElementById('slideImage').value = slide.image;
-            document.getElementById('slideMovieId').value = slide.link || '';
-            openModal('slideModal');
-        };
-
-        window.editMovie = (id) => {
-            const movie = allMovies.find(m => m.id === id);
-            if (!movie) return;
-            document.getElementById('movieModalTitle').innerHTML = '<i class="fas fa-edit"></i> دەستکاریکردنی فیلم';
-            document.getElementById('movieEditId').value = id;
-            document.getElementById('movieType').value = movie.type;
-            document.getElementById('movieTitle').value = movie.title;
-            document.getElementById('movieCountry').value = movie.country;
-            document.getElementById('movieYear').value = movie.year;
-            document.getElementById('movieRating').value = movie.rating || '';
-            document.getElementById('moviePoster').value = movie.poster;
-            document.getElementById('movieServer1').value = movie.servers?.server1 || '';
-            document.getElementById('movieServer2').value = movie.servers?.server2 || '';
-            document.getElementById('movieServer3').value = movie.servers?.server3 || '';
-            document.getElementById('movieServer4').value = movie.servers?.server4 || '';
-            document.getElementById('movieSrt1').value = movie.subtitles?.srt1 || '';
-            document.getElementById('movieSrt2').value = movie.subtitles?.srt2 || '';
-            document.getElementById('movieDescription').value = movie.description || '';
-            document.getElementById('movieFeatured').value = movie.featured ? 'true' : 'false';
-            
-            const genres = movie.genres?.split(', ') || [];
-            document.querySelectorAll('#genreCheckboxes input').forEach(cb => {
-                cb.checked = genres.includes(cb.value);
-            });
-            
-            openModal('movieModal');
-        };
-
-        window.editSeries = (id) => {
-            const series = allSeries.find(s => s.id === id);
-            if (!series) return;
-            document.getElementById('seriesModalTitle').innerHTML = '<i class="fas fa-edit"></i> دەستکاریکردنی زنجیرە';
-            document.getElementById('seriesEditId').value = id;
-            document.getElementById('seriesType').value = series.type;
-            document.getElementById('seriesTitle').value = series.title;
-            document.getElementById('seriesCountry').value = series.country;
-            document.getElementById('seriesYear').value = series.year;
-            document.getElementById('seriesRating').value = series.rating || '';
-            document.getElementById('seriesPoster').value = series.poster;
-            document.getElementById('seriesDescription').value = series.description || '';
-            document.getElementById('seriesFeatured').value = series.featured ? 'true' : 'false';
-            
-            const genres = series.genres?.split(', ') || [];
-            document.querySelectorAll('#seriesGenreCheckboxes input').forEach(cb => {
-                cb.checked = genres.includes(cb.value);
-            });
-            
-            openModal('seriesModal');
-        };
-
-        window.editEpisode = (seriesId, episodeId) => {
-            openEpisodeModal(seriesId, episodeId);
-        };
-
-        window.editMenu = (id) => {
-            const menu = allMenus.find(m => m.id === id);
-            if (!menu) return;
-            document.getElementById('menuEditId').value = id;
-            document.getElementById('menuName').value = menu.name;
-            document.getElementById('menuValue').value = menu.value;
-            openModal('menuModal');
-        };
-
-        window.editCountry = (id) => {
-            const country = allCountries.find(c => c.id === id);
-            if (!country) return;
-            document.getElementById('countryEditId').value = id;
-            document.getElementById('countryName').value = country.name;
-            openModal('countryModal');
-        };
-
-        window.deleteSlide = async (id) => {
-            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
-            try {
-                await remove(ref(db, `slides/${id}`));
-                showToast('✅ سڕایەوە');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.deleteMovie = async (id) => {
-            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
-            try {
-                await remove(ref(db, `movies/${id}`));
-                showToast('✅ سڕایەوە');
-            } catch (error) {
-                showToast('❌ هەڵە: ' + error.message);
-            }
-        };
-
-        window.deleteSeries = async (id) => {
-            if (!confirm('دڵنیایت؟ هەموو ئەڵقەکانیش دەسڕێنەوە')) return;
-            try {
-                await remove(ref(db, `series/${id}`));
-                const episodes = allEpisodes.filter(ep => ep.seriesId === id);
-                for (const ep of episodes) {
-                    await remove(ref(db, `episodes/${ep.id}`));
-                }
-                showToast('✅ سڕایەوە');
-            } catch (error) {
-                showToast('❌ هەڵە');
-            }
-        };
-
-        window.deleteEpisode = async (id) => {
-            if (!confirm('دڵنیایت؟')) return;
-            try {
-                await remove(ref(db, `episodes/${id}`));
-                showToast('✅ سڕایەوە');
-            } catch (error) {
-                showToast('❌ هەڵە');
-            }
-        };
-
-        window.deleteMenu = async (id) => {
-            if (!confirm('دڵنیایت؟')) return;
-            try {
-                await remove(ref(db, `menuItems/${id}`));
-                showToast('✅ سڕایەوە');
-            } catch (error) {
-                showToast('❌ هەڵە');
-            }
-        };
-
-        window.deleteCountry = async (id) => {
-            if (!confirm('دڵنیایت؟')) return;
-            try {
-                await remove(ref(db, `countries/${id}`));
-                showToast('✅ سڕایەوە');
-            } catch (error) {
-                showToast('❌ هەڵە');
-            }
-        };
-
-        window.login = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+            const email = document.getElementById('userLoginEmail').value;
+            const password = document.getElementById('userLoginPassword').value;
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                closeModal('loginModal');
+                closeModal('userLoginModal');
+                showToast('✅ بە سەرکەوتوویی چوویتە ژوورەوە');
+            } catch (error) {
+                showToast('❌ ئیمەیڵ یان پاسوۆرد هەڵەیە');
+            }
+        };
+
+        window.userRegister = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('userRegisterName').value;
+            const email = document.getElementById('userRegisterEmail').value;
+            const password = document.getElementById('userRegisterPassword').value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                closeModal('userRegisterModal');
+                showToast('✅ ئەکاونت دروست کرا! بەخێربێیت');
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    showToast('❌ ئەم ئیمەیڵە پێشتر بەکارهاتووە');
+                } else {
+                    showToast('❌ هەڵە: ' + error.message);
+                }
+            }
+        };
+
+        window.loginWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+                closeModal('userLoginModal');
+                closeModal('userRegisterModal');
+                showToast('✅ بە Google چوویتە ژوورەوە');
+            } catch (error) {
+                showToast('❌ هەڵە لە چوونە ژوورەوە بە Google');
+            }
+        };
+
+        window.loginWithFacebook = async () => {
+            const provider = new FacebookAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+                closeModal('userLoginModal');
+                closeModal('userRegisterModal');
+                showToast('✅ بە Facebook چوویتە ژوورەوە');
+            } catch (error) {
+                showToast('❌ هەڵە لە چوونە ژوورەوە بە Facebook');
+            }
+        };
+
+        window.adminLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('adminLoginEmail').value;
+            const password = document.getElementById('adminLoginPassword').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                closeModal('adminLoginModal');
                 showToast('✅ بە سەرکەوتوویی چوویتە ژوورەوە');
                 showSection('admin');
             } catch (error) {
@@ -2194,14 +1213,19 @@
             }
         };
 
-        window.logout = async () => {
+        window.userLogout = async () => {
+            await signOut(auth);
+            showToast('✅ چوویتە دەرەوە');
+        };
+
+        window.adminLogout = async () => {
             await signOut(auth);
             showToast('✅ چوویتە دەرەوە');
             showSection('home');
         };
 
         window.openWatch = (id, type) => {
-            const content = type === 'movie' ? allMovies.find(m => m.id === id) : null;
+            const content = allMovies.find(m => m.id === id);
             if (!content) return;
 
             if (content.id) {
@@ -2222,7 +1246,7 @@
                     <h2 style="font-size: 24px; margin-bottom: 15px;">${content.title}</h2>
                     <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-secondary);">
                         <span>📅 ${content.year}</span>
-                        <span>🌍 ${content.country || 'نەناسراو'}</span>
+                        ${content.duration ? `<span>🕒 ${content.duration}</span>` : ''}
                         ${content.rating ? `<span>⭐ ${content.rating}/10</span>` : ''}
                         <span>👁️ ${(content.views || 0).toLocaleString()}</span>
                     </div>
@@ -2238,31 +1262,39 @@
                         </div>
                     ` : ''}
 
-                    ${content.subtitles?.srt1 || content.subtitles?.srt2 ? `
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
-                            <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                ${content.subtitles.srt1 ? `<a href="${content.subtitles.srt1}" download class="btn btn-secondary">⬇️ داگرتنی SRT 1</a>` : ''}
-                                ${content.subtitles.srt2 ? `<a href="${content.subtitles.srt2}" download class="btn btn-secondary">⬇️ داگرتنی SRT 2</a>` : ''}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <div style="margin-top: 15px;">
-                        <strong style="color: var(--accent-primary);">ژانر:</strong> 
-                        <span style="color: var(--text-secondary);">${content.genres || 'نەناسراو'}</span>
-                    </div>
-
                     ${content.description ? `
                         <div style="margin-top: 20px; line-height: 1.8; color: var(--text-secondary);">
-                            <strong style="color: var(--accent-primary); display: block; margin-bottom: 10px;">کورتە:</strong>
+                            <strong style="color: var(--accent-primary);">کورتە:</strong><br>
                             ${content.description}
                         </div>
                     ` : ''}
+
+                    <div class="comments-section">
+                        <h3 style="margin-bottom: 20px; color: var(--accent-primary);">
+                            <i class="fas fa-comments"></i> بۆچونەکان
+                        </h3>
+                        ${currentUser ? `
+                            <div class="comment-form">
+                                <textarea id="commentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
+                                <button class="btn btn-primary" onclick="postComment('${content.id}', 'movie')">
+                                    <i class="fas fa-paper-plane"></i> ناردن
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="login-prompt">
+                                <p style="margin-bottom: 15px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
+                                <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
+                                    <i class="fas fa-user"></i> چوونە ژوورەوە
+                                </button>
+                            </div>
+                        `}
+                        <div id="commentsContainer"></div>
+                    </div>
                 </div>
             `;
 
             openModal('watchModal');
+            loadComments(content.id, 'movie');
         };
 
         window.switchServer = (url, btn) => {
@@ -2289,14 +1321,10 @@
                             <h2 style="font-size: 28px; margin-bottom: 15px;">${series.title}</h2>
                             <div style="display: flex; gap: 15px; margin-bottom: 20px; color: var(--text-secondary);">
                                 <span>📅 ${series.year}</span>
-                                <span>🌍 ${series.country || 'نەناسراو'}</span>
                                 <span>📺 ${episodes.length} ئەڵقە</span>
+                                ${series.duration ? `<span>🕒 ${series.duration}</span>` : ''}
                                 ${series.rating ? `<span>⭐ ${series.rating}/10</span>` : ''}
                                 <span>👁️ ${(series.views || 0).toLocaleString()}</span>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: var(--accent-primary);">ژانر:</strong> 
-                                <span style="color: var(--text-secondary);">${series.genres || 'نەناسراو'}</span>
                             </div>
                             ${series.description ? `<p style="line-height: 1.8; color: var(--text-secondary);">${series.description}</p>` : ''}
                         </div>
@@ -2313,16 +1341,40 @@
                                     <div>
                                         <span class="episode-number">ئەڵقەی ${ep.number}</span>
                                         ${ep.title ? ` - ${ep.title}` : ''}
+                                        ${ep.duration ? ` <span style="color: var(--text-secondary); margin-right: 10px;">🕒 ${ep.duration}</span>` : ''}
                                     </div>
                                     <i class="fas fa-play"></i>
                                 </div>
                             `).join('')}
                         </div>
                     ` : '<p style="text-align: center; color: var(--text-secondary);">هیچ ئەڵقەیەک زیاد نەکراوە</p>'}
+
+                    <div class="comments-section" style="margin-top: 40px;">
+                        <h3 style="margin-bottom: 20px; color: var(--accent-primary);">
+                            <i class="fas fa-comments"></i> بۆچونەکان
+                        </h3>
+                        ${currentUser ? `
+                            <div class="comment-form">
+                                <textarea id="seriesCommentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
+                                <button class="btn btn-primary" onclick="postComment('${series.id}', 'series')">
+                                    <i class="fas fa-paper-plane"></i> ناردن
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="login-prompt">
+                                <p style="margin-bottom: 15px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
+                                <button class="btn btn-primary" onclick="closeModal('seriesViewModal'); openUserLoginModal()">
+                                    <i class="fas fa-user"></i> چوونە ژوورەوە
+                                </button>
+                            </div>
+                        `}
+                        <div id="seriesCommentsContainer"></div>
+                    </div>
                 </div>
             `;
 
             openModal('seriesViewModal');
+            loadComments(series.id, 'series');
         };
 
         window.openEpisodeWatch = (seriesId, episodeId) => {
@@ -2345,10 +1397,9 @@
                         ${series.title} - ئەڵقەی ${episode.number}
                         ${episode.title ? ` - ${episode.title}` : ''}
                     </h2>
-                    <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-secondary);">
+                    <div style="display: flex; gap: 15px; margin-bottom: 20px; color: var(--text-secondary);">
                         <span>📅 ${series.year}</span>
-                        <span>🌍 ${series.country || 'نەناسراو'}</span>
-                        ${series.rating ? `<span>⭐ ${series.rating}/10</span>` : ''}
+                        ${episode.duration ? `<span>🕒 ${episode.duration}</span>` : ''}
                     </div>
 
                     ${servers.length > 1 ? `
@@ -2362,16 +1413,6 @@
                         </div>
                     ` : ''}
 
-                    ${episode.subtitles?.srt1 || episode.subtitles?.srt2 ? `
-                        <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
-                            <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                ${episode.subtitles.srt1 ? `<a href="${episode.subtitles.srt1}" download class="btn btn-secondary">⬇️ داگرتنی SRT 1</a>` : ''}
-                                ${episode.subtitles.srt2 ? `<a href="${episode.subtitles.srt2}" download class="btn btn-secondary">⬇️ داگرتنی SRT 2</a>` : ''}
-                            </div>
-                        </div>
-                    ` : ''}
-
                     <div style="margin-top: 20px;">
                         <button class="btn btn-primary" onclick="closeModal('watchModal'); openSeriesView('${seriesId}')">
                             <i class="fas fa-arrow-right"></i> گەڕانەوە بۆ لیستی ئەڵقەکان
@@ -2382,6 +1423,86 @@
 
             closeModal('seriesViewModal');
             openModal('watchModal');
+        };
+
+        window.postComment = async (contentId, contentType) => {
+            if (!currentUser) {
+                showToast('❌ تکایە یەکەم بچۆ ژوورەوە');
+                return;
+            }
+
+            const textId = contentType === 'series' ? 'seriesCommentText' : 'commentText';
+            const text = document.getElementById(textId).value.trim();
+
+            if (!text) {
+                showToast('❌ تکایە بۆچونەکەت بنووسە');
+                return;
+            }
+
+            const comment = {
+                contentId: contentId,
+                contentType: contentType,
+                userId: currentUser.uid,
+                userName: currentUser.displayName || currentUser.email.split('@')[0],
+                text: text,
+                date: new Date().toISOString()
+            };
+
+            try {
+                await push(ref(db, 'comments'), comment);
+                document.getElementById(textId).value = '';
+                showToast('✅ بۆچونەکەت زیاد کرا');
+                loadComments(contentId, contentType);
+            } catch (error) {
+                showToast('❌ هەڵە لە زیادکردنی بۆچون');
+            }
+        };
+
+        function loadComments(contentId, contentType) {
+            const containerId = contentType === 'series' ? 'seriesCommentsContainer' : 'commentsContainer';
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const comments = allComments
+                .filter(c => c.contentId === contentId && c.contentType === contentType)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (comments.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">هێشتا هیچ بۆچونێک نییە</p>';
+                return;
+            }
+
+            container.innerHTML = comments.map(comment => `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="comment-author">
+                            <i class="fas fa-user-circle"></i> ${comment.userName}
+                        </span>
+                        <span class="comment-date">
+                            ${new Date(comment.date).toLocaleDateString('ku')}
+                        </span>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                    ${currentUser && currentUser.uid === comment.userId ? `
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-danger" style="padding: 4px 12px; font-size: 12px;" onclick="deleteComment('${comment.id}', '${contentId}', '${contentType}')">
+                                <i class="fas fa-trash"></i> سڕینەوە
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        window.deleteComment = async (commentId, contentId, contentType) => {
+            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
+            try {
+                await remove(ref(db, `comments/${commentId}`));
+                showToast('✅ سڕایەوە');
+                loadComments(contentId, contentType);
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
         };
 
         window.openContentById = (id) => {
@@ -2421,7 +1542,7 @@
             );
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="loading">هیچ ئەنجامێک نەدۆزرایەوە</div>';
+                grid.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">هیچ ئەنجامێک نەدۆزرایەوە</div>';
                 return;
             }
 
@@ -2448,11 +1569,82 @@
         window.showSection = (section) => {
             if (section === 'admin') {
                 document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('adminPanel').innerHTML = `
+                    <div class="container">
+                        <h2 style="margin-bottom: 30px; font-size: 28px;">
+                            <i class="fas fa-cog"></i> پانێڵی بەڕێوەبردن
+                        </h2>
+                        <div class="admin-section">
+                            <h3>پێشنیار: بۆ زیادکردنی فیلم و زنجیرە:</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.8;">
+                                ١. بڕۆ بۆ Firebase Console<br>
+                                ٢. لە Database دا، زانیاریەکان زیاد بکە<br>
+                                ٣. بۆ زیادکردنی کات (Duration)، بنووسە: "2h 15m" یان "45m"<br>
+                                ٤. بۆ Slider، لە "slides" دا زیاد بکە<br>
+                                ٥. بۆ زیادکردنی "link" لە Slide، ID ی فیلم یان زنجیرەکە بنووسە
+                            </p>
+                        </div>
+
+                        <div class="admin-section">
+                            <h3><i class="fas fa-database"></i> لینکی Firebase Console</h3>
+                            <a href="https://console.firebase.google.com/project/kurdvision-f9d3e/database/kurdvision-f9d3e-default-rtdb/data" 
+                               target="_blank" class="btn btn-primary" style="margin-top: 10px;">
+                                <i class="fas fa-external-link-alt"></i> کردنەوەی Firebase Console
+                            </a>
+                        </div>
+
+                        <div class="admin-section">
+                            <h3><i class="fas fa-info-circle"></i> زانیاری</h3>
+                            <p style="color: var(--text-secondary);">
+                                • کات (Duration): "2h 30m" یان "1h 45m" یان "45m"<br>
+                                • ڕەیتینگ: ژمارەی لە 0 بۆ 10 (بۆ نموونە: 8.5)<br>
+                                • Featured: true یان false<br>
+                                • Type: "subtitle" یان "dubbed"<br>
+                            </p>
+                        </div>
+
+                        <div class="admin-section">
+                            <h3><i class="fas fa-comments"></i> بەڕێوەبردنی بۆچونەکان</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                                کۆی بۆچونەکان: ${allComments.length}
+                            </p>
+                            ${allComments.length > 0 ? `
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    ${allComments.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 20).map(comment => `
+                                        <div class="list-item">
+                                            <div class="list-item-info">
+                                                <div style="font-weight: 600; color: var(--accent-primary);">${comment.userName}</div>
+                                                <div style="font-size: 12px; color: var(--text-secondary); margin: 5px 0;">
+                                                    ${new Date(comment.date).toLocaleDateString('ku')}
+                                                </div>
+                                                <div style="color: var(--text-secondary);">${comment.text}</div>
+                                            </div>
+                                            <button class="btn btn-danger" onclick="deleteCommentAdmin('${comment.id}')">
+                                                <i class="fas fa-trash"></i> سڕینەوە
+                                            </button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : '<p style="text-align: center; color: var(--text-secondary);">هیچ بۆچونێک نییە</p>'}
+                        </div>
+                    </div>
+                `;
                 document.getElementById('adminPanel').classList.add('show');
                 document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
             } else {
                 document.getElementById('homeSection').style.display = 'block';
                 document.getElementById('adminPanel').classList.remove('show');
+            }
+        };
+
+        window.deleteCommentAdmin = async (commentId) => {
+            if (!confirm('دڵنیایت؟')) return;
+            try {
+                await remove(ref(db, `comments/${commentId}`));
+                showToast('✅ سڕایەوە');
+                showSection('admin');
+            } catch (error) {
+                showToast('❌ هەڵە');
             }
         };
 
@@ -2468,3 +1660,78 @@
     </script>
 </body>
 </html>
+                        <label>ئیمەیڵ</label>
+                        <input type="email" id="userLoginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>پاسوۆرد</label>
+                        <input type="password" id="userLoginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        چوونە ژوورەوە
+                    </button>
+                </form>
+                
+                <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 14px;">
+                    ئەکاونتت نییە؟ <a href="#" onclick="closeModal('userLoginModal'); openUserRegisterModal()" style="color: var(--accent-primary);">تۆمارکردن</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- USER REGISTER MODAL -->
+    <div class="modal" id="userRegisterModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <button class="modal-close" onclick="closeModal('userRegisterModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title">📝 دروستکردنی ئەکاونت</h2>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-google" onclick="loginWithGoogle()">
+                    <i class="fab fa-google"></i> بەردەوامبوون لەگەڵ Google
+                </button>
+                <button class="btn btn-facebook" onclick="loginWithFacebook()" style="margin-top: 10px;">
+                    <i class="fab fa-facebook-f"></i> بەردەوامبوون لەگەڵ Facebook
+                </button>
+                
+                <div class="divider"><span>یان</span></div>
+                
+                <form onsubmit="userRegister(event)">
+                    <div class="form-group">
+                        <label>ناو *</label>
+                        <input type="text" id="userRegisterName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ئیمەیڵ *</label>
+                        <input type="email" id="userRegisterEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>پاسوۆرد * (لایەنی کەم 6 پیت)</label>
+                        <input type="password" id="userRegisterPassword" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        دروستکردنی ئەکاونت
+                    </button>
+                </form>
+                
+                <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 14px;">
+                    ئەکاونتت هەیە؟ <a href="#" onclick="closeModal('userRegisterModal'); openUserLoginModal()" style="color: var(--accent-primary);">چوونە ژوورەوە</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeModal('adminLoginModal')">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title">🔒 چوونە ژوورەوەی ئەدمین</h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="adminLogin(event)">
+                    <div class="form-group">
+                        <label>ئیمەیڵی ئەدمین</label>
+                        <input type="email" id="adminLoginEmail" required>
+                    </div>
+                    <div class="form-group">
