@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="پلاتفۆرمی بینینی فیلم و زنجیرە بە ژێرنووسی کوردی">
     <title>کورد ڤیژن Pro</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,54 +12,45 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-primary: #0f0f1e;
-            --bg-secondary: #1a1a2e;
-            --bg-card: #16213e;
-            --accent-primary: #e94560;
-            --accent-secondary: #0f3460;
-            --text-primary: #f1f1f1;
-            --text-secondary: #a0a0a0;
-            --success: #00ff88;
-            --warning: #ffa500;
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151b35;
+            --bg-card: #1e2746;
+            --accent-primary: #e50914;
+            --accent-secondary: #b20710;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --success: #46d369;
         }
         
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.8;
-            overflow-x: hidden;
-            font-weight: 400;
-            font-size: 16px;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
+            line-height: 1.6;
         }
 
         header {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(10, 14, 39, 0.7) 100%);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(233, 69, 96, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         nav {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px 20px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--accent-primary);
             display: flex;
@@ -78,17 +66,24 @@
 
         .nav-search input {
             width: 100%;
-            padding: 10px 40px 10px 15px;
+            padding: 12px 45px 12px 20px;
             background: var(--bg-card);
-            border: 1px solid transparent;
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
             color: var(--text-primary);
             font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .nav-search input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
         }
 
         .nav-search button {
             position: absolute;
-            left: 10px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -99,47 +94,46 @@
 
         .nav-links {
             display: flex;
-            gap: 5px;
+            gap: 10px;
             list-style: none;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .nav-links a {
-            padding: 8px 15px;
+            padding: 10px 20px;
             color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
             transition: all 0.3s;
         }
 
         .nav-links a:hover, .nav-links a.active {
             color: var(--accent-primary);
-            background: rgba(233, 69, 96, 0.1);
+            background: rgba(229, 9, 20, 0.1);
         }
 
-        .admin-controls, .user-controls {
+        .user-controls {
             display: none;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 10px;
             align-items: center;
         }
 
-        .admin-controls.show, .user-controls.show {
+        .user-controls.show {
             display: flex;
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.3s;
             font-family: inherit;
         }
@@ -150,17 +144,23 @@
         }
 
         .btn-primary:hover {
-            background: #d63850;
+            background: var(--accent-secondary);
         }
 
         .btn-secondary {
             background: var(--success);
-            color: #000;
+            color: white;
         }
 
-        .btn-danger {
-            background: #ff4444;
+        .btn-outline {
+            background: transparent;
             color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--bg-primary);
         }
 
         .btn-google {
@@ -168,7 +168,6 @@
             color: white;
             width: 100%;
             justify-content: center;
-            padding: 12px;
         }
 
         .btn-facebook {
@@ -176,39 +175,14 @@
             color: white;
             width: 100%;
             justify-content: center;
-            padding: 12px;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 20px 0;
-            position: relative;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .divider span {
-            background: var(--bg-secondary);
-            padding: 0 15px;
-            position: relative;
-            color: var(--text-secondary);
-            font-size: 14px;
         }
 
         .hero {
             position: relative;
-            height: 60vh;
-            min-height: 400px;
+            height: 70vh;
+            min-height: 500px;
             overflow: hidden;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .hero-slide {
@@ -216,7 +190,7 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s;
         }
 
         .hero-slide.active { opacity: 1; }
@@ -224,10 +198,8 @@
         .hero-bg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            object-position: center;
-            filter: brightness(0.5);
-            background: var(--bg-primary);
+            object-fit: cover;
+            filter: brightness(0.4);
         }
 
         .hero-content {
@@ -235,14 +207,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 40px 60px;
-            background: linear-gradient(transparent, rgba(15, 15, 30, 0.98));
+            padding: 60px;
+            background: linear-gradient(transparent, rgba(10, 14, 39, 1));
         }
 
         .hero-title {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .hero-meta {
@@ -260,24 +232,24 @@
         }
 
         .hero-actions .btn {
-            padding: 12px 30px;
+            padding: 15px 35px;
             font-size: 16px;
         }
 
         .hero-navigation {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 15px;
-            z-index: 10;
         }
 
         .hero-nav-btn {
             width: 50px;
             height: 50px;
-            background: rgba(233, 69, 96, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
             border: none;
             border-radius: 50%;
             color: white;
@@ -288,66 +260,27 @@
 
         .hero-nav-btn:hover {
             background: var(--accent-primary);
-            transform: scale(1.1);
-        }
-
-        .hero-dots {
-            position: absolute;
-            bottom: 60px;
-            left: 60px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .hero-dot {
-            width: 12px;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .hero-dot.active {
-            background: var(--accent-primary);
-            width: 30px;
-            border-radius: 6px;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 30px;
         }
 
-        .filters {
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 50px 0 30px;
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            overflow-x: auto;
-        }
-
-        .filter-btn {
-            padding: 8px 20px;
-            background: var(--bg-card);
-            border: 1px solid transparent;
-            border-radius: 20px;
-            color: var(--text-secondary);
-            font-size: 13px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--accent-primary);
-            color: white;
+            align-items: center;
+            gap: 15px;
         }
 
         .movies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
             margin-bottom: 60px;
         }
 
@@ -358,11 +291,13 @@
             cursor: pointer;
             transition: all 0.4s;
             position: relative;
+            border: 2px solid transparent;
         }
 
         .movie-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
+            transform: translateY(-10px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.3);
         }
 
         .movie-poster {
@@ -370,24 +305,23 @@
             width: 100%;
             aspect-ratio: 2/3;
             overflow: hidden;
-            background: var(--bg-secondary);
         }
 
         .movie-poster img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s;
         }
 
-        .play-icon {
+        .movie-card:hover .movie-poster img {
+            transform: scale(1.1);
+        }
+
+        .play-overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            background: rgba(233, 69, 96, 0.9);
-            border-radius: 50%;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -395,37 +329,45 @@
             transition: all 0.3s;
         }
 
-        .movie-card:hover .play-icon {
+        .movie-card:hover .play-overlay {
             opacity: 1;
         }
 
-        .movie-badge, .series-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
+        .play-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
         }
 
         .movie-badge {
-            background: rgba(233, 69, 96, 0.95);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 12px;
+            background: var(--accent-primary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .series-badge {
-            background: rgba(0, 255, 136, 0.95);
-            color: #000;
+            background: var(--success);
+            color: var(--bg-primary);
         }
 
         .movie-info {
-            padding: 12px;
+            padding: 15px;
         }
 
         .movie-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -435,7 +377,7 @@
         .movie-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
@@ -458,7 +400,7 @@
         .modal-content {
             background: var(--bg-secondary);
             border-radius: 16px;
-            max-width: 900px;
+            max-width: 1100px;
             width: 100%;
             position: relative;
             max-height: 90vh;
@@ -467,16 +409,17 @@
 
         .modal-close {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            width: 40px;
-            height: 40px;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
             background: rgba(0, 0, 0, 0.8);
             border: none;
             border-radius: 50%;
             color: white;
             font-size: 24px;
             cursor: pointer;
+            z-index: 10;
             transition: all 0.3s;
         }
 
@@ -484,235 +427,241 @@
             background: var(--accent-primary);
         }
 
-        .modal-header {
-            padding: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .modal-title {
-            font-size: 24px;
-            color: var(--accent-primary);
-        }
-
-        .modal-body {
-            padding: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
+        .watch-header {
+            position: relative;
             width: 100%;
-            padding: 12px;
-            background: var(--bg-card);
-            border: 1px solid transparent;
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-family: inherit;
+            aspect-ratio: 16/9;
+            background: #000;
+            overflow: hidden;
         }
 
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-primary);
+        .watch-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
         }
 
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            padding: 15px;
-            background: var(--bg-card);
-            border-radius: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .checkbox-item {
+        .trailer-overlay {
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-        }
-
-        .form-actions .btn {
-            flex: 1;
             justify-content: center;
-            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .trailer-btn {
+            padding: 20px 50px;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .trailer-btn:hover {
+            background: var(--accent-secondary);
+            transform: scale(1.05);
         }
 
         .video-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            aspect-ratio: 16/9;
             background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 20px;
         }
 
         .video-player {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        .server-tabs {
+        .watch-body {
+            padding: 40px;
+        }
+
+        .watch-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .watch-meta {
             display: flex;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 25px;
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: var(--text-secondary);
             flex-wrap: wrap;
         }
 
-        .server-tab {
-            padding: 10px 20px;
-            background: var(--bg-card);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .server-tab:hover, .server-tab.active {
-            background: var(--accent-primary);
-            color: white;
-        }
-
-        .comments-section {
-            margin-top: 30px;
+        .servers-section {
+            margin: 30px 0;
             padding: 25px;
             background: var(--bg-card);
             border-radius: 12px;
+        }
+
+        .servers-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent-primary);
+        }
+
+        .server-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .server-tab {
+            padding: 15px;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .server-tab:hover {
+            border-color: var(--accent-primary);
+            background: rgba(229, 9, 20, 0.1);
+        }
+
+        .server-tab.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .description-section {
+            margin: 30px 0;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .comments-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .comments-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
         }
 
         .comment-form textarea {
             width: 100%;
             padding: 15px;
             background: var(--bg-secondary);
-            border: 1px solid transparent;
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
             color: var(--text-primary);
-            min-height: 100px;
-            margin-bottom: 10px;
+            min-height: 120px;
+            margin-bottom: 15px;
             font-family: inherit;
+            font-size: 15px;
         }
 
         .comment-item {
             background: var(--bg-secondary);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 10px;
             margin-bottom: 15px;
         }
 
         .comment-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .comment-author {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent-primary);
         }
 
         .comment-date {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
         .comment-text {
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .login-prompt {
             text-align: center;
-            padding: 30px;
+            padding: 40px;
             background: var(--bg-secondary);
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
-        .admin-panel {
-            display: none;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .admin-panel.show {
-            display: block;
-        }
-
-        .admin-section {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-
-        .list-item {
-            background: var(--bg-secondary);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .list-item-info {
-            flex: 1;
-        }
-
-        .list-item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .episodes-list {
+        .form-group input {
             width: 100%;
-            margin-top: 15px;
-        }
-
-        .episode-item {
-            background: var(--bg-primary);
             padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
         }
 
-        .episode-item:hover {
-            background: var(--accent-secondary);
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
         }
 
-        .episode-number {
-            background: var(--accent-primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider span {
+            background: var(--bg-secondary);
+            padding: 0 15px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            padding: 40px 20px;
+            margin-top: 80px;
+            text-align: center;
+            color: var(--text-secondary);
         }
 
         .toast {
@@ -720,12 +669,12 @@
             bottom: 30px;
             right: 30px;
             background: var(--bg-card);
-            padding: 15px 20px;
-            border-radius: 8px;
+            padding: 15px 25px;
+            border-radius: 10px;
             border-left: 4px solid var(--accent-primary);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             z-index: 3000;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.3s;
         }
 
         @keyframes slideIn {
@@ -733,22 +682,14 @@
             to { transform: translateX(0); }
         }
 
-        footer {
-            background: var(--bg-secondary);
-            padding: 30px 20px;
-            margin-top: 80px;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
         @media (max-width: 768px) {
-            .hero { height: 50vh; min-height: 350px; }
-            .hero-content { padding: 30px 25px; }
-            .hero-title { font-size: 24px; }
-            .movies-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .hero { height: 50vh; min-height: 400px; }
+            .hero-content { padding: 30px 20px; }
+            .hero-title { font-size: 28px; }
+            .movies-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .nav-search { display: none; }
-            .hero-navigation { bottom: 20px; }
-            .hero-dots { bottom: 50px; left: 50%; transform: translateX(-50%); }
+            .watch-body { padding: 20px; }
+            .server-tabs { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -767,24 +708,13 @@
 
             <ul class="nav-links">
                 <li><a href="#" onclick="showSection('home')" class="active"><i class="fas fa-home"></i> سەرەکی</a></li>
-                <li><a href="#" onclick="setFilter('trending')"><i class="fas fa-fire"></i> ترێند</a></li>
                 <li><a href="#" onclick="setFilter('series')"><i class="fas fa-tv"></i> زنجیرە</a></li>
-                <li id="adminLoginBtn" style="display: none;"><a href="#" onclick="openAdminLoginModal()"><i class="fas fa-lock"></i> ئەدمین</a></li>
                 <li id="userLoginBtn"><a href="#" onclick="openUserLoginModal()"><i class="fas fa-user"></i> چوونە ژوورەوە</a></li>
             </ul>
 
             <div class="user-controls" id="userControls">
-                <span style="color: var(--success); font-size: 14px;" id="userDisplayName"></span>
-                <button class="btn btn-danger" onclick="userLogout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
-
-            <div class="admin-controls" id="adminControls">
-                <button class="btn btn-secondary" onclick="showSection('admin')">
-                    <i class="fas fa-cog"></i> پانێڵ
-                </button>
-                <button class="btn btn-danger" onclick="adminLogout()">
+                <span style="color: var(--success); font-size: 15px;" id="userDisplayName"></span>
+                <button class="btn btn-primary" onclick="userLogout()">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
@@ -795,32 +725,26 @@
         <section class="hero" id="heroSection"></section>
 
         <div class="container">
-            <div class="filters">
-                <button class="filter-btn active" onclick="setFilter('all')">هەموو</button>
-                <button class="filter-btn" onclick="setFilter('latest')">نوێترین</button>
-                <button class="filter-btn" onclick="setFilter('popular')">بەناوبانگ</button>
-            </div>
-
-            <h2 style="margin: 40px 0 25px; font-size: 24px;"><i class="fas fa-fire"></i> پێشنیارکراو</h2>
+            <h2 class="section-title">
+                <i class="fas fa-fire"></i> پێشنیارکراو
+            </h2>
             <div class="movies-grid" id="featuredGrid"></div>
 
-            <h2 style="margin: 40px 0 25px; font-size: 24px;"><i class="fas fa-star"></i> نوێترین</h2>
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> نوێترین
+            </h2>
             <div class="movies-grid" id="moviesGrid">
                 <div style="text-align: center; padding: 60px; color: var(--text-secondary);">چاوەڕێ بکە...</div>
             </div>
         </div>
     </div>
 
-    <div class="admin-panel" id="adminPanel"></div>
-
-    <!-- USER LOGIN MODAL -->
     <div class="modal" id="userLoginModal">
         <div class="modal-content" style="max-width: 450px;">
             <button class="modal-close" onclick="closeModal('userLoginModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title">🔐 چوونە ژوورەوە</h2>
-            </div>
-            <div class="modal-body">
+            <div style="padding: 40px;">
+                <h2 style="font-size: 28px; margin-bottom: 30px; text-align: center;">چوونە ژوورەوە</h2>
+                
                 <button class="btn btn-google" onclick="loginWithGoogle()">
                     <i class="fab fa-google"></i> بەردەوامبوون لەگەڵ Google
                 </button>
@@ -832,30 +756,64 @@
                 
                 <form onsubmit="userLogin(event)">
                     <div class="form-group">
-                        <label>پاسوۆرد</label>
-                        <input type="password" id="adminLoginPassword" required>
+                        <input type="email" id="userLoginEmail" placeholder="ئیمەیڵ" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="userLoginPassword" placeholder="پاسوۆرد" required>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
                         چوونە ژوورەوە
                     </button>
                 </form>
+                
+                <p style="text-align: center; margin-top: 20px; color: var(--text-secondary);">
+                    ئەکاونتت نییە؟ <a href="#" onclick="closeModal('userLoginModal'); openUserRegisterModal()" style="color: var(--accent-primary);">تۆمارکردن</a>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- WATCH MODAL -->
+    <div class="modal" id="userRegisterModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <button class="modal-close" onclick="closeModal('userRegisterModal')">×</button>
+            <div style="padding: 40px;">
+                <h2 style="font-size: 28px; margin-bottom: 30px; text-align: center;">دروستکردنی ئەکاونت</h2>
+                
+                <button class="btn btn-google" onclick="loginWithGoogle()">
+                    <i class="fab fa-google"></i> بەردەوامبوون لەگەڵ Google
+                </button>
+                <button class="btn btn-facebook" onclick="loginWithFacebook()" style="margin-top: 10px;">
+                    <i class="fab fa-facebook-f"></i> بەردەوامبوون لەگەڵ Facebook
+                </button>
+                
+                <div class="divider"><span>یان</span></div>
+                
+                <form onsubmit="userRegister(event)">
+                    <div class="form-group">
+                        <input type="text" id="userRegisterName" placeholder="ناو" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="userRegisterEmail" placeholder="ئیمەیڵ" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="userRegisterPassword" placeholder="پاسوۆرد (لایەنی کەم 6 پیت)" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        دروستکردنی ئەکاونت
+                    </button>
+                </form>
+                
+                <p style="text-align: center; margin-top: 20px; color: var(--text-secondary);">
+                    ئەکاونتت هەیە؟ <a href="#" onclick="closeModal('userRegisterModal'); openUserLoginModal()" style="color: var(--accent-primary);">چوونە ژوورەوە</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="watchModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('watchModal')">×</button>
             <div id="watchContent"></div>
-        </div>
-    </div>
-
-    <!-- SERIES VIEW MODAL -->
-    <div class="modal" id="seriesViewModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('seriesViewModal')">×</button>
-            <div id="seriesViewContent"></div>
         </div>
     </div>
 
@@ -865,7 +823,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getDatabase, ref, push, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
@@ -879,128 +837,76 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        let allMovies = [];
-        let allSeries = [];
-        let allEpisodes = [];
-        let allSlides = [];
-        let allComments = [];
-        let currentFilter = 'all';
-        let isAdmin = false;
-        let currentUser = null;
-        let currentSlideIndex = 0;
-        let slideInterval;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('admin') === 'true') {
-            document.getElementById('adminLoginBtn').style.display = 'block';
-        }
+        let allMovies = [], allSeries = [], allEpisodes = [], allSlides = [], allComments = [];
+        let currentFilter = 'all', currentUser = null, currentSlideIndex = 0;
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                if (user.email && user.email.includes('admin')) {
-                    isAdmin = true;
-                    currentUser = null;
-                    document.getElementById('adminControls').classList.add('show');
-                    document.getElementById('userControls').classList.remove('show');
-                    document.getElementById('userLoginBtn').style.display = 'none';
-                    document.getElementById('adminLoginBtn').style.display = 'none';
-                    document.body.classList.add('admin-mode');
-                } else {
-                    currentUser = user;
-                    isAdmin = false;
-                    document.getElementById('userControls').classList.add('show');
-                    document.getElementById('adminControls').classList.remove('show');
-                    document.getElementById('userLoginBtn').style.display = 'none';
-                    document.getElementById('userDisplayName').textContent = user.displayName || user.email.split('@')[0];
-                }
+                currentUser = user;
+                document.getElementById('userControls').classList.add('show');
+                document.getElementById('userLoginBtn').style.display = 'none';
+                document.getElementById('userDisplayName').textContent = user.displayName || user.email.split('@')[0];
             } else {
-                isAdmin = false;
                 currentUser = null;
-                document.getElementById('adminControls').classList.remove('show');
                 document.getElementById('userControls').classList.remove('show');
                 document.getElementById('userLoginBtn').style.display = 'block';
-                document.body.classList.remove('admin-mode');
             }
         });
 
         function loadData() {
             onValue(ref(db, 'movies'), (snapshot) => {
                 allMovies = [];
-                snapshot.forEach((child) => {
-                    allMovies.push({ id: child.key, ...child.val(), contentType: 'movie' });
-                });
+                snapshot.forEach((child) => allMovies.push({ id: child.key, ...child.val(), contentType: 'movie' }));
                 displayMovies();
                 displayFeatured();
             });
 
             onValue(ref(db, 'series'), (snapshot) => {
                 allSeries = [];
-                snapshot.forEach((child) => {
-                    allSeries.push({ id: child.key, ...child.val(), contentType: 'series' });
-                });
+                snapshot.forEach((child) => allSeries.push({ id: child.key, ...child.val(), contentType: 'series' }));
                 displayMovies();
                 displayFeatured();
             });
 
             onValue(ref(db, 'episodes'), (snapshot) => {
                 allEpisodes = [];
-                snapshot.forEach((child) => {
-                    allEpisodes.push({ id: child.key, ...child.val() });
-                });
+                snapshot.forEach((child) => allEpisodes.push({ id: child.key, ...child.val() }));
             });
 
             onValue(ref(db, 'slides'), (snapshot) => {
                 allSlides = [];
-                snapshot.forEach((child) => {
-                    allSlides.push({ id: child.key, ...child.val() });
-                });
+                snapshot.forEach((child) => allSlides.push({ id: child.key, ...child.val() }));
                 loadHero();
             });
 
             onValue(ref(db, 'comments'), (snapshot) => {
                 allComments = [];
-                snapshot.forEach((child) => {
-                    allComments.push({ id: child.key, ...child.val() });
-                });
+                snapshot.forEach((child) => allComments.push({ id: child.key, ...child.val() }));
             });
         }
 
         function displayMovies() {
             const grid = document.getElementById('moviesGrid');
-            let allContent = [...allMovies, ...allSeries];
-            let filtered = [...allContent];
-
-            if (currentFilter === 'latest') {
-                filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
-            } else if (currentFilter === 'popular') {
-                filtered = filtered.sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 12);
-            } else if (currentFilter === 'series') {
-                filtered = allSeries;
-            } else if (currentFilter !== 'all') {
-                filtered = filtered.filter(m => m.genres?.includes(currentFilter));
-            }
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">هیچ ناوەڕۆکێک نەدۆزرایەوە</div>';
-                return;
-            }
+            let filtered = currentFilter === 'series' ? allSeries : [...allMovies, ...allSeries];
 
             grid.innerHTML = filtered.slice(0, 24).map(content => {
                 const isSeries = content.contentType === 'series';
                 const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
                 
                 return `
-                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
+                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}")`}'>
                         <div class="movie-poster">
                             <img src="${content.poster}" alt="${content.title}" loading="lazy">
-                            <div class="play-icon"><i class="fas fa-play"></i></div>
-                            ${isSeries ? `<div class="series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : content.rating ? `<div class="movie-badge"><i class="fas fa-star"></i> ${content.rating}</div>` : ''}
+                            <div class="play-overlay">
+                                <div class="play-icon"><i class="fas fa-play"></i></div>
+                            </div>
+                            ${isSeries ? `<div class="movie-badge series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : content.rating ? `<div class="movie-badge"><i class="fas fa-star"></i> ${content.rating}</div>` : ''}
                         </div>
                         <div class="movie-info">
                             <div class="movie-title">${content.title}</div>
                             <div class="movie-meta">
                                 <span>${content.year || '2024'}</span>
-                                <span>${content.duration || ''}</span>
+                                ${content.duration ? `<span>${content.duration}</span>` : ''}
                             </div>
                         </div>
                     </div>
@@ -1010,25 +916,24 @@
 
         function displayFeatured() {
             const grid = document.getElementById('featuredGrid');
-            const allContent = [...allMovies, ...allSeries];
-            const featured = allContent.filter(m => m.featured).slice(0, 6);
+            const featured = [...allMovies, ...allSeries].filter(m => m.featured).slice(0, 6);
             
             grid.innerHTML = featured.map(content => {
                 const isSeries = content.contentType === 'series';
                 const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
                 
                 return `
-                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
+                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}")`}'>
                         <div class="movie-poster">
                             <img src="${content.poster}" alt="${content.title}">
-                            <div class="play-icon"><i class="fas fa-play"></i></div>
-                            ${isSeries ? `<div class="series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : ''}
+                            <div class="play-overlay">
+                                <div class="play-icon"><i class="fas fa-play"></i></div>
+                            </div>
+                            ${isSeries ? `<div class="movie-badge series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : ''}
                         </div>
                         <div class="movie-info">
                             <div class="movie-title">${content.title}</div>
-                            <div class="movie-meta">
-                                <span>${content.year}</span>
-                            </div>
+                            <div class="movie-meta"><span>${content.year}</span></div>
                         </div>
                     </div>
                 `;
@@ -1044,20 +949,17 @@
                 return;
             }
 
-            hero.style.display = 'block';
-            currentSlideIndex = 0;
-            
             hero.innerHTML = featured.map((slide, index) => `
                 <div class="hero-slide ${index === 0 ? 'active' : ''}">
                     <img src="${slide.image}" class="hero-bg">
                     <div class="hero-content">
                         <h1 class="hero-title">${slide.title}</h1>
                         <div class="hero-meta">
-                            ${slide.year ? `<span>📅 ${slide.year}</span>` : ''}
-                            ${slide.rating ? `<span>⭐ ${slide.rating}</span>` : ''}
-                            ${slide.duration ? `<span>🕒 ${slide.duration}</span>` : ''}
+                            ${slide.year ? `<span><i class="fas fa-calendar"></i> ${slide.year}</span>` : ''}
+                            ${slide.rating ? `<span><i class="fas fa-star"></i> ${slide.rating}</span>` : ''}
+                            ${slide.duration ? `<span><i class="fas fa-clock"></i> ${slide.duration}</span>` : ''}
                         </div>
-                        ${slide.description ? `<p style="margin-bottom: 20px; color: var(--text-secondary);">${slide.description}</p>` : ''}
+                        ${slide.description ? `<p style="margin-bottom: 20px; color: var(--text-secondary); max-width: 600px;">${slide.description}</p>` : ''}
                         <div class="hero-actions">
                             ${slide.link ? `<button class="btn btn-primary" onclick="event.stopPropagation(); openContentById('${slide.link}')"><i class="fas fa-play"></i> بینین</button>` : ''}
                         </div>
@@ -1065,70 +967,32 @@
                 </div>
             `).join('') + `
                 <div class="hero-navigation">
-                    <button class="hero-nav-btn" onclick="prevSlide()">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <button class="hero-nav-btn" onclick="nextSlide()">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                </div>
-                <div class="hero-dots">
-                    ${featured.map((_, i) => `<div class="hero-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('')}
+                    <button class="hero-nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-nav-btn" onclick="nextSlide()"><i class="fas fa-chevron-left"></i></button>
                 </div>
             `;
 
-            startSlideshow();
-        }
-
-        function startSlideshow() {
-            if (slideInterval) clearInterval(slideInterval);
-            slideInterval = setInterval(() => {
-                nextSlide();
-            }, 5000);
+            setInterval(() => nextSlide(), 5000);
         }
 
         window.nextSlide = () => {
             const slides = document.querySelectorAll('.hero-slide');
-            const dots = document.querySelectorAll('.hero-dot');
             if (slides.length === 0) return;
-            
             slides[currentSlideIndex].classList.remove('active');
-            dots[currentSlideIndex].classList.remove('active');
             currentSlideIndex = (currentSlideIndex + 1) % slides.length;
             slides[currentSlideIndex].classList.add('active');
-            dots[currentSlideIndex].classList.add('active');
-            startSlideshow();
         };
 
         window.prevSlide = () => {
             const slides = document.querySelectorAll('.hero-slide');
-            const dots = document.querySelectorAll('.hero-dot');
             if (slides.length === 0) return;
-            
             slides[currentSlideIndex].classList.remove('active');
-            dots[currentSlideIndex].classList.remove('active');
             currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
             slides[currentSlideIndex].classList.add('active');
-            dots[currentSlideIndex].classList.add('active');
-            startSlideshow();
-        };
-
-        window.goToSlide = (index) => {
-            const slides = document.querySelectorAll('.hero-slide');
-            const dots = document.querySelectorAll('.hero-dot');
-            if (slides.length === 0) return;
-            
-            slides[currentSlideIndex].classList.remove('active');
-            dots[currentSlideIndex].classList.remove('active');
-            currentSlideIndex = index;
-            slides[currentSlideIndex].classList.add('active');
-            dots[currentSlideIndex].classList.add('active');
-            startSlideshow();
         };
 
         window.openUserLoginModal = () => openModal('userLoginModal');
         window.openUserRegisterModal = () => openModal('userRegisterModal');
-        window.openAdminLoginModal = () => openModal('adminLoginModal');
 
         function openModal(id) {
             document.getElementById(id).classList.add('active');
@@ -1142,11 +1006,8 @@
 
         window.userLogin = async (e) => {
             e.preventDefault();
-            const email = document.getElementById('userLoginEmail').value;
-            const password = document.getElementById('userLoginPassword').value;
-
             try {
-                await signInWithEmailAndPassword(auth, email, password);
+                await signInWithEmailAndPassword(auth, document.getElementById('userLoginEmail').value, document.getElementById('userLoginPassword').value);
                 closeModal('userLoginModal');
                 showToast('✅ بە سەرکەوتوویی چوویتە ژوورەوە');
             } catch (error) {
@@ -1156,60 +1017,35 @@
 
         window.userRegister = async (e) => {
             e.preventDefault();
-            const name = document.getElementById('userRegisterName').value;
-            const email = document.getElementById('userRegisterEmail').value;
-            const password = document.getElementById('userRegisterPassword').value;
-
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
+                const userCredential = await createUserWithEmailAndPassword(auth, document.getElementById('userRegisterEmail').value, document.getElementById('userRegisterPassword').value);
+                await updateProfile(userCredential.user, { displayName: document.getElementById('userRegisterName').value });
                 closeModal('userRegisterModal');
-                showToast('✅ ئەکاونت دروست کرا! بەخێربێیت');
+                showToast('✅ ئەکاونت دروست کرا!');
             } catch (error) {
-                if (error.code === 'auth/email-already-in-use') {
-                    showToast('❌ ئەم ئیمەیڵە پێشتر بەکارهاتووە');
-                } else {
-                    showToast('❌ هەڵە: ' + error.message);
-                }
+                showToast(error.code === 'auth/email-already-in-use' ? '❌ ئەم ئیمەیڵە بەکارهاتووە' : '❌ هەڵە');
             }
         };
 
         window.loginWithGoogle = async () => {
-            const provider = new GoogleAuthProvider();
             try {
-                await signInWithPopup(auth, provider);
+                await signInWithPopup(auth, new GoogleAuthProvider());
                 closeModal('userLoginModal');
                 closeModal('userRegisterModal');
                 showToast('✅ بە Google چوویتە ژوورەوە');
             } catch (error) {
-                showToast('❌ هەڵە لە چوونە ژوورەوە بە Google');
+                showToast('❌ هەڵە');
             }
         };
 
         window.loginWithFacebook = async () => {
-            const provider = new FacebookAuthProvider();
             try {
-                await signInWithPopup(auth, provider);
+                await signInWithPopup(auth, new FacebookAuthProvider());
                 closeModal('userLoginModal');
                 closeModal('userRegisterModal');
                 showToast('✅ بە Facebook چوویتە ژوورەوە');
             } catch (error) {
-                showToast('❌ هەڵە لە چوونە ژوورەوە بە Facebook');
-            }
-        };
-
-        window.adminLogin = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('adminLoginEmail').value;
-            const password = document.getElementById('adminLoginPassword').value;
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                closeModal('adminLoginModal');
-                showToast('✅ بە سەرکەوتوویی چوویتە ژوورەوە');
-                showSection('admin');
-            } catch (error) {
-                showToast('❌ ئیمەیڵ یان پاسوۆرد هەڵەیە');
+                showToast('❌ هەڵە');
             }
         };
 
@@ -1218,19 +1054,11 @@
             showToast('✅ چوویتە دەرەوە');
         };
 
-        window.adminLogout = async () => {
-            await signOut(auth);
-            showToast('✅ چوویتە دەرەوە');
-            showSection('home');
-        };
-
-        window.openWatch = (id, type) => {
+        window.openWatch = (id) => {
             const content = allMovies.find(m => m.id === id);
             if (!content) return;
 
-            if (content.id) {
-                update(ref(db, `movies/${content.id}`), { views: (content.views || 0) + 1 });
-            }
+            update(ref(db, `movies/${content.id}`), { views: (content.views || 0) + 1 });
 
             const servers = [];
             if (content.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: content.servers.server1 });
@@ -1239,40 +1067,60 @@
             if (content.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: content.servers.server4 });
 
             document.getElementById('watchContent').innerHTML = `
-                <div class="video-container">
-                    <iframe id="videoPlayer" class="video-player" src="${servers[0]?.url || ''}" allowfullscreen allow="autoplay"></iframe>
+                <div class="watch-header" id="watchHeader">
+                    <img src="${content.poster}" class="watch-poster" id="watchPoster">
+                    <div class="trailer-overlay" id="trailerOverlay">
+                        <button class="trailer-btn" onclick="playMovie()">
+                            <i class="fas fa-play"></i>
+                            بینی تریلەر
+                        </button>
+                    </div>
+                    <div class="video-container" id="videoContainer" style="display: none;">
+                        <iframe id="videoPlayer" class="video-player" src="" allowfullscreen allow="autoplay"></iframe>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <h2 style="font-size: 24px; margin-bottom: 15px;">${content.title}</h2>
-                    <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; font-size: 14px; color: var(--text-secondary);">
-                        <span>📅 ${content.year}</span>
-                        ${content.duration ? `<span>🕒 ${content.duration}</span>` : ''}
-                        ${content.rating ? `<span>⭐ ${content.rating}/10</span>` : ''}
-                        <span>👁️ ${(content.views || 0).toLocaleString()}</span>
+                <div class="watch-body">
+                    <h1 class="watch-title">${content.title}</h1>
+                    <div class="watch-meta">
+                        <span><i class="fas fa-calendar"></i> ${content.year}</span>
+                        ${content.duration ? `<span><i class="fas fa-clock"></i> ${content.duration}</span>` : ''}
+                        ${content.rating ? `<span><i class="fas fa-star"></i> ${content.rating}/10</span>` : ''}
+                        <span><i class="fas fa-eye"></i> ${(content.views || 0).toLocaleString()}</span>
+                        ${content.translator ? `<span><i class="fas fa-language"></i> وەرگێڕ: ${content.translator}</span>` : ''}
                     </div>
 
-                    ${servers.length > 1 ? `
-                        <div class="server-tabs">
-                            ${servers.map((s, i) => `
-                                <button class="server-tab ${i === 0 ? 'active' : ''}" 
-                                        onclick="switchServer('${s.url}', this)">
-                                    ${s.name}
-                                </button>
-                            `).join('')}
+                    ${servers.length > 0 ? `
+                        <div class="servers-section">
+                            <h3 class="servers-title"><i class="fas fa-server"></i> سێرڤەرەکان</h3>
+                            <div class="server-tabs">
+                                ${servers.map((s, i) => `
+                                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">
+                                        <i class="fas fa-play-circle"></i> ${s.name}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${content.subtitles?.srt1 || content.subtitles?.srt2 ? `
+                        <div class="servers-section">
+                            <h3 class="servers-title"><i class="fas fa-closed-captioning"></i> ژێرنووسەکان</h3>
+                            <div style="display: flex; gap: 15px;">
+                                ${content.subtitles.srt1 ? `<a href="${content.subtitles.srt1}" download class="btn btn-secondary"><i class="fas fa-download"></i> SRT 1</a>` : ''}
+                                ${content.subtitles.srt2 ? `<a href="${content.subtitles.srt2}" download class="btn btn-secondary"><i class="fas fa-download"></i> SRT 2</a>` : ''}
+                            </div>
                         </div>
                     ` : ''}
 
                     ${content.description ? `
-                        <div style="margin-top: 20px; line-height: 1.8; color: var(--text-secondary);">
-                            <strong style="color: var(--accent-primary);">کورتە:</strong><br>
-                            ${content.description}
+                        <div class="description-section">
+                            <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--accent-primary);">کورتە</h3>
+                            <p>${content.description}</p>
                         </div>
                     ` : ''}
 
                     <div class="comments-section">
-                        <h3 style="margin-bottom: 20px; color: var(--accent-primary);">
-                            <i class="fas fa-comments"></i> بۆچونەکان
-                        </h3>
+                        <h3 class="comments-title"><i class="fas fa-comments"></i> بۆچونەکان</h3>
                         ${currentUser ? `
                             <div class="comment-form">
                                 <textarea id="commentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
@@ -1282,7 +1130,7 @@
                             </div>
                         ` : `
                             <div class="login-prompt">
-                                <p style="margin-bottom: 15px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
+                                <p style="margin-bottom: 20px; font-size: 16px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
                                 <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
                                     <i class="fas fa-user"></i> چوونە ژوورەوە
                                 </button>
@@ -1293,66 +1141,75 @@
                 </div>
             `;
 
+            window.playMovie = () => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.getElementById('videoPlayer').src = servers[0]?.url || '';
+            };
+
+            window.switchServer = (url, btn) => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('videoPlayer').src = url;
+            };
+
             openModal('watchModal');
             loadComments(content.id, 'movie');
-        };
-
-        window.switchServer = (url, btn) => {
-            document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('videoPlayer').src = url;
         };
 
         window.openSeriesView = (id) => {
             const series = allSeries.find(s => s.id === id);
             if (!series) return;
 
-            if (series.id) {
-                update(ref(db, `series/${series.id}`), { views: (series.views || 0) + 1 });
-            }
+            update(ref(db, `series/${series.id}`), { views: (series.views || 0) + 1 });
 
             const episodes = allEpisodes.filter(ep => ep.seriesId === series.id).sort((a, b) => a.number - b.number);
 
-            document.getElementById('seriesViewContent').innerHTML = `
-                <div class="modal-body">
-                    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-                        <img src="${series.poster}" style="width: 200px; height: 300px; object-fit: cover; border-radius: 8px;">
-                        <div style="flex: 1;">
-                            <h2 style="font-size: 28px; margin-bottom: 15px;">${series.title}</h2>
-                            <div style="display: flex; gap: 15px; margin-bottom: 20px; color: var(--text-secondary);">
-                                <span>📅 ${series.year}</span>
-                                <span>📺 ${episodes.length} ئەڵقە</span>
-                                ${series.duration ? `<span>🕒 ${series.duration}</span>` : ''}
-                                ${series.rating ? `<span>⭐ ${series.rating}/10</span>` : ''}
-                                <span>👁️ ${(series.views || 0).toLocaleString()}</span>
-                            </div>
-                            ${series.description ? `<p style="line-height: 1.8; color: var(--text-secondary);">${series.description}</p>` : ''}
-                        </div>
+            document.getElementById('watchContent').innerHTML = `
+                <div class="watch-header">
+                    <img src="${series.poster}" class="watch-poster">
+                </div>
+                <div class="watch-body">
+                    <h1 class="watch-title">${series.title}</h1>
+                    <div class="watch-meta">
+                        <span><i class="fas fa-calendar"></i> ${series.year}</span>
+                        <span><i class="fas fa-tv"></i> ${episodes.length} ئەڵقە</span>
+                        ${series.duration ? `<span><i class="fas fa-clock"></i> ${series.duration}</span>` : ''}
+                        ${series.rating ? `<span><i class="fas fa-star"></i> ${series.rating}/10</span>` : ''}
+                        <span><i class="fas fa-eye"></i> ${(series.views || 0).toLocaleString()}</span>
+                        ${series.translator ? `<span><i class="fas fa-language"></i> وەرگێڕ: ${series.translator}</span>` : ''}
                     </div>
-                    
-                    <h3 style="margin-bottom: 20px; color: var(--accent-primary);">
-                        <i class="fas fa-list"></i> ئەڵقەکان
-                    </h3>
-                    
-                    ${episodes.length > 0 ? `
-                        <div class="episodes-list">
-                            ${episodes.map(ep => `
-                                <div class="episode-item" onclick='openEpisodeWatch("${series.id}", "${ep.id}")'>
-                                    <div>
-                                        <span class="episode-number">ئەڵقەی ${ep.number}</span>
-                                        ${ep.title ? ` - ${ep.title}` : ''}
-                                        ${ep.duration ? ` <span style="color: var(--text-secondary); margin-right: 10px;">🕒 ${ep.duration}</span>` : ''}
-                                    </div>
-                                    <i class="fas fa-play"></i>
-                                </div>
-                            `).join('')}
-                        </div>
-                    ` : '<p style="text-align: center; color: var(--text-secondary);">هیچ ئەڵقەیەک زیاد نەکراوە</p>'}
 
-                    <div class="comments-section" style="margin-top: 40px;">
-                        <h3 style="margin-bottom: 20px; color: var(--accent-primary);">
-                            <i class="fas fa-comments"></i> بۆچونەکان
-                        </h3>
+                    ${series.description ? `
+                        <div class="description-section">
+                            <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--accent-primary);">کورتە</h3>
+                            <p>${series.description}</p>
+                        </div>
+                    ` : ''}
+
+                    <div class="servers-section">
+                        <h3 class="servers-title"><i class="fas fa-list"></i> ئەڵقەکان</h3>
+                        ${episodes.length > 0 ? `
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                                ${episodes.map(ep => `
+                                    <div class="server-tab" onclick='openEpisodeWatch("${series.id}", "${ep.id}")'>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <span style="background: var(--accent-primary); padding: 5px 12px; border-radius: 5px; font-size: 14px;">ئەڵقەی ${ep.number}</span>
+                                            <span style="flex: 1;">${ep.title || ''}</span>
+                                            ${ep.duration ? `<span style="color: var(--text-secondary); font-size: 13px;">${ep.duration}</span>` : ''}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p style="text-align: center; color: var(--text-secondary); padding: 30px;">هیچ ئەڵقەیەک زیاد نەکراوە</p>'}
+                    </div>
+
+                    <div class="comments-section">
+                        <h3 class="comments-title"><i class="fas fa-comments"></i> بۆچونەکان</h3>
                         ${currentUser ? `
                             <div class="comment-form">
                                 <textarea id="seriesCommentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
@@ -1362,8 +1219,8 @@
                             </div>
                         ` : `
                             <div class="login-prompt">
-                                <p style="margin-bottom: 15px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
-                                <button class="btn btn-primary" onclick="closeModal('seriesViewModal'); openUserLoginModal()">
+                                <p style="margin-bottom: 20px; font-size: 16px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
+                                <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
                                     <i class="fas fa-user"></i> چوونە ژوورەوە
                                 </button>
                             </div>
@@ -1373,7 +1230,7 @@
                 </div>
             `;
 
-            openModal('seriesViewModal');
+            openModal('watchModal');
             loadComments(series.id, 'series');
         };
 
@@ -1389,72 +1246,86 @@
             if (episode.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: episode.servers.server4 });
 
             document.getElementById('watchContent').innerHTML = `
-                <div class="video-container">
-                    <iframe id="videoPlayer" class="video-player" src="${servers[0]?.url || ''}" allowfullscreen allow="autoplay"></iframe>
+                <div class="watch-header">
+                    <img src="${series.poster}" class="watch-poster" id="watchPoster">
+                    <div class="trailer-overlay" id="trailerOverlay">
+                        <button class="trailer-btn" onclick="playEpisode()">
+                            <i class="fas fa-play"></i>
+                            بینی ئەڵقە
+                        </button>
+                    </div>
+                    <div class="video-container" id="videoContainer" style="display: none;">
+                        <iframe id="videoPlayer" class="video-player" src="" allowfullscreen allow="autoplay"></iframe>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <h2 style="font-size: 24px; margin-bottom: 15px;">
-                        ${series.title} - ئەڵقەی ${episode.number}
-                        ${episode.title ? ` - ${episode.title}` : ''}
-                    </h2>
-                    <div style="display: flex; gap: 15px; margin-bottom: 20px; color: var(--text-secondary);">
-                        <span>📅 ${series.year}</span>
-                        ${episode.duration ? `<span>🕒 ${episode.duration}</span>` : ''}
+                <div class="watch-body">
+                    <h1 class="watch-title">${series.title} - ئەڵقەی ${episode.number}</h1>
+                    <div class="watch-meta">
+                        <span><i class="fas fa-calendar"></i> ${series.year}</span>
+                        ${episode.duration ? `<span><i class="fas fa-clock"></i> ${episode.duration}</span>` : ''}
+                        ${episode.translator ? `<span><i class="fas fa-language"></i> وەرگێڕ: ${episode.translator}</span>` : ''}
                     </div>
 
-                    ${servers.length > 1 ? `
-                        <div class="server-tabs">
-                            ${servers.map((s, i) => `
-                                <button class="server-tab ${i === 0 ? 'active' : ''}" 
-                                        onclick="switchServer('${s.url}', this)">
-                                    ${s.name}
-                                </button>
-                            `).join('')}
+                    ${servers.length > 0 ? `
+                        <div class="servers-section">
+                            <h3 class="servers-title"><i class="fas fa-server"></i> سێرڤەرەکان</h3>
+                            <div class="server-tabs">
+                                ${servers.map((s, i) => `
+                                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchEpisodeServer('${s.url}', this)">
+                                        <i class="fas fa-play-circle"></i> ${s.name}
+                                    </button>
+                                `).join('')}
+                            </div>
                         </div>
                     ` : ''}
 
                     <div style="margin-top: 20px;">
-                        <button class="btn btn-primary" onclick="closeModal('watchModal'); openSeriesView('${seriesId}')">
+                        <button class="btn btn-outline" onclick="closeModal('watchModal'); openSeriesView('${seriesId}')">
                             <i class="fas fa-arrow-right"></i> گەڕانەوە بۆ لیستی ئەڵقەکان
                         </button>
                     </div>
                 </div>
             `;
 
-            closeModal('seriesViewModal');
+            window.playEpisode = () => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.getElementById('videoPlayer').src = servers[0]?.url || '';
+            };
+
+            window.switchEpisodeServer = (url, btn) => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('videoPlayer').src = url;
+            };
+
             openModal('watchModal');
         };
 
         window.postComment = async (contentId, contentType) => {
-            if (!currentUser) {
-                showToast('❌ تکایە یەکەم بچۆ ژوورەوە');
-                return;
-            }
+            if (!currentUser) return showToast('❌ تکایە یەکەم بچۆ ژوورەوە');
 
             const textId = contentType === 'series' ? 'seriesCommentText' : 'commentText';
             const text = document.getElementById(textId).value.trim();
 
-            if (!text) {
-                showToast('❌ تکایە بۆچونەکەت بنووسە');
-                return;
-            }
-
-            const comment = {
-                contentId: contentId,
-                contentType: contentType,
-                userId: currentUser.uid,
-                userName: currentUser.displayName || currentUser.email.split('@')[0],
-                text: text,
-                date: new Date().toISOString()
-            };
+            if (!text) return showToast('❌ تکایە بۆچونەکەت بنووسە');
 
             try {
-                await push(ref(db, 'comments'), comment);
+                await push(ref(db, 'comments'), {
+                    contentId, contentType,
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName || currentUser.email.split('@')[0],
+                    text, date: new Date().toISOString()
+                });
                 document.getElementById(textId).value = '';
                 showToast('✅ بۆچونەکەت زیاد کرا');
                 loadComments(contentId, contentType);
             } catch (error) {
-                showToast('❌ هەڵە لە زیادکردنی بۆچون');
+                showToast('❌ هەڵە');
             }
         };
 
@@ -1463,39 +1334,26 @@
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            const comments = allComments
-                .filter(c => c.contentId === contentId && c.contentType === contentType)
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            const comments = allComments.filter(c => c.contentId === contentId && c.contentType === contentType).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            if (comments.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">هێشتا هیچ بۆچونێک نییە</p>';
-                return;
-            }
-
-            container.innerHTML = comments.map(comment => `
+            container.innerHTML = comments.length === 0 ? '<p style="text-align: center; color: var(--text-secondary); padding: 30px;">هێشتا هیچ بۆچونێک نییە</p>' : comments.map(comment => `
                 <div class="comment-item">
                     <div class="comment-header">
-                        <span class="comment-author">
-                            <i class="fas fa-user-circle"></i> ${comment.userName}
-                        </span>
-                        <span class="comment-date">
-                            ${new Date(comment.date).toLocaleDateString('ku')}
-                        </span>
+                        <span class="comment-author"><i class="fas fa-user-circle"></i> ${comment.userName}</span>
+                        <span class="comment-date">${new Date(comment.date).toLocaleDateString('ku')}</span>
                     </div>
                     <div class="comment-text">${comment.text}</div>
                     ${currentUser && currentUser.uid === comment.userId ? `
-                        <div style="margin-top: 10px;">
-                            <button class="btn btn-danger" style="padding: 4px 12px; font-size: 12px;" onclick="deleteComment('${comment.id}', '${contentId}', '${contentType}')">
-                                <i class="fas fa-trash"></i> سڕینەوە
-                            </button>
-                        </div>
+                        <button class="btn btn-primary" style="padding: 6px 15px; font-size: 12px; margin-top: 10px;" onclick="deleteComment('${comment.id}', '${contentId}', '${contentType}')">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
                     ` : ''}
                 </div>
             `).join('');
         }
 
         window.deleteComment = async (commentId, contentId, contentType) => {
-            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
+            if (!confirm('دڵنیایت؟')) return;
             try {
                 await remove(ref(db, `comments/${commentId}`));
                 showToast('✅ سڕایەوە');
@@ -1507,146 +1365,22 @@
 
         window.openContentById = (id) => {
             const movie = allMovies.find(m => m.id === id);
-            if (movie) {
-                openWatch(id, 'movie');
-                return;
-            }
-            
+            if (movie) return openWatch(id);
             const series = allSeries.find(s => s.id === id);
-            if (series) {
-                openSeriesView(id);
-            }
+            if (series) openSeriesView(id);
         };
 
         window.setFilter = (filter) => {
             currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            if (event?.target) event.target.classList.add('active');
             displayMovies();
         };
 
         window.performSearch = () => {
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
-            if (!term) {
-                currentFilter = 'all';
-                displayMovies();
-                return;
-            }
-
-            const grid = document.getElementById('moviesGrid');
-            const allContent = [...allMovies, ...allSeries];
-            const filtered = allContent.filter(m => 
-                m.title?.toLowerCase().includes(term) ||
-                m.genres?.toLowerCase().includes(term) ||
-                m.country?.toLowerCase().includes(term)
-            );
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">هیچ ئەنجامێک نەدۆزرایەوە</div>';
-                return;
-            }
-
-            grid.innerHTML = filtered.map(content => {
-                const isSeries = content.contentType === 'series';
-                const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
-                
-                return `
-                    <div class="movie-card" onclick='${isSeries ? `openSeriesView("${content.id}")` : `openWatch("${content.id}", "movie")`}'>
-                        <div class="movie-poster">
-                            <img src="${content.poster}" alt="${content.title}">
-                            <div class="play-icon"><i class="fas fa-play"></i></div>
-                            ${isSeries ? `<div class="series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : ''}
-                        </div>
-                        <div class="movie-info">
-                            <div class="movie-title">${content.title}</div>
-                            <div class="movie-meta"><span>${content.year}</span></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            displayMovies();
         };
 
-        window.showSection = (section) => {
-            if (section === 'admin') {
-                document.getElementById('homeSection').style.display = 'none';
-                document.getElementById('adminPanel').innerHTML = `
-                    <div class="container">
-                        <h2 style="margin-bottom: 30px; font-size: 28px;">
-                            <i class="fas fa-cog"></i> پانێڵی بەڕێوەبردن
-                        </h2>
-                        <div class="admin-section">
-                            <h3>پێشنیار: بۆ زیادکردنی فیلم و زنجیرە:</h3>
-                            <p style="color: var(--text-secondary); line-height: 1.8;">
-                                ١. بڕۆ بۆ Firebase Console<br>
-                                ٢. لە Database دا، زانیاریەکان زیاد بکە<br>
-                                ٣. بۆ زیادکردنی کات (Duration)، بنووسە: "2h 15m" یان "45m"<br>
-                                ٤. بۆ Slider، لە "slides" دا زیاد بکە<br>
-                                ٥. بۆ زیادکردنی "link" لە Slide، ID ی فیلم یان زنجیرەکە بنووسە
-                            </p>
-                        </div>
-
-                        <div class="admin-section">
-                            <h3><i class="fas fa-database"></i> لینکی Firebase Console</h3>
-                            <a href="https://console.firebase.google.com/project/kurdvision-f9d3e/database/kurdvision-f9d3e-default-rtdb/data" 
-                               target="_blank" class="btn btn-primary" style="margin-top: 10px;">
-                                <i class="fas fa-external-link-alt"></i> کردنەوەی Firebase Console
-                            </a>
-                        </div>
-
-                        <div class="admin-section">
-                            <h3><i class="fas fa-info-circle"></i> زانیاری</h3>
-                            <p style="color: var(--text-secondary);">
-                                • کات (Duration): "2h 30m" یان "1h 45m" یان "45m"<br>
-                                • ڕەیتینگ: ژمارەی لە 0 بۆ 10 (بۆ نموونە: 8.5)<br>
-                                • Featured: true یان false<br>
-                                • Type: "subtitle" یان "dubbed"<br>
-                            </p>
-                        </div>
-
-                        <div class="admin-section">
-                            <h3><i class="fas fa-comments"></i> بەڕێوەبردنی بۆچونەکان</h3>
-                            <p style="color: var(--text-secondary); margin-bottom: 15px;">
-                                کۆی بۆچونەکان: ${allComments.length}
-                            </p>
-                            ${allComments.length > 0 ? `
-                                <div style="max-height: 400px; overflow-y: auto;">
-                                    ${allComments.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 20).map(comment => `
-                                        <div class="list-item">
-                                            <div class="list-item-info">
-                                                <div style="font-weight: 600; color: var(--accent-primary);">${comment.userName}</div>
-                                                <div style="font-size: 12px; color: var(--text-secondary); margin: 5px 0;">
-                                                    ${new Date(comment.date).toLocaleDateString('ku')}
-                                                </div>
-                                                <div style="color: var(--text-secondary);">${comment.text}</div>
-                                            </div>
-                                            <button class="btn btn-danger" onclick="deleteCommentAdmin('${comment.id}')">
-                                                <i class="fas fa-trash"></i> سڕینەوە
-                                            </button>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : '<p style="text-align: center; color: var(--text-secondary);">هیچ بۆچونێک نییە</p>'}
-                        </div>
-                    </div>
-                `;
-                document.getElementById('adminPanel').classList.add('show');
-                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            } else {
-                document.getElementById('homeSection').style.display = 'block';
-                document.getElementById('adminPanel').classList.remove('show');
-            }
-        };
-
-        window.deleteCommentAdmin = async (commentId) => {
-            if (!confirm('دڵنیایت؟')) return;
-            try {
-                await remove(ref(db, `comments/${commentId}`));
-                showToast('✅ سڕایەوە');
-                showSection('admin');
-            } catch (error) {
-                showToast('❌ هەڵە');
-            }
-        };
+        window.showSection = () => {};
 
         window.showToast = (message) => {
             const toast = document.createElement('div');
@@ -1660,78 +1394,3 @@
     </script>
 </body>
 </html>
-                        <label>ئیمەیڵ</label>
-                        <input type="email" id="userLoginEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label>پاسوۆرد</label>
-                        <input type="password" id="userLoginPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        چوونە ژوورەوە
-                    </button>
-                </form>
-                
-                <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 14px;">
-                    ئەکاونتت نییە؟ <a href="#" onclick="closeModal('userLoginModal'); openUserRegisterModal()" style="color: var(--accent-primary);">تۆمارکردن</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- USER REGISTER MODAL -->
-    <div class="modal" id="userRegisterModal">
-        <div class="modal-content" style="max-width: 450px;">
-            <button class="modal-close" onclick="closeModal('userRegisterModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title">📝 دروستکردنی ئەکاونت</h2>
-            </div>
-            <div class="modal-body">
-                <button class="btn btn-google" onclick="loginWithGoogle()">
-                    <i class="fab fa-google"></i> بەردەوامبوون لەگەڵ Google
-                </button>
-                <button class="btn btn-facebook" onclick="loginWithFacebook()" style="margin-top: 10px;">
-                    <i class="fab fa-facebook-f"></i> بەردەوامبوون لەگەڵ Facebook
-                </button>
-                
-                <div class="divider"><span>یان</span></div>
-                
-                <form onsubmit="userRegister(event)">
-                    <div class="form-group">
-                        <label>ناو *</label>
-                        <input type="text" id="userRegisterName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ئیمەیڵ *</label>
-                        <input type="email" id="userRegisterEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label>پاسوۆرد * (لایەنی کەم 6 پیت)</label>
-                        <input type="password" id="userRegisterPassword" required minlength="6">
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        دروستکردنی ئەکاونت
-                    </button>
-                </form>
-                
-                <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 14px;">
-                    ئەکاونتت هەیە؟ <a href="#" onclick="closeModal('userRegisterModal'); openUserLoginModal()" style="color: var(--accent-primary);">چوونە ژوورەوە</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN LOGIN MODAL -->
-    <div class="modal" id="adminLoginModal">
-        <div class="modal-content" style="max-width: 400px;">
-            <button class="modal-close" onclick="closeModal('adminLoginModal')">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title">🔒 چوونە ژوورەوەی ئەدمین</h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="adminLogin(event)">
-                    <div class="form-group">
-                        <label>ئیمەیڵی ئەدمین</label>
-                        <input type="email" id="adminLoginEmail" required>
-                    </div>
-                    <div class="form-group">
