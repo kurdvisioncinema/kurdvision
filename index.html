@@ -94,24 +94,69 @@
 
         .nav-links {
             display: flex;
-            gap: 10px;
+            gap: 5px;
             list-style: none;
             align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links li {
+            position: relative;
         }
 
         .nav-links a {
-            padding: 10px 20px;
+            padding: 10px 15px;
             color: var(--text-secondary);
             text-decoration: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .nav-links a:hover, .nav-links a.active {
             color: var(--accent-primary);
             background: rgba(229, 9, 20, 0.1);
+        }
+
+        .genre-dropdown {
+            position: relative;
+        }
+
+        .genre-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            min-width: 200px;
+            margin-top: 10px;
+            padding: 10px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .genre-menu.show {
+            display: block;
+        }
+
+        .genre-menu a {
+            display: flex;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 0;
+        }
+
+        .genre-menu a:hover {
+            background: rgba(229, 9, 20, 0.1);
+            color: var(--accent-primary);
         }
 
         .user-controls {
@@ -360,6 +405,14 @@
             color: var(--bg-primary);
         }
 
+        .dubbed-badge {
+            background: #FF6B35;
+        }
+
+        .subtitled-badge {
+            background: #4ECDC4;
+        }
+
         .movie-info {
             padding: 15px;
         }
@@ -378,6 +431,48 @@
             display: flex;
             justify-content: space-between;
             font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .staff-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .staff-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+        }
+
+        .staff-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            object-fit: cover;
+            border: 3px solid var(--accent-primary);
+        }
+
+        .staff-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .staff-role {
+            font-size: 14px;
             color: var(--text-secondary);
         }
 
@@ -449,6 +544,7 @@
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.5);
+            gap: 20px;
         }
 
         .trailer-btn {
@@ -469,6 +565,11 @@
         .trailer-btn:hover {
             background: var(--accent-secondary);
             transform: scale(1.05);
+        }
+
+        .trailer-btn.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .video-container {
@@ -617,7 +718,14 @@
             margin-bottom: 20px;
         }
 
-        .form-group input, .form-group select {
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px;
             background: var(--bg-card);
@@ -628,7 +736,7 @@
             font-family: inherit;
         }
 
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--accent-primary);
         }
@@ -669,14 +777,15 @@
             gap: 10px;
             margin-bottom: 30px;
             border-bottom: 2px solid var(--bg-card);
+            flex-wrap: wrap;
         }
 
         .admin-tab {
-            padding: 15px 30px;
+            padding: 15px 25px;
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             border-bottom: 3px solid transparent;
@@ -730,6 +839,8 @@
             .nav-search { display: none; }
             .watch-body { padding: 20px; }
             .server-tabs { grid-template-columns: 1fr; }
+            .nav-links { font-size: 12px; }
+            .nav-links a { padding: 8px 10px; }
         }
     </style>
 </head>
@@ -747,8 +858,18 @@
             </div>
 
             <ul class="nav-links">
-                <li><a href="index.html" class="active"><i class="fas fa-home"></i> سەرەکی</a></li>
+                <li><a href="#" onclick="setFilter('all')" class="active"><i class="fas fa-home"></i> سەرەکی</a></li>
+                <li><a href="#" onclick="setFilter('movie')"><i class="fas fa-film"></i> فیلم</a></li>
                 <li><a href="#" onclick="setFilter('series')"><i class="fas fa-tv"></i> زنجیرە</a></li>
+                <li><a href="#" onclick="setFilter('subtitled')"><i class="fas fa-closed-captioning"></i> ژێرنووس</a></li>
+                <li><a href="#" onclick="setFilter('dubbed')"><i class="fas fa-microphone"></i> دۆبلاژ</a></li>
+                <li><a href="#" onclick="showStaffSection()"><i class="fas fa-user-tie"></i> ستاف</a></li>
+                <li class="genre-dropdown">
+                    <a href="#" onclick="toggleGenreMenu(event)">
+                        <i class="fas fa-list"></i> ژانەر <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="genre-menu" id="genreMenu"></div>
+                </li>
                 <li id="adminLink" style="display: none;"><a href="?admin=true"><i class="fas fa-cog"></i> ئەدمین</a></li>
                 <li id="userLoginBtn"><a href="#" onclick="openUserLoginModal()"><i class="fas fa-user"></i> چوونە ژوورەوە</a></li>
             </ul>
@@ -780,6 +901,15 @@
         </div>
     </div>
 
+    <div id="staffSection" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-users"></i> ستافی کورد ڤیژن
+            </h2>
+            <div class="staff-grid" id="staffGrid"></div>
+        </div>
+    </div>
+
     <div id="adminSection" style="display: none;">
         <div class="container">
             <div class="admin-panel">
@@ -792,26 +922,184 @@
                     <button class="admin-tab" onclick="switchAdminTab('series')">زنجیرەکان</button>
                     <button class="admin-tab" onclick="switchAdminTab('episodes')">ئەڵقەکان</button>
                     <button class="admin-tab" onclick="switchAdminTab('slides')">سڵایدەکان</button>
+                    <button class="admin-tab" onclick="switchAdminTab('staff')">ستافەکان</button>
+                    <button class="admin-tab" onclick="switchAdminTab('genres')">ژانەرەکان</button>
                 </div>
 
                 <div id="moviesAdmin" class="admin-content active">
                     <h3 style="margin-bottom: 20px;">زیادکردنی فیلم</h3>
                     <form onsubmit="addMovie(event)">
                         <div class="form-group">
-                            <input type="text" id="episodeTranslator" placeholder="وەرگێڕ">
+                            <label>ناونیشان</label>
+                            <input type="text" id="movieTitle" placeholder="ناونیشانی فیلم" required>
+                        </div>
+                        <div class="form-group">
+                            <label>لینکی پۆستەر</label>
+                            <input type="text" id="moviePoster" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>ساڵ</label>
+                            <input type="number" id="movieYear" placeholder="2025" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ماوە</label>
+                            <input type="text" id="movieDuration" placeholder="2h 15m">
+                        </div>
+                        <div class="form-group">
+                            <label>هەڵسەنگاندن</label>
+                            <input type="text" id="movieRating" placeholder="8.5">
+                        </div>
+                        <div class="form-group">
+                            <label>ژانەر</label>
+                            <select id="movieGenre" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>جۆر</label>
+                            <select id="movieType" required>
+                                <option value="subtitled">ژێرنووسکراو</option>
+                                <option value="dubbed">دۆبلاژکراو</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>وەرگێڕ/دەنگدەر</label>
+                            <input type="text" id="movieTranslator" placeholder="ناوی وەرگێڕ">
+                        </div>
+                        <div class="form-group">
+                            <label>کورتە</label>
+                            <textarea id="movieDescription" placeholder="کورتەی فیلم" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>لینکی ترەیلەر</label>
+                            <input type="url" id="movieTrailer" placeholder="https://... (ئیختیاری)">
                         </div>
                         <h4 style="margin: 20px 0 10px;">سێرڤەرەکان</h4>
                         <div class="form-group">
-                            <input type="url" id="episodeServer1" placeholder="سێرڤەر 1 (لینک)" required>
+                            <label>سێرڤەر 1</label>
+                            <input type="url" id="movieServer1" placeholder="https://..." required>
                         </div>
                         <div class="form-group">
-                            <input type="url" id="episodeServer2" placeholder="سێرڤەر 2 (لینک)">
+                            <label>سێرڤەر 2 (ئیختیاری)</label>
+                            <input type="url" id="movieServer2" placeholder="https://...">
                         </div>
                         <div class="form-group">
-                            <input type="url" id="episodeServer3" placeholder="سێرڤەر 3 (لینک)">
+                            <label>سێرڤەر 3 (ئیختیاری)</label>
+                            <input type="url" id="movieServer3" placeholder="https://...">
                         </div>
                         <div class="form-group">
-                            <input type="url" id="episodeServer4" placeholder="سێرڤەر 4 (لینک)">
+                            <label>سێرڤەر 4 (ئیختیاری)</label>
+                            <input type="url" id="movieServer4" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" id="movieFeatured">
+                                <span>پێشنیارکراو</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-plus"></i> زیادکردن
+                        </button>
+                    </form>
+                </div>
+
+                <div id="seriesAdmin" class="admin-content">
+                    <h3 style="margin-bottom: 20px;">زیادکردنی زنجیرە</h3>
+                    <form onsubmit="addSeries(event)">
+                        <div class="form-group">
+                            <label>ناونیشان</label>
+                            <input type="text" id="seriesTitle" placeholder="ناونیشانی زنجیرە" required>
+                        </div>
+                        <div class="form-group">
+                            <label>لینکی پۆستەر</label>
+                            <input type="text" id="seriesPoster" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>ساڵ</label>
+                            <input type="number" id="seriesYear" placeholder="2025" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ماوەی هەر ئەڵقە</label>
+                            <input type="text" id="seriesDuration" placeholder="45m">
+                        </div>
+                        <div class="form-group">
+                            <label>هەڵسەنگاندن</label>
+                            <input type="text" id="seriesRating" placeholder="9.0">
+                        </div>
+                        <div class="form-group">
+                            <label>ژانەر</label>
+                            <select id="seriesGenre" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>جۆر</label>
+                            <select id="seriesType" required>
+                                <option value="subtitled">ژێرنووسکراو</option>
+                                <option value="dubbed">دۆبلاژکراو</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>وەرگێڕ/دەنگدەر</label>
+                            <input type="text" id="seriesTranslator" placeholder="ناوی وەرگێڕ">
+                        </div>
+                        <div class="form-group">
+                            <label>کورتە</label>
+                            <textarea id="seriesDescription" placeholder="کورتەی زنجیرە" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>لینکی ترەیلەر</label>
+                            <input type="url" id="seriesTrailer" placeholder="https://... (ئیختیاری)">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" id="seriesFeatured">
+                                <span>پێشنیارکراو</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-plus"></i> زیادکردن
+                        </button>
+                    </form>
+                </div>
+
+                <div id="episodesAdmin" class="admin-content">
+                    <h3 style="margin-bottom: 20px;">زیادکردنی ئەڵقە</h3>
+                    <form onsubmit="addEpisode(event)">
+                        <div class="form-group">
+                            <label>زنجیرە</label>
+                            <select id="episodeSeries" required>
+                                <option value="">هەڵبژاردنی زنجیرە</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ژمارەی ئەڵقە</label>
+                            <input type="number" id="episodeNumber" placeholder="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ناونیشانی ئەڵقە</label>
+                            <input type="text" id="episodeTitle" placeholder="ناونیشان (ئیختیاری)">
+                        </div>
+                        <div class="form-group">
+                            <label>ماوە</label>
+                            <input type="text" id="episodeDuration" placeholder="45m">
+                        </div>
+                        <div class="form-group">
+                            <label>وەرگێڕ/دەنگدەر</label>
+                            <input type="text" id="episodeTranslator" placeholder="ناوی وەرگێڕ">
+                        </div>
+                        <h4 style="margin: 20px 0 10px;">سێرڤەرەکان</h4>
+                        <div class="form-group">
+                            <label>سێرڤەر 1</label>
+                            <input type="url" id="episodeServer1" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>سێرڤەر 2 (ئیختیاری)</label>
+                            <input type="url" id="episodeServer2" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>سێرڤەر 3 (ئیختیاری)</label>
+                            <input type="url" id="episodeServer3" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>سێرڤەر 4 (ئیختیاری)</label>
+                            <input type="url" id="episodeServer4" placeholder="https://...">
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
                             <i class="fas fa-plus"></i> زیادکردن
@@ -823,30 +1111,81 @@
                     <h3 style="margin-bottom: 20px;">زیادکردنی سڵاید</h3>
                     <form onsubmit="addSlide(event)">
                         <div class="form-group">
+                            <label>ناونیشان</label>
                             <input type="text" id="slideTitle" placeholder="ناونیشان" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="slideImage" placeholder="لینکی وێنە" required>
+                            <label>لینکی وێنە</label>
+                            <input type="text" id="slideImage" placeholder="https://..." required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="slideDescription" placeholder="کورتە">
+                            <label>کورتە</label>
+                            <textarea id="slideDescription" placeholder="کورتە" rows="2"></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="slideYear" placeholder="ساڵ">
+                            <label>ساڵ</label>
+                            <input type="text" id="slideYear" placeholder="2025">
                         </div>
                         <div class="form-group">
-                            <input type="text" id="slideRating" placeholder="هەڵسەنگاندن">
+                            <label>هەڵسەنگاندن</label>
+                            <input type="text" id="slideRating" placeholder="8.5">
                         </div>
                         <div class="form-group">
-                            <input type="text" id="slideDuration" placeholder="ماوە">
+                            <label>ماوە</label>
+                            <input type="text" id="slideDuration" placeholder="2h 15m">
                         </div>
                         <div class="form-group">
-                            <input type="text" id="slideLink" placeholder="ID ی فیلم یان زنجیرە">
+                            <label>ID ی فیلم/زنجیرە</label>
+                            <input type="text" id="slideLink" placeholder="ID لە دیتابەیس">
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
                             <i class="fas fa-plus"></i> زیادکردن
                         </button>
                     </form>
+                </div>
+
+                <div id="staffAdmin" class="admin-content">
+                    <h3 style="margin-bottom: 20px;">زیادکردنی ستاف</h3>
+                    <form onsubmit="addStaff(event)">
+                        <div class="form-group">
+                            <label>ناو</label>
+                            <input type="text" id="staffName" placeholder="ناوی ستاف" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ڕۆڵ</label>
+                            <input type="text" id="staffRole" placeholder="وەرگێڕ / دەنگدەر / دیزاینەر" required>
+                        </div>
+                        <div class="form-group">
+                            <label>لینکی وێنە</label>
+                            <input type="text" id="staffAvatar" placeholder="https://..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-plus"></i> زیادکردن
+                        </button>
+                    </form>
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="margin-bottom: 20px;">لیستی ستافەکان</h3>
+                    <div id="staffList" style="display: grid; gap: 15px;"></div>
+                </div>
+
+                <div id="genresAdmin" class="admin-content">
+                    <h3 style="margin-bottom: 20px;">زیادکردنی ژانەر</h3>
+                    <form onsubmit="addGenre(event)">
+                        <div class="form-group">
+                            <label>ناوی ژانەر</label>
+                            <input type="text" id="genreName" placeholder="درامی / ئاکشن / کۆمیدی" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ئایکۆن</label>
+                            <input type="text" id="genreIcon" placeholder="theater-masks (FontAwesome)" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-plus"></i> زیادکردن
+                        </button>
+                    </form>
+                    <hr style="margin: 30px 0; border: none; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="margin-bottom: 20px;">لیستی ژانەرەکان</h3>
+                    <div id="genresList" style="display: grid; gap: 15px;"></div>
                 </div>
             </div>
         </div>
@@ -936,7 +1275,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, push, onValue, remove, update, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getDatabase, ref, push, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
@@ -950,7 +1289,7 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        let allMovies = [], allSeries = [], allEpisodes = [], allSlides = [], allComments = [];
+        let allMovies = [], allSeries = [], allEpisodes = [], allSlides = [], allComments = [], allStaff = [], allGenres = [];
         let currentFilter = 'all', currentUser = null, currentSlideIndex = 0;
         let isAdmin = window.location.search.includes('admin=true');
 
@@ -965,8 +1304,6 @@
                 document.getElementById('userControls').classList.add('show');
                 document.getElementById('userLoginBtn').style.display = 'none';
                 document.getElementById('userDisplayName').textContent = user.displayName || user.email.split('@')[0];
-                
-                // Show admin link for authenticated users
                 document.getElementById('adminLink').style.display = 'block';
             } else {
                 currentUser = null;
@@ -1007,6 +1344,41 @@
                 allComments = [];
                 snapshot.forEach((child) => allComments.push({ id: child.key, ...child.val() }));
             });
+
+            onValue(ref(db, 'staff'), (snapshot) => {
+                allStaff = [];
+                snapshot.forEach((child) => allStaff.push({ id: child.key, ...child.val() }));
+                displayStaff();
+                displayStaffList();
+            });
+
+            onValue(ref(db, 'genres'), (snapshot) => {
+                allGenres = [];
+                snapshot.forEach((child) => allGenres.push({ id: child.key, ...child.val() }));
+                updateGenreMenu();
+                updateGenreDropdowns();
+                displayGenresList();
+            });
+        }
+
+        function updateGenreMenu() {
+            const menu = document.getElementById('genreMenu');
+            menu.innerHTML = allGenres.map(g => `
+                <a href="#" onclick="setGenreFilter('${g.name}')">
+                    <i class="fas fa-${g.icon}"></i> ${g.name}
+                </a>
+            `).join('');
+        }
+
+        function updateGenreDropdowns() {
+            const movieGenre = document.getElementById('movieGenre');
+            const seriesGenre = document.getElementById('seriesGenre');
+            if (movieGenre && seriesGenre) {
+                const options = '<option value="">هەڵبژاردنی ژانەر</option>' + 
+                    allGenres.map(g => `<option value="${g.name}">${g.name}</option>`).join('');
+                movieGenre.innerHTML = options;
+                seriesGenre.innerHTML = options;
+            }
         }
 
         function updateSeriesDropdown() {
@@ -1017,13 +1389,97 @@
             }
         }
 
+        window.toggleGenreMenu = (e) => {
+            e.preventDefault();
+            document.getElementById('genreMenu').classList.toggle('show');
+        };
+
+        window.setGenreFilter = (genre) => {
+            currentFilter = 'genre:' + genre;
+            document.getElementById('genreMenu').classList.remove('show');
+            document.getElementById('homeSection').style.display = 'block';
+            document.getElementById('staffSection').style.display = 'none';
+            displayMovies();
+        };
+
+        window.showStaffSection = () => {
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('staffSection').style.display = 'block';
+            document.getElementById('adminSection').style.display = 'none';
+        };
+
+        function displayStaff() {
+            const grid = document.getElementById('staffGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = allStaff.map(staff => `
+                <div class="staff-card">
+                    <img src="${staff.avatar}" class="staff-avatar" alt="${staff.name}">
+                    <div class="staff-name">${staff.name}</div>
+                    <div class="staff-role">${staff.role}</div>
+                </div>
+            `).join('');
+        }
+
+        function displayStaffList() {
+            const list = document.getElementById('staffList');
+            if (!list) return;
+            
+            list.innerHTML = allStaff.map(staff => `
+                <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${staff.avatar}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                        <div>
+                            <div style="font-weight: 700;">${staff.name}</div>
+                            <div style="font-size: 13px; color: var(--text-secondary);">${staff.role}</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="deleteStaff('${staff.id}')" style="padding: 8px 15px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function displayGenresList() {
+            const list = document.getElementById('genresList');
+            if (!list) return;
+            
+            list.innerHTML = allGenres.map(genre => `
+                <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-${genre.icon}" style="font-size: 24px; color: var(--accent-primary);"></i>
+                        <div style="font-weight: 700;">${genre.name}</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="deleteGenre('${genre.id}')" style="padding: 8px 15px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+        
         function displayMovies() {
             const grid = document.getElementById('moviesGrid');
-            let filtered = currentFilter === 'series' ? allSeries : [...allMovies, ...allSeries];
+            let filtered = [...allMovies, ...allSeries];
+
+            if (currentFilter === 'movie') {
+                filtered = allMovies;
+            } else if (currentFilter === 'series') {
+                filtered = allSeries;
+            } else if (currentFilter === 'subtitled') {
+                filtered = filtered.filter(c => c.type === 'subtitled');
+            } else if (currentFilter === 'dubbed') {
+                filtered = filtered.filter(c => c.type === 'dubbed');
+            } else if (currentFilter.startsWith('genre:')) {
+                const genre = currentFilter.replace('genre:', '');
+                filtered = filtered.filter(c => c.genre === genre);
+            }
 
             grid.innerHTML = filtered.slice(0, 24).map(content => {
                 const isSeries = content.contentType === 'series';
                 const episodeCount = isSeries ? allEpisodes.filter(ep => ep.seriesId === content.id).length : 0;
+                const badgeClass = content.type === 'dubbed' ? 'dubbed-badge' : content.type === 'subtitled' ? 'subtitled-badge' : '';
+                const badgeText = content.type === 'dubbed' ? 'دۆبلاژ' : content.type === 'subtitled' ? 'ژێرنووس' : '';
                 
                 return `
                     <div class="movie-card" onclick='${isSeries ? `openSeriesDetails("${content.id}")` : `openMovieDetails("${content.id}")`}'>
@@ -1033,11 +1489,12 @@
                                 <div class="play-icon"><i class="fas fa-play"></i></div>
                             </div>
                             ${isSeries ? `<div class="movie-badge series-badge"><i class="fas fa-tv"></i> ${episodeCount} ئەڵقە</div>` : content.rating ? `<div class="movie-badge"><i class="fas fa-star"></i> ${content.rating}</div>` : ''}
+                            ${badgeText ? `<div class="movie-badge ${badgeClass}" style="top: auto; bottom: 10px;">${badgeText}</div>` : ''}
                         </div>
                         <div class="movie-info">
                             <div class="movie-title">${content.title}</div>
                             <div class="movie-meta">
-                                <span>${content.year || '2024'}</span>
+                                <span>${content.year || '2025'}</span>
                                 ${content.duration ? `<span>${content.duration}</span>` : ''}
                             </div>
                         </div>
@@ -1142,8 +1599,10 @@
                     duration: document.getElementById('movieDuration').value,
                     rating: document.getElementById('movieRating').value,
                     genre: document.getElementById('movieGenre').value,
+                    type: document.getElementById('movieType').value,
                     translator: document.getElementById('movieTranslator').value,
                     description: document.getElementById('movieDescription').value,
+                    trailer: document.getElementById('movieTrailer').value,
                     servers: {
                         server1: document.getElementById('movieServer1').value,
                         server2: document.getElementById('movieServer2').value,
@@ -1172,8 +1631,10 @@
                     duration: document.getElementById('seriesDuration').value,
                     rating: document.getElementById('seriesRating').value,
                     genre: document.getElementById('seriesGenre').value,
+                    type: document.getElementById('seriesType').value,
                     translator: document.getElementById('seriesTranslator').value,
                     description: document.getElementById('seriesDescription').value,
+                    trailer: document.getElementById('seriesTrailer').value,
                     featured: document.getElementById('seriesFeatured').checked,
                     views: 0
                 });
@@ -1225,6 +1686,59 @@
                 });
                 showToast('✅ سڵاید زیاد کرا');
                 e.target.reset();
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.addStaff = async (e) => {
+            e.preventDefault();
+            if (!currentUser) return showToast('⚠️ تکایە بچۆ ژوورەوە');
+            
+            try {
+                await push(ref(db, 'staff'), {
+                    name: document.getElementById('staffName').value,
+                    role: document.getElementById('staffRole').value,
+                    avatar: document.getElementById('staffAvatar').value
+                });
+                showToast('✅ ستاف زیاد کرا');
+                e.target.reset();
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.deleteStaff = async (id) => {
+            if (!confirm('دڵنیایت؟')) return;
+            try {
+                await remove(ref(db, `staff/${id}`));
+                showToast('✅ سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.addGenre = async (e) => {
+            e.preventDefault();
+            if (!currentUser) return showToast('⚠️ تکایە بچۆ ژوورەوە');
+            
+            try {
+                await push(ref(db, 'genres'), {
+                    name: document.getElementById('genreName').value,
+                    icon: document.getElementById('genreIcon').value
+                });
+                showToast('✅ ژانەر زیاد کرا');
+                e.target.reset();
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.deleteGenre = async (id) => {
+            if (!confirm('دڵنیایت؟')) return;
+            try {
+                await remove(ref(db, `genres/${id}`));
+                showToast('✅ سڕایەوە');
             } catch (error) {
                 showToast('❌ هەڵە');
             }
@@ -1309,9 +1823,11 @@
                 <div class="watch-header" id="watchHeader">
                     <img src="${content.poster}" class="watch-poster" id="watchPoster">
                     <div class="trailer-overlay" id="trailerOverlay">
+                        ${content.trailer ? `<button class="trailer-btn secondary" onclick="playTrailer()">
+                            <i class="fas fa-play"></i> ترەیلەر
+                        </button>` : ''}
                         <button class="trailer-btn" onclick="playMovie()">
-                            <i class="fas fa-play"></i>
-                            بینینی فیلم
+                            <i class="fas fa-play"></i> بینینی فیلم
                         </button>
                     </div>
                     <div class="video-container" id="videoContainer" style="display: none;">
@@ -1325,174 +1841,8 @@
                         ${content.duration ? `<span><i class="fas fa-clock"></i> ${content.duration}</span>` : ''}
                         ${content.rating ? `<span><i class="fas fa-star"></i> ${content.rating}/10</span>` : ''}
                         <span><i class="fas fa-eye"></i> ${(content.views || 0).toLocaleString()}</span>
-                        ${content.translator ? `<span><i class="fas fa-language"></i> وەرگێڕ: ${content.translator}</span>` : ''}
-                    </div>
-
-                    ${servers.length > 0 ? `
-                        <div class="servers-section">
-                            <h3 class="servers-title"><i class="fas fa-server"></i> سێرڤەرەکان</h3>
-                            <div class="server-tabs">
-                                ${servers.map((s, i) => `
-                                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">
-                                        <i class="fas fa-play-circle"></i> ${s.name}
-                                    </button>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    ${content.description ? `
-                        <div class="description-section">
-                            <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--accent-primary);">کورتە</h3>
-                            <p>${content.description}</p>
-                        </div>
-                    ` : ''}
-
-                    <div class="comments-section">
-                        <h3 class="comments-title"><i class="fas fa-comments"></i> بۆچونەکان</h3>
-                        ${currentUser ? `
-                            <div class="comment-form">
-                                <textarea id="commentText" placeholder="بۆچونەکەت بنوسە..."></textarea>
-                                <button class="btn btn-primary" onclick="postComment('${content.id}', 'movie')">
-                                    <i class="fas fa-paper-plane"></i> ناردن
-                                </button>
-                            </div>
-                        ` : `
-                            <div class="login-prompt">
-                                <p style="margin-bottom: 20px; font-size: 16px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
-                                <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
-                                    <i class="fas fa-user"></i> چوونە ژوورەوە
-                                </button>
-                            </div>
-                        `}
-                        <div id="commentsContainer"></div>
-                    </div>
-                </div>
-            `;
-
-            window.playMovie = () => {
-                document.getElementById('watchPoster').style.display = 'none';
-                document.getElementById('trailerOverlay').style.display = 'none';
-                document.getElementById('videoContainer').style.display = 'block';
-                document.getElementById('videoPlayer').src = servers[0]?.url || '';
-            };
-
-            window.switchServer = (url, btn) => {
-                document.getElementById('watchPoster').style.display = 'none';
-                document.getElementById('trailerOverlay').style.display = 'none';
-                document.getElementById('videoContainer').style.display = 'block';
-                document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById('videoPlayer').src = url;
-            };
-
-            openModal('watchModal');
-            loadComments(content.id, 'movie');
-        };
-
-        window.openSeriesDetails = (id) => {
-            const series = allSeries.find(s => s.id === id);
-            if (!series) return;
-
-            update(ref(db, `series/${series.id}`), { views: (series.views || 0) + 1 });
-
-            const episodes = allEpisodes.filter(ep => ep.seriesId === series.id).sort((a, b) => a.number - b.number);
-
-            document.getElementById('watchContent').innerHTML = `
-                <div class="watch-header">
-                    <img src="${series.poster}" class="watch-poster">
-                </div>
-                <div class="watch-body">
-                    <h1 class="watch-title">${series.title}</h1>
-                    <div class="watch-meta">
-                        <span><i class="fas fa-calendar"></i> ${series.year}</span>
-                        <span><i class="fas fa-tv"></i> ${episodes.length} ئەڵقە</span>
-                        ${series.duration ? `<span><i class="fas fa-clock"></i> ${series.duration}</span>` : ''}
-                        ${series.rating ? `<span><i class="fas fa-star"></i> ${series.rating}/10</span>` : ''}
-                        <span><i class="fas fa-eye"></i> ${(series.views || 0).toLocaleString()}</span>
-                        ${series.translator ? `<span><i class="fas fa-language"></i> وەرگێڕ: ${series.translator}</span>` : ''}
-                    </div>
-
-                    ${series.description ? `
-                        <div class="description-section">
-                            <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--accent-primary);">کورتە</h3>
-                            <p>${series.description}</p>
-                        </div>
-                    ` : ''}
-
-                    <div class="servers-section">
-                        <h3 class="servers-title"><i class="fas fa-list"></i> ئەڵقەکان</h3>
-                        ${episodes.length > 0 ? `
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
-                                ${episodes.map(ep => `
-                                    <div class="server-tab" onclick='openEpisodeWatch("${series.id}", "${ep.id}")'>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <span style="background: var(--accent-primary); padding: 5px 12px; border-radius: 5px; font-size: 14px;">ئەڵقەی ${ep.number}</span>
-                                            <span style="flex: 1;">${ep.title || ''}</span>
-                                            ${ep.duration ? `<span style="color: var(--text-secondary); font-size: 13px;">${ep.duration}</span>` : ''}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : '<p style="text-align: center; color: var(--text-secondary); padding: 30px;">هیچ ئەڵقەیەک زیاد نەکراوە</p>'}
-                    </div>
-
-                    <div class="comments-section">
-                        <h3 class="comments-title"><i class="fas fa-comments"></i> بۆچونەکان</h3>
-                        ${currentUser ? `
-                            <div class="comment-form">
-                                <textarea id="seriesCommentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
-                                <button class="btn btn-primary" onclick="postComment('${series.id}', 'series')">
-                                    <i class="fas fa-paper-plane"></i> ناردن
-                                </button>
-                            </div>
-                        ` : `
-                            <div class="login-prompt">
-                                <p style="margin-bottom: 20px; font-size: 16px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
-                                <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
-                                    <i class="fas fa-user"></i> چوونە ژوورەوە
-                                </button>
-                            </div>
-                        `}
-                        <div id="seriesCommentsContainer"></div>
-                    </div>
-                </div>
-            `;
-
-            openModal('watchModal');
-            loadComments(series.id, 'series');
-        };
-
-        window.openEpisodeWatch = (seriesId, episodeId) => {
-            const series = allSeries.find(s => s.id === seriesId);
-            const episode = allEpisodes.find(ep => ep.id === episodeId);
-            if (!series || !episode) return;
-
-            const servers = [];
-            if (episode.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: episode.servers.server1 });
-            if (episode.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: episode.servers.server2 });
-            if (episode.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: episode.servers.server3 });
-            if (episode.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: episode.servers.server4 });
-
-            document.getElementById('watchContent').innerHTML = `
-                <div class="watch-header">
-                    <img src="${series.poster}" class="watch-poster" id="watchPoster">
-                    <div class="trailer-overlay" id="trailerOverlay">
-                        <button class="trailer-btn" onclick="playEpisode()">
-                            <i class="fas fa-play"></i>
-                            بینینی ئەڵقە
-                        </button>
-                    </div>
-                    <div class="video-container" id="videoContainer" style="display: none;">
-                        <iframe id="videoPlayer" class="video-player" src="" allowfullscreen allow="autoplay"></iframe>
-                    </div>
-                </div>
-                <div class="watch-body">
-                    <h1 class="watch-title">${series.title} - ئەڵقەی ${episode.number}</h1>
-                    <div class="watch-meta">
-                        <span><i class="fas fa-calendar"></i> ${series.year}</span>
-                        ${episode.duration ? `<span><i class="fas fa-clock"></i> ${episode.duration}</span>` : ''}
-                        ${episode.translator ? `<span><i class="fas fa-language"></i> وەرگێڕ: ${episode.translator}</span>` : ''}
+                        ${content.type ? `<span><i class="fas fa-${content.type === 'dubbed' ? 'microphone' : 'closed-captioning'}"></i> ${content.type === 'dubbed' ? 'دۆبلاژکراو' : 'ژێرنووسکراو'}</span>` : ''}
+                        ${content.translator ? `<span><i class="fas fa-language"></i> ${content.translator}</span>` : ''}
                     </div>
 
                     ${servers.length > 0 ? `
@@ -1539,7 +1889,7 @@
             if (!currentUser) return showToast('⚠️ تکایە یەکەم بچۆ ژوورەوە');
 
             const textId = contentType === 'series' ? 'seriesCommentText' : 'commentText';
-            const text = document.getElementById(textId).value.trim();
+            const text = document.getElementById(textId)?.value.trim();
 
             if (!text) return showToast('⚠️ تکایە بۆچونەکەت بنووسە');
 
@@ -1601,7 +1951,13 @@
 
         window.setFilter = (filter) => {
             currentFilter = filter;
+            document.getElementById('homeSection').style.display = 'block';
+            document.getElementById('staffSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'none';
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
             displayMovies();
+            window.scrollTo(0, 0);
         };
 
         window.performSearch = () => {
@@ -1611,7 +1967,8 @@
             const grid = document.getElementById('moviesGrid');
             const filtered = [...allMovies, ...allSeries].filter(c => 
                 c.title.toLowerCase().includes(term) || 
-                (c.description && c.description.toLowerCase().includes(term))
+                (c.description && c.description.toLowerCase().includes(term)) ||
+                (c.genre && c.genre.toLowerCase().includes(term))
             );
 
             if (filtered.length === 0) {
@@ -1635,7 +1992,7 @@
                         <div class="movie-info">
                             <div class="movie-title">${content.title}</div>
                             <div class="movie-meta">
-                                <span>${content.year || '2024'}</span>
+                                <span>${content.year || '2025'}</span>
                                 ${content.duration ? `<span>${content.duration}</span>` : ''}
                             </div>
                         </div>
@@ -1652,112 +2009,205 @@
             setTimeout(() => toast.remove(), 3000);
         };
 
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.genre-dropdown')) {
+                document.getElementById('genreMenu').classList.remove('show');
+            }
+        });
+
         loadData();
     </script>
 </body>
-</html>" id="movieTitle" placeholder="ناونیشان" required>
+</html> 0 ? `
+                        <div class="servers-section">
+                            <h3 class="servers-title"><i class="fas fa-server"></i> سێرڤەرەکان</h3>
+                            <div class="server-tabs">
+                                ${servers.map((s, i) => `
+                                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">
+                                        <i class="fas fa-play-circle"></i> ${s.name}
+                                    </button>
+                                `).join('')}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" id="moviePoster" placeholder="لینکی پۆستەر" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="movieYear" placeholder="ساڵ" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="movieDuration" placeholder="ماوە (وەک: 2h 15m)">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="movieRating" placeholder="هەڵسەنگاندن (وەک: 8.5)">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="movieGenre" placeholder="ژانەر (وەک: ئەکشن، کۆمیدی)">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="movieTranslator" placeholder="وەرگێڕ">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="movieDescription" placeholder="کورتە">
-                        </div>
-                        <h4 style="margin: 20px 0 10px;">سێرڤەرەکان</h4>
-                        <div class="form-group">
-                            <input type="url" id="movieServer1" placeholder="سێرڤەر 1 (لینک)" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="url" id="movieServer2" placeholder="سێرڤەر 2 (لینک)">
-                        </div>
-                        <div class="form-group">
-                            <input type="url" id="movieServer3" placeholder="سێرڤەر 3 (لینک)">
-                        </div>
-                        <div class="form-group">
-                            <input type="url" id="movieServer4" placeholder="سێرڤەر 4 (لینک)">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                <input type="checkbox" id="movieFeatured">
-                                <span>پێشنیارکراو</span>
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                            <i class="fas fa-plus"></i> زیادکردن
-                        </button>
-                    </form>
-                </div>
+                    ` : ''}
 
-                <div id="seriesAdmin" class="admin-content">
-                    <h3 style="margin-bottom: 20px;">زیادکردنی زنجیرە</h3>
-                    <form onsubmit="addSeries(event)">
-                        <div class="form-group">
-                            <input type="text" id="seriesTitle" placeholder="ناونیشان" required>
+                    ${content.description ? `
+                        <div class="description-section">
+                            <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--accent-primary);">کورتە</h3>
+                            <p>${content.description}</p>
                         </div>
-                        <div class="form-group">
-                            <input type="text" id="seriesPoster" placeholder="لینکی پۆستەر" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="seriesYear" placeholder="ساڵ" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="seriesDuration" placeholder="ماوە">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="seriesRating" placeholder="هەڵسەنگاندن">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="seriesGenre" placeholder="ژانەر">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="seriesTranslator" placeholder="وەرگێڕ">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="seriesDescription" placeholder="کورتە">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                <input type="checkbox" id="seriesFeatured">
-                                <span>پێشنیارکراو</span>
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                            <i class="fas fa-plus"></i> زیادکردن
-                        </button>
-                    </form>
-                </div>
+                    ` : ''}
 
-                <div id="episodesAdmin" class="admin-content">
-                    <h3 style="margin-bottom: 20px;">زیادکردنی ئەڵقە</h3>
-                    <form onsubmit="addEpisode(event)">
-                        <div class="form-group">
-                            <select id="episodeSeries" required>
-                                <option value="">هەڵبژاردنی زنجیرە</option>
-                            </select>
+                    <div class="comments-section">
+                        <h3 class="comments-title"><i class="fas fa-comments"></i> بۆچونەکان</h3>
+                        ${currentUser ? `
+                            <div class="comment-form">
+                                <textarea id="commentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
+                                <button class="btn btn-primary" onclick="postComment('${content.id}', 'movie')">
+                                    <i class="fas fa-paper-plane"></i> ناردن
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="login-prompt">
+                                <p style="margin-bottom: 20px; font-size: 16px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
+                                <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
+                                    <i class="fas fa-user"></i> چوونە ژوورەوە
+                                </button>
+                            </div>
+                        `}
+                        <div id="commentsContainer"></div>
+                    </div>
+                </div>
+            `;
+
+            window.playTrailer = () => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.getElementById('videoPlayer').src = content.trailer || '';
+            };
+
+            window.playMovie = () => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.getElementById('videoPlayer').src = servers[0]?.url || '';
+            };
+
+            window.switchServer = (url, btn) => {
+                document.getElementById('watchPoster').style.display = 'none';
+                document.getElementById('trailerOverlay').style.display = 'none';
+                document.getElementById('videoContainer').style.display = 'block';
+                document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('videoPlayer').src = url;
+            };
+
+            openModal('watchModal');
+            loadComments(content.id, 'movie');
+        };
+
+        window.openSeriesDetails = (id) => {
+            const series = allSeries.find(s => s.id === id);
+            if (!series) return;
+
+            update(ref(db, `series/${series.id}`), { views: (series.views || 0) + 1 });
+
+            const episodes = allEpisodes.filter(ep => ep.seriesId === series.id).sort((a, b) => a.number - b.number);
+
+            document.getElementById('watchContent').innerHTML = `
+                <div class="watch-header">
+                    <img src="${series.poster}" class="watch-poster" id="seriesPoster">
+                    ${series.trailer ? `
+                    <div class="trailer-overlay" id="seriesTrailerOverlay">
+                        <button class="trailer-btn" onclick="playSeriesTrailer()">
+                            <i class="fas fa-play"></i> بینینی ترەیلەر
+                        </button>
+                    </div>
+                    <div class="video-container" id="seriesTrailerContainer" style="display: none;">
+                        <iframe id="seriesTrailerPlayer" class="video-player" src="" allowfullscreen allow="autoplay"></iframe>
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="watch-body">
+                    <h1 class="watch-title">${series.title}</h1>
+                    <div class="watch-meta">
+                        <span><i class="fas fa-calendar"></i> ${series.year}</span>
+                        <span><i class="fas fa-tv"></i> ${episodes.length} ئەڵقە</span>
+                        ${series.duration ? `<span><i class="fas fa-clock"></i> ${series.duration}</span>` : ''}
+                        ${series.rating ? `<span><i class="fas fa-star"></i> ${series.rating}/10</span>` : ''}
+                        <span><i class="fas fa-eye"></i> ${(series.views || 0).toLocaleString()}</span>
+                        ${series.type ? `<span><i class="fas fa-${series.type === 'dubbed' ? 'microphone' : 'closed-captioning'}"></i> ${series.type === 'dubbed' ? 'دۆبلاژکراو' : 'ژێرنووسکراو'}</span>` : ''}
+                        ${series.translator ? `<span><i class="fas fa-language"></i> ${series.translator}</span>` : ''}
+                    </div>
+
+                    ${series.description ? `
+                        <div class="description-section">
+                            <h3 style="font-size: 20px; margin-bottom: 15px; color: var(--accent-primary);">کورتە</h3>
+                            <p>${series.description}</p>
                         </div>
-                        <div class="form-group">
-                            <input type="number" id="episodeNumber" placeholder="ژمارەی ئەڵقە" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="episodeTitle" placeholder="ناونیشانی ئەڵقە">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="episodeDuration" placeholder="ماوە">
-                        </div>
-                        <div class="form-group">
-                            <input type="text
+                    ` : ''}
+
+                    <div class="servers-section">
+                        <h3 class="servers-title"><i class="fas fa-list"></i> ئەڵقەکان</h3>
+                        ${episodes.length > 0 ? `
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                                ${episodes.map(ep => `
+                                    <div class="server-tab" onclick='openEpisodeWatch("${series.id}", "${ep.id}")'>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <span style="background: var(--accent-primary); padding: 5px 12px; border-radius: 5px; font-size: 14px;">ئەڵقەی ${ep.number}</span>
+                                            <span style="flex: 1;">${ep.title || ''}</span>
+                                            ${ep.duration ? `<span style="color: var(--text-secondary); font-size: 13px;">${ep.duration}</span>` : ''}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p style="text-align: center; color: var(--text-secondary); padding: 30px;">هیچ ئەڵقەیەک زیاد نەکراوە</p>'}
+                    </div>
+
+                    <div class="comments-section">
+                        <h3 class="comments-title"><i class="fas fa-comments"></i> بۆچونەکان</h3>
+                        ${currentUser ? `
+                            <div class="comment-form">
+                                <textarea id="seriesCommentText" placeholder="بۆچونەکەت بنووسە..."></textarea>
+                                <button class="btn btn-primary" onclick="postComment('${series.id}', 'series')">
+                                    <i class="fas fa-paper-plane"></i> ناردن
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="login-prompt">
+                                <p style="margin-bottom: 20px; font-size: 16px;">بۆ نووسینی بۆچون، تکایە بچۆ ژوورەوە</p>
+                                <button class="btn btn-primary" onclick="closeModal('watchModal'); openUserLoginModal()">
+                                    <i class="fas fa-user"></i> چوونە ژوورەوە
+                                </button>
+                            </div>
+                        `}
+                        <div id="seriesCommentsContainer"></div>
+                    </div>
+                </div>
+            `;
+
+            window.playSeriesTrailer = () => {
+                document.getElementById('seriesPoster').style.display = 'none';
+                document.getElementById('seriesTrailerOverlay').style.display = 'none';
+                document.getElementById('seriesTrailerContainer').style.display = 'block';
+                document.getElementById('seriesTrailerPlayer').src = series.trailer || '';
+            };
+
+            openModal('watchModal');
+            loadComments(series.id, 'series');
+        };
+
+        window.openEpisodeWatch = (seriesId, episodeId) => {
+            const series = allSeries.find(s => s.id === seriesId);
+            const episode = allEpisodes.find(ep => ep.id === episodeId);
+            if (!series || !episode) return;
+
+            const servers = [];
+            if (episode.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: episode.servers.server1 });
+            if (episode.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: episode.servers.server2 });
+            if (episode.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: episode.servers.server3 });
+            if (episode.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: episode.servers.server4 });
+
+            document.getElementById('watchContent').innerHTML = `
+                <div class="watch-header">
+                    <img src="${series.poster}" class="watch-poster" id="watchPoster">
+                    <div class="trailer-overlay" id="trailerOverlay">
+                        <button class="trailer-btn" onclick="playEpisode()">
+                            <i class="fas fa-play"></i> بینینی ئەڵقە
+                        </button>
+                    </div>
+                    <div class="video-container" id="videoContainer" style="display: none;">
+                        <iframe id="videoPlayer" class="video-player" src="" allowfullscreen allow="autoplay"></iframe>
+                    </div>
+                </div>
+                <div class="watch-body">
+                    <h1 class="watch-title">${series.title} - ئەڵقەی ${episode.number}</h1>
+                    <div class="watch-meta">
+                        <span><i class="fas fa-calendar"></i> ${series.year}</span>
+                        ${episode.duration ? `<span><i class="fas fa-clock"></i> ${episode.duration}</span>` : ''}
+                        ${episode.translator ? `<span><i class="fas fa-language"></i> ${episode.translator}</span>` : ''}
+                    </div>
+
+                    ${servers.length >
