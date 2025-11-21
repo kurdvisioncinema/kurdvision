@@ -3,632 +3,921 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>کورد ڤیژن Pro | Kurdsubtitle Style</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>کورد ڤیژن</title>
     <style>
-        /* ===================================================================
-           CSS (ستایلی گشتی بە شێوازی کوردی سابتایتڵ - تاریکتر و ساردتر)
-        =================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-primary: #0e1217;       /* زۆر تاریک و سارد (هاوشێوەی Kurdsubtitle) */
-            --bg-secondary: #1a202a;     /* تابلۆکان */
-            --bg-card: #212833;          /* بۆ کاردەکان */
-            --accent-primary: #03a9f4;   /* شینێکی ڕووناک بۆ جەختکردنەوە */
-            --accent-secondary: #0288d1; /* شینی تۆختر */
-            --text-primary: #ffffff;
-            --text-secondary: #b3b3b3;
-            --success: #4caf50;
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #ffd700;
         }
-
+        
         body {
-            font-family: 'Cairo', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            direction: rtl; /* دڵنیابوون لەوەی ئاراستەی کۆدی کوردی دروستە */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: #fff;
+            min-height: 100vh;
         }
-
-        a {
-            text-decoration: none;
-            color: var(--accent-primary);
-        }
-
+        
         header {
-            background: rgba(14, 18, 23, 0.9); /* بێلورکردنی سەرەوە */
-            backdrop-filter: blur(5px);
-            position: fixed;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 100;
-            padding: 15px 5%;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--accent-color), #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .admin-controls {
+            display: none;
+            gap: 10px;
+        }
+        .admin-controls.show { display: flex; }
+        
+        .admin-btn, .logout-btn, .settings-btn {
+            background: var(--accent-color);
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .settings-btn { background: #4CAF50; color: white; }
+        .logout-btn { background: #ff4444; color: white; }
+        
+        /* Hero Slider */
+        .hero-slider {
+            position: relative;
+            height: 550px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .slide.active { opacity: 1; }
+        
+        .slide-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.5);
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 60px;
+            right: 50px;
+            max-width: 700px;
+            z-index: 2;
+        }
+        
+        .slide-content h1 {
+            font-size: 52px;
+            margin-bottom: 15px;
+        }
+        
+        .slide-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .slide-badge {
+            background: var(--accent-color);
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .slide-btn {
+            background: var(--accent-color);
+            color: #333;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .slider-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+        }
+        .slider-dot.active {
+            background: var(--accent-color);
+            width: 35px;
+            border-radius: 6px;
+        }
+        
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+        
+        .slider-arrow {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        .search-box button {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--bg-secondary);
+            margin: 50px 0 30px;
         }
-
-        .logo {
-            font-size: 1.8em;
-            font-weight: 800; /* تۆختر */
-            color: var(--accent-primary);
+        
+        .section-title {
+            font-size: 32px;
         }
-
-        .search-icon {
-            font-size: 1.4em;
-            cursor: pointer;
-            color: var(--text-primary);
-            transition: color 0.2s;
-        }
-        .search-icon:hover {
-             color: var(--accent-primary);
-        }
-
-        main {
-            padding-top: 80px; 
-            min-height: calc(100vh - 100px); 
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1300px; /* پانتر کردن */
-            margin: 0 auto;
+        
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
             padding: 20px 0;
         }
-
-        .section-title {
-            font-size: 1.7em;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 25px;
-            border-right: 5px solid var(--accent-primary); /* تۆختر */
-            padding-right: 12px;
-            display: inline-block;
-        }
-
-        .series-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 25px;
-        }
-
-        .series-card {
-            background: var(--bg-card);
-            border-radius: 6px;
+        
+        .movie-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* سێبەرێکی تاریکتر */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .series-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
-        }
-
-        .series-poster {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .series-info {
-            padding: 10px 10px 15px;
-        }
-
-        .series-title {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .series-year {
-            font-size: 0.85em;
-            color: var(--text-secondary);
-        }
-
-        /* ستایلی بەشی بینین */
-        #watchContent {
-            display: none;
-            padding: 20px;
-        }
-
-        .watch-header {
+            transition: all 0.3s;
             position: relative;
-            margin-bottom: 30px;
         }
-
-        .watch-poster {
+        .movie-card:hover { transform: scale(1.05); }
+        
+        .movie-poster {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
-            display: block;
+            height: 350px;
+            position: relative;
         }
-
-        .trailer-overlay {
+        .movie-poster img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .play-icon {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.65);
+            font-size: 70px;
+            background: rgba(0, 0, 0, 0.6);
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
             display: flex;
-            justify-content: center;
             align-items: center;
-            border-radius: 8px;
+            justify-content: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
-
-        .trailer-btn {
-            background: var(--accent-primary);
-            color: var(--text-primary);
-            border: none;
-            padding: 18px 35px; /* گەورەتر */
-            font-size: 1.2em;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.2s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        }
-
-        .trailer-btn:hover {
-            background: var(--accent-secondary);
-            transform: scale(1.05);
-        }
-
-        .video-container {
-            width: 100%;
-            padding-top: 56.25%; 
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .video-player {
+        
+        .rating-badge {
             position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 215, 0, 0.95);
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .view-count {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .admin-only { display: none; }
+        .admin-mode .admin-only { display: flex; }
+        
+        .movie-info { padding: 20px; }
+        .movie-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .movie-meta { font-size: 14px; opacity: 0.8; margin-bottom: 5px; }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px 5px 0 0;
+        }
+        .badge.subtitle { background: var(--accent-color); color: #333; }
+        .badge.dubbed { background: #ff6b6b; color: white; }
+        
+        .delete-btn, .edit-btn {
+            position: absolute;
+            top: 10px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: none;
+            z-index: 10;
+        }
+        .delete-btn { left: 10px; }
+        .edit-btn { left: 55px; background: #4CAF50; }
+        .admin-mode .movie-card:hover .delete-btn,
+        .admin-mode .movie-card:hover .edit-btn { display: block; }
+        
+        .modal {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
         }
-
-        .watch-title {
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: var(--accent-primary);
+        
+        .modal-content {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            margin: 50px auto;
+            padding: 40px;
+            max-width: 500px;
+            border-radius: 20px;
+            position: relative;
         }
-
-        .watch-meta span {
-            margin-left: 20px;
-            color: var(--text-secondary);
-            font-size: 0.9em;
-        }
-        .watch-meta i {
-            color: var(--accent-primary);
-            margin-left: 5px;
-        }
-
-        .episode-servers {
-            margin-top: 25px;
-            padding: 15px;
-            background: var(--bg-secondary);
-            border-radius: 6px;
-        }
-
-        .server-title {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .server-buttons .server-btn {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--bg-primary);
-            padding: 10px 18px;
-            margin-left: 10px;
-            margin-bottom: 10px;
-            border-radius: 4px;
+        .modal-content.large { max-width: 800px; }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 30px;
             cursor: pointer;
-            transition: background 0.2s ease, color 0.2s;
-        }
-
-        .server-buttons .server-btn:hover {
-            background: var(--bg-primary);
-            color: var(--accent-primary);
-        }
-        .server-buttons .server-btn.active {
-            background: var(--accent-primary);
-            color: var(--bg-primary);
-            font-weight: 600;
-        }
-
-
-        .episode-list {
-            margin-top: 25px;
-            padding: 15px;
-            background: var(--bg-secondary);
-            border-radius: 6px;
-        }
-
-        .episode-title {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .episode-buttons {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal h2 { text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
             gap: 8px;
         }
-
-        .episode-buttons .ep-btn {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--bg-primary);
-            padding: 8px 12px;
-            border-radius: 4px;
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
             cursor: pointer;
-            transition: background 0.2s ease;
         }
-
-        .episode-buttons .ep-btn:hover {
-            background: var(--bg-primary);
-            color: var(--accent-primary);
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-color);
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
         }
-        .episode-buttons .ep-btn.active {
-            background: var(--accent-primary);
-            color: var(--bg-primary);
-            font-weight: 600;
+        
+        .video-player {
+            width: 100%;
+            height: 500px;
+            background: #000;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
-                
-        /* چاکسازی ستایلی FOOTER (تەنها مافی کۆپی) */
+        
+        .server-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .server-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .server-btn.active { background: var(--accent-color); color: #333; }
+        
+        .settings-panel {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .settings-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+        
+        .settings-section h3 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: var(--accent-color);
+        }
+        
+        .list-manager {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .list-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .list-item-actions button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .color-picker-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .color-picker-item input[type="color"] {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
         footer {
-            background: var(--bg-secondary);
-            padding: 15px 5%; 
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 20px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 40px; 
+            margin-top: 80px;
         }
-
-        .footer-content {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        footer p {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            margin: 0; 
-            padding: 5px 0; 
-        }
-
-        /* ===================================================================
-           MEDIA QUERIES (باشترکردنی بۆ مۆبایل)
-        =================================================================== */
+        footer p { opacity: 0.8; margin: 5px 0; }
+        
         @media (max-width: 768px) {
-            header {
-                padding: 10px 4%;
-            }
-
-            .logo {
-                font-size: 1.6em;
-            }
-
-            .container {
-                width: 95%; 
-                padding: 10px 0;
-            }
-
-            .section-title {
-                font-size: 1.5em;
-                margin-bottom: 20px;
-            }
-
-            .series-list {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-                gap: 15px;
-            }
-
-            .series-title {
-                font-size: 1em;
-            }
-            .series-info {
-                padding: 8px 5px 10px;
-            }
-            
-            .trailer-btn {
-                padding: 12px 25px;
-                font-size: 1.1em;
-            }
-            
-            .watch-title {
-                font-size: 1.7em;
-            }
-            
-            .watch-meta span {
-                margin-left: 10px;
-                font-size: 0.85em;
-            }
-            
-            .episode-servers, .episode-list {
-                padding: 12px;
-            }
-            
-            .server-buttons .server-btn, .episode-buttons .ep-btn {
-                padding: 8px 12px;
-                font-size: 0.9em;
-                margin-left: 5px;
-            }
-
-            footer {
-                padding: 10px 4%;
-            }
+            .hero-slider { height: 400px; }
+            .slide-content { padding: 30px 20px; bottom: 40px; right: 20px; }
+            .slide-content h1 { font-size: 32px; }
         }
     </style>
 </head>
 <body>
-
     <header>
-        <a href="#" class="logo">Kurd Vision</a>
-        <i class="fas fa-search search-icon"></i>
+        <div class="container">
+            <nav>
+                <div class="logo">🎬 <span id="siteNameDisplay">کورد ڤیژن</span></div>
+                <ul class="nav-links" id="dynamicMenu">
+                    <li><a href="#" onclick="showTab('all')">سەرەکی</a></li>
+                    <li><a href="#" onclick="showTab('latest')">نوێترین</a></li>
+                    <li><a href="#" onclick="showTab('subtitle')">ژێرنووسکراو</a></li>
+                    <li><a href="#" onclick="showTab('dubbed')">دۆبلاژکراو</a></li>
+                    <li><a href="#staffSection">ستاف</a></li>
+                    <li id="adminLoginBtn" style="display: none;"><a href="#" onclick="openLogin()" style="background: rgba(255,215,0,0.2);">🔐 ئەدمین</a></li>
+                </ul>
+                <div class="admin-controls" id="adminControls">
+                    <button class="settings-btn" onclick="showSettings()">⚙️ ڕێکخستن</button>
+                    <button class="admin-btn" onclick="openAddModal()">➕ فیلمی نوێ</button>
+                    <button class="logout-btn" onclick="logout()">چوونە دەرەوە</button>
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <div class="container">
-            <div id="seriesContent">
-                <h2 class="section-title">تازەترین زنجیرەکان</h2>
-                <div class="series-list" id="seriesList">
-                    </div>
+    <!-- Hero Slider -->
+    <section class="hero-slider" id="heroSlider"></section>
+
+    <!-- Search -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="گەڕان بە فیلم یان زنجیرە..." onkeyup="searchMovies()">
+        <button onclick="searchMovies()">🔍 گەڕان</button>
+    </div>
+
+    <!-- Movies -->
+    <section class="container" id="moviesSection">
+        <div class="section-header">
+            <h2 class="section-title">🔥 پێشنیارکراو</h2>
+        </div>
+        <div class="movies-grid" id="featuredGrid"></div>
+
+        <div class="section-header">
+            <h2 class="section-title" id="sectionTitle">⭐ نوێترین فیلمەکان</h2>
+        </div>
+        <div class="movies-grid" id="moviesGrid">
+            <div style="text-align: center; grid-column: 1/-1; padding: 40px;">چاوەڕێ بکە...</div>
+        </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="container" id="settingsSection" style="display: none;">
+        <div class="settings-panel">
+            <h2 style="text-align: center; margin-bottom: 40px;">⚙️ ڕێکخستنەکان</h2>
+            
+            <div class="settings-section">
+                <h3>🎬 بەڕێوەبردنی Slider</h3>
+                <button class="submit-btn" style="margin-bottom: 20px;" onclick="openSliderModal()">➕ زیادکردنی Slide نوێ</button>
+                <div class="list-manager" id="sliderManager"></div>
             </div>
 
-            <div id="watchContent">
-                </div>
-        </div>
-    </main>
+            <div class="settings-section">
+                <h3>📋 بەڕێوەبردنی Menu</h3>
+                <button class="submit-btn" style="margin-bottom: 20px;" onclick="openMenuModal()">➕ زیادکردنی بەشی نوێ</button>
+                <div class="list-manager" id="menuManager"></div>
+            </div>
 
-    <footer>
-        <div class="footer-content">
-            <p>
-                © 2025 کورد ڤیژن - هەموو مافێک پارێزراوە
-            </p>
+            <div class="settings-section">
+                <h3>🌍 بەڕێوەبردنی وڵاتەکان</h3>
+                <button class="submit-btn" style="margin-bottom: 20px;" onclick="openCountryModal()">➕ زیادکردنی وڵات</button>
+                <div class="list-manager" id="countryManager"></div>
+            </div>
+
+            <div class="settings-section">
+                <h3>👥 بەڕێوەبردنی ستاف</h3>
+                <button class="submit-btn" style="margin-bottom: 20px;" onclick="openStaffModal()">➕ زیادکردنی ئەندام</button>
+                <div class="list-manager" id="staffManager"></div>
+            </div>
+
+            <div class="settings-section">
+                <h3>📝 زانیاری وێبسایت</h3>
+                <div class="form-group">
+                    <label>ناوی وێبسایت</label>
+                    <input type="text" id="settingSiteName" placeholder="کورد ڤیژن">
+                </div>
+                <div class="form-group">
+                    <label>سەردێڕی لیستی فیلمەکان</label>
+                    <input type="text" id="settingSectionTitle" placeholder="نوێترین فیلمەکان">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🎨 ڕەنگەکان</h3>
+                <div class="color-picker-group">
+                    <div>
+                        <label>ڕەنگی سەرەکی</label>
+                        <input type="color" id="settingPrimaryColor" value="#667eea">
+                    </div>
+                    <div>
+                        <label>ڕەنگی لاوەکی</label>
+                        <input type="color" id="settingSecondaryColor" value="#764ba2">
+                    </div>
+                    <div>
+                        <label>ڕەنگی دوگمەکان</label>
+                        <input type="color" id="settingAccentColor" value="#ffd700">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>📄 تێکستی Footer</h3>
+                <div class="form-group">
+                    <textarea id="settingFooterText" placeholder="بڵاوکردنەوەی فیلم..."></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="submit-btn" onclick="saveSettings()">💾 پاشەکەوتکردن</button>
+                <button class="submit-btn" style="background: #666;" onclick="hideSettings()">گەڕانەوە</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Staff Section -->
+    <footer id="staffSection">
+        <div class="container">
+            <h3 style="margin-bottom: 20px;">👥 ستافی <span id="footerSiteName">کورد ڤیژن</span></h3>
+            <div id="staffList" style="max-width: 600px; margin: 0 auto 20px;"></div>
+            <p>© 2024 <span id="footerSiteName2">کورد ڤیژن</span> - هەموو مافێک پارێزراوە</p>
+            <p id="footerText">بڵاوکردنەوەی فیلم و زنجیرە بە ژێرنووسی و دۆبلاژی کوردی</p>
         </div>
     </footer>
 
-    <script>
-        // داتای نموونە بۆ زنجیرەکان (هەمان داتای پێشوو)
-        const seriesData = [
-            {
-                id: 1,
-                title: "وۆکینگ دێد",
-                year: 2010,
-                poster: "https://i.ibb.co/L89YQ7p/series-1.jpg",
-                episodes: [
-                    { number: 1, duration: "45 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" } },
-                    { number: 2, duration: "42 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/L8zB7_R7M-Q?autoplay=1" } },
-                ]
-            },
-            {
-                id: 2,
-                title: "تایتانەکان",
-                year: 2018,
-                poster: "https://i.ibb.co/3sXz6rV/series-2.jpg",
-                episodes: [
-                    { number: 1, duration: "48 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/1B1LwWk76lM?autoplay=1" } },
-                ]
-            },
-            {
-                id: 3,
-                title: "فلاش",
-                year: 2014,
-                poster: "https://i.ibb.co/xL0Qy4X/series-3.jpg",
-                episodes: [
-                    { number: 1, duration: "42 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/n4Dmp2H871s?autoplay=1" } },
-                ]
-            },
-            {
-                id: 4,
-                title: "سەرپەرشتیکەرەکان",
-                year: 2019,
-                poster: "https://i.ibb.co/T8V6yWq/series-4.jpg",
-                episodes: [
-                    { number: 1, duration: "60 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/j4_E50iW3fM?autoplay=1" } },
-                ]
-            },
-            {
-                id: 5,
-                title: "لۆکی",
-                year: 2021,
-                poster: "https://i.ibb.co/S6w8v9N/series-5.jpg",
-                episodes: [
-                    { number: 1, duration: "52 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/n4Dmp2H871s?autoplay=1" } },
-                ]
-            },
-            {
-                id: 6,
-                title: "هەڵمەتی یەکیەتی",
-                year: 2024,
-                poster: "https://i.ibb.co/gW62V1F/series-6.jpg",
-                episodes: [
-                    { number: 1, duration: "50 خولەک", translator: "کورد ڤیژن", servers: { server1: "https://www.youtube.com/embed/1B1LwWk76lM?autoplay=1" } },
-                ]
+    <!-- Modals will be added via JavaScript -->
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaE1v9PcHGsSgF1IlnDrygX5TT2-zii8o",
+            authDomain: "kurdvision-f9d3e.firebaseapp.com",
+            databaseURL: "https://kurdvision-f9d3e-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "kurdvision-f9d3e",
+            storageBucket: "kurdvision-f9d3e.firebasestorage.app",
+            messagingSenderId: "704463916853",
+            appId: "1:704463916853:web:237616584ecaf85309467c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        let movies = [], slides = [], menuItems = [], countries = [], staffMembers = [];
+        let isAdmin = false, currentFilter = 'all', currentSlide = 0, sliderInterval;
+
+        window.onload = function() {
+            loadAll();
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                document.getElementById('adminLoginBtn').style.display = 'block';
             }
-        ];
+        };
 
-        let currentSeries = null;
-        let currentEpisode = null;
-
-        // فانکشن بۆ پیشاندانی زنجیرەکان
-        function renderSeries() {
-            const seriesList = document.getElementById('seriesList');
-            seriesList.innerHTML = '';
-            seriesData.forEach(series => {
-                const card = document.createElement('div');
-                card.className = 'series-card';
-                card.onclick = () => showSeriesDetails(series.id);
-                card.innerHTML = `
-                    <img src="${series.poster}" alt="${series.title}" class="series-poster">
-                    <div class="series-info">
-                        <h3 class="series-title">${series.title}</h3>
-                        <span class="series-year">${series.year}</span>
-                    </div>
-                `;
-                seriesList.appendChild(card);
+        function loadAll() {
+            onAuthStateChanged(auth, (user) => {
+                isAdmin = !!user;
+                document.getElementById('adminControls').classList.toggle('show', isAdmin);
+                document.body.classList.toggle('admin-mode', isAdmin);
             });
-            document.getElementById('seriesContent').style.display = 'block';
-            document.getElementById('watchContent').style.display = 'none';
+            
+            onValue(ref(database, 'movies'), (s) => {
+                movies = [];
+                s.forEach((c) => movies.push({id: c.key, ...c.val()}));
+                displayMovies();
+            });
+            
+            onValue(ref(database, 'slides'), (s) => {
+                slides = [];
+                s.forEach((c) => slides.push({id: c.key, ...c.val()}));
+                displaySlider();
+            });
+            
+            onValue(ref(database, 'staff'), (s) => {
+                staffMembers = [];
+                s.forEach((c) => staffMembers.push({id: c.key, ...c.val()}));
+                displayStaff();
+            });
+            
+            onValue(ref(database, 'menuItems'), (s) => {
+                menuItems = [];
+                s.forEach((c) => menuItems.push({id: c.key, ...c.val()}));
+                updateMenu();
+            });
+            
+            onValue(ref(database, 'countries'), (s) => {
+                countries = [];
+                s.forEach((c) => countries.push({id: c.key, ...c.val()}));
+            });
+            
+            onValue(ref(database, 'settings'), (s) => {
+                const settings = s.val() || {};
+                if (settings.siteName) {
+                    document.getElementById('siteNameDisplay').textContent = settings.siteName;
+                    document.getElementById('footerSiteName').textContent = settings.siteName;
+                    document.getElementById('footerSiteName2').textContent = settings.siteName;
+                    document.title = settings.siteName;
+                }
+                if (settings.sectionTitle) document.getElementById('sectionTitle').textContent = settings.sectionTitle;
+                if (settings.footerText) document.getElementById('footerText').textContent = settings.footerText;
+                if (settings.primaryColor) document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
+                if (settings.secondaryColor) document.documentElement.style.setProperty('--secondary-color', settings.secondaryColor);
+                if (settings.accentColor) document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+            });
         }
 
-        // فانکشن بۆ پیشاندانی وردەکاری زنجیرە
-        function showSeriesDetails(seriesId) {
-            currentSeries = seriesData.find(s => s.id === seriesId);
-            if (!currentSeries) return;
-
-            document.getElementById('seriesContent').style.display = 'none';
-            document.getElementById('watchContent').style.display = 'block';
-            currentEpisode = null; 
-
-            const watchContent = document.getElementById('watchContent');
-            watchContent.innerHTML = `
-                <div class="watch-header">
-                    <img src="${currentSeries.poster}" class="watch-poster" id="watchPoster">
-                    <div class="trailer-overlay" id="trailerOverlay">
-                        <button class="trailer-btn" onclick="playFirstEpisode()">
-                            <i class="fas fa-play"></i> بینینی یەکەم ئەڵقە
-                        </button>
-                    </div>
-                    <div class="video-container" id="videoContainer" style="display: none;">
-                        <iframe id="videoPlayer" class="video-player" src="" allowfullscreen allow="autoplay"></iframe>
-                    </div>
-                </div>
-                <div class="watch-body">
-                    <h1 class="watch-title">${currentSeries.title}</h1>
-                    <div id="episodeDetails">
-                        </div>
-                    
-                    <div class="episode-list">
-                        <h3 class="episode-title">هەموو ئەڵقەکان</h3>
-                        <div class="episode-buttons" id="episodeButtons">
-                            ${currentSeries.episodes.map(ep => 
-                                `<button class="ep-btn" data-episode-number="${ep.number}" onclick="watchEpisode(${currentSeries.id}, ${ep.number})">ئەڵقەی ${ep.number}</button>`
-                            ).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-            updateEpisodeDetails(currentSeries.episodes[0]);
+        function displayStaff() {
+            const list = document.getElementById('staffList');
+            if (staffMembers.length === 0) {
+                list.innerHTML = '<p>💻 بەرنامەنووس: Raz Tofiq</p><p>🎬 وەرگێڕ: تیمی کورد ڤیژن</p>';
+            } else {
+                list.innerHTML = staffMembers.map(m => `<p>${m.icon||'👤'} ${m.role}: ${m.name}</p>`).join('');
+            }
         }
 
-        // فانکشن بۆ نوێکردنەوەی وردەکاری ئەڵقە
-        function updateEpisodeDetails(episode) {
-            currentEpisode = episode;
-            const detailsDiv = document.getElementById('episodeDetails');
-            const watchPoster = document.getElementById('watchPoster');
-            if (watchPoster) watchPoster.style.display = 'none';
-            
-            const mainTitle = document.querySelector('.watch-title');
-            if (mainTitle) mainTitle.textContent = `${currentSeries.title} - ئەڵقەی ${episode.number}`;
-
-            let detailsHtml = `
-                <div class="watch-meta">
-                    <span><i class="fas fa-calendar"></i> ${currentSeries.year}</span>
-                    ${episode.duration ? `<span><i class="fas fa-clock"></i> ${episode.duration}</span>` : ''}
-                    ${episode.translator ? `<span><i class="fas fa-language"></i> ${episode.translator}</span>` : ''}
-                </div>
+        function updateMenu() {
+            const menu = document.getElementById('dynamicMenu');
+            const custom = menuItems.map(i => `<li><a href="#" onclick="showTab('${i.value}')">${i.name}</a></li>`).join('');
+            menu.innerHTML = `
+                <li><a href="#" onclick="showTab('all')">سەرەکی</a></li>
+                <li><a href="#" onclick="showTab('latest')">نوێترین</a></li>
+                <li><a href="#" onclick="showTab('subtitle')">ژێرنووسکراو</a></li>
+                <li><a href="#" onclick="showTab('dubbed')">دۆبلاژکراو</a></li>
+                ${custom}
+                <li><a href="#staffSection">ستاف</a></li>
+                <li id="adminLoginBtn" style="display: ${new URLSearchParams(window.location.search).get('admin') === 'true' ? 'block' : 'none'};"><a href="#" onclick="openLogin()" style="background: rgba(255,215,0,0.2);">🔐 ئەدمین</a></li>
             `;
+        }
 
-            const servers = [];
-            if (episode.servers?.server1) servers.push({ name: 'سێرڤەر 1', url: episode.servers.server1 });
-            if (episode.servers?.server2) servers.push({ name: 'سێرڤەر 2', url: episode.servers.server2 });
-            if (episode.servers?.server3) servers.push({ name: 'سێرڤەر 3', url: episode.servers.server3 });
-            if (episode.servers?.server4) servers.push({ name: 'سێرڤەر 4', url: episode.servers.server4 });
+        function displaySlider() {
+            const el = document.getElementById('heroSlider');
+            if (slides.length === 0) { el.style.display = 'none'; return; }
+            el.style.display = 'block';
             
-            if (servers.length > 0) {
-                detailsHtml += `
-                    <div class="episode-servers">
-                        <h4 class="server-title">هەڵبژاردنی سێرڤەر</h4>
-                        <div class="server-buttons" id="serverButtons">
-                            ${servers.map((server, index) => 
-                                `<button class="server-btn" data-server-url="${server.url}" onclick="changeServer('${server.url}')">${server.name}</button>`
-                            ).join('')}
-                        </div>
+            el.innerHTML = slides.map((s, i) => `
+                <div class="slide ${i === 0 ? 'active' : ''}">
+                    <img src="${s.image}" class="slide-bg" alt="${s.title}">
+                    <div class="slide-content">
+                        <h1>${s.title}</h1>
+                        ${s.year ? `<div class="slide-meta"><span class="slide-badge">${s.year}</span></div>` : ''}
+                        ${s.description ? `<p>${s.description}</p>` : ''}
+                        ${s.link ? `<button class="slide-btn" onclick="openMovieById('${s.link}')">▶ بینین</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            if (slides.length > 1) {
+                el.innerHTML += `
+                    <div class="slider-controls">
+                        ${slides.map((_, i) => `<div class="slider-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('')}
+                    </div>
+                    <div class="slider-arrows">
+                        <button class="slider-arrow" onclick="prevSlide()">‹</button>
+                        <button class="slider-arrow" onclick="nextSlide()">›</button>
                     </div>
                 `;
+                startSlider();
             }
+        }
+
+        function startSlider() {
+            if (sliderInterval) clearInterval(sliderInterval);
+            sliderInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                updateSlider();
+            }, 5000);
+        }
+
+        window.goToSlide = (i) => { currentSlide = i; updateSlider(); startSlider(); };
+        window.nextSlide = () => { currentSlide = (currentSlide + 1) % slides.length; updateSlider(); startSlider(); };
+        window.prevSlide = () => { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlider(); startSlider(); };
+
+        function updateSlider() {
+            document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+            document.querySelectorAll('.slider-dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        }
+
+        function displayMovies() {
+            const featured = movies.filter(m => m.featured).slice(0, 6);
+            const grid1 = document.getElementById('featuredGrid');
+            const grid2 = document.getElementById('moviesGrid');
             
-            detailsDiv.innerHTML = detailsHtml;
-
-            document.querySelectorAll('.ep-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.querySelector(`.ep-btn[data-episode-number="${episode.number}"]`);
-            if (activeBtn) activeBtn.classList.add('active');
-
-            if (servers.length > 0) {
-                changeServer(servers[0].url);
-            }
-        }
-
-        // فانکشن بۆ گواستنەوەی سێرڤەر
-        function changeServer(url) {
-            document.getElementById('videoPlayer').src = url;
-            document.querySelectorAll('.server-btn').forEach(btn => btn.classList.remove('active'));
-            const activeServerBtn = document.querySelector(`.server-btn[data-server-url="${url}"]`);
-            if (activeServerBtn) activeServerBtn.classList.add('active');
-        }
-
-        // فانکشن بۆ بینینی ئەڵقەیەکی دیاریکراو
-        function watchEpisode(seriesId, episodeNumber) {
-            const series = seriesData.find(s => s.id === seriesId);
-            const episode = series.episodes.find(ep => ep.number === episodeNumber);
-            if (episode) {
-                updateEpisodeDetails(episode);
-                playEpisode(); 
-            }
-        }
-
-        // فانکشن بۆ لێدانی یەکەم ئەڵقە
-        function playFirstEpisode() {
-            if (currentSeries && currentSeries.episodes.length > 0) {
-                watchEpisode(currentSeries.id, currentSeries.episodes[0].number);
-            }
-        }
-
-        // فانکشن بۆ دەستپێکردنی لێدان
-        function playEpisode() {
-            if (!currentEpisode || Object.keys(currentEpisode.servers).length === 0) {
-                alert("ببوورە، هیچ سێرڤەرێک بۆ ئەم ئەڵقەیە بەردەست نییە.");
-                return;
-            }
+            grid1.innerHTML = featured.length ? featured.map(createCard).join('') : '';
             
-            const firstServerUrl = Object.values(currentEpisode.servers)[0];
-            const videoPlayer = document.getElementById('videoPlayer');
-            const videoContainer = document.getElementById('videoContainer');
-            const trailerOverlay = document.getElementById('trailerOverlay');
-            const watchPoster = document.getElementById('watchPoster');
-
-            videoPlayer.src = firstServerUrl;
-            videoContainer.style.display = 'block';
-            trailerOverlay.style.display = 'none';
-            if (watchPoster) watchPoster.style.display = 'none';
+            let filtered = movies;
+            if (currentFilter === 'latest') filtered = movies.slice(0, 12);
+            else if (currentFilter !== 'all') filtered = movies.filter(m => m.type === currentFilter || m.country === currentFilter || m.genres.includes(currentFilter));
+            
+            const sorted = [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date));
+            grid2.innerHTML = sorted.length ? sorted.map(createCard).join('') : '<p style="text-align: center; grid-column: 1/-1; padding: 40px;">هیچ فیلمێک نەدۆزرایەوە</p>';
         }
 
-        // دەستپێکردن
-        window.onload = renderSeries;
+        function createCard(m) {
+            const views = m.views || Math.floor(Math.random() * 10000);
+            return `
+                <div class="movie-card" onclick="openWatchModal('${m.id}')">
+                    ${isAdmin ? `
+                        <button class="delete-btn" onclick="event.stopPropagation(); deleteItem('movies', '${m.id}')">×</button>
+                        <button class="edit-btn" onclick="event.stopPropagation(); editMovie('${m.id}')">✏️</button>
+                    ` : ''}
+                    <div class="movie-poster">
+                        <img src="${m.poster}" alt="${m.title}">
+                        <div class="play-icon">▶</div>
+                        ${m.rating ? `<div class="rating-badge">⭐ ${m.rating}</div>` : ''}
+                        <div class="view-count admin-only">👁️ ${views.toLocaleString()}</div>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${m.title}</div>
+                        <div class="movie-meta">ژانر: ${m.genres}</div>
+                        <div class="movie-meta">وڵات: ${m.country || 'نەناسراو'}</div>
+                        <div class="movie-meta">ساڵ: ${m.year}</div>
+                        <span class="badge ${m.type}">${m.type === 'subtitle' ? 'ژێرنووسی کوردی' : 'دۆبلاژی کوردی'}</span>
+                        ${m.featured ? '<span class="badge" style="background: #ff6b6b;">⭐ پێشنیارکراو</span>' : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        window.openLogin = () => alert('تکایە لۆگین فۆڕم دروست بکە');
+        window.logout = () => signOut(auth);
+        window.showSettings = () => {
+            document.getElementById('moviesSection').style.display = 'none';
+            document.getElementById('settingsSection').style.display = 'block';
+        };
+        window.hideSettings = () => {
+            document.getElementById('moviesSection').style.display = 'block';
+            document.getElementById('settingsSection').style.display = 'none';
+        };
+        window.saveSettings = () => {
+            set(ref(database, 'settings'), {
+                siteName: document.getElementById('settingSiteName').value,
+                sectionTitle: document.getElementById('settingSectionTitle').value,
+                footerText: document.getElementById('settingFooterText').value,
+                primaryColor: document.getElementById('settingPrimaryColor').value,
+                secondaryColor: document.getElementById('settingSecondaryColor').value,
+                accentColor: document.getElementById('settingAccentColor').value
+            }).then(() => { alert('✅ پاشەکەوت کرا!'); hideSettings(); });
+        };
+        
+        window.showTab = (type) => { currentFilter = type; displayMovies(); };
+        window.searchMovies = () => {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = movies.filter(m => 
+                m.title.toLowerCase().includes(term) || 
+                m.genres.toLowerCase().includes(term) ||
+                (m.country && m.country.toLowerCase().includes(term))
+            );
+            document.getElementById('moviesGrid').innerHTML = filtered.map(createCard).join('');
+        };
+
+        window.openMovieById = (id) => {
+            const m = movies.find(x => x.id === id);
+            if (m) openWatchModal(id);
+        };
+
+        window.openWatchModal = (id) => {
+            const m = movies.find(x => x.id === id);
+            if (!m) return;
+            
+            if (!isAdmin) update(ref(database, 'movies/' + id), { views: (m.views || 0) + 1 });
+            
+            let servers = '';
+            if (m.servers.server1) servers += `<button class="server-btn active" onclick="switchServer('${m.servers.server1}', this)">سێرڤەر ١ (Upstream)</button>`;
+            if (m.servers.server2) servers += `<button class="server-btn" onclick="switchServer('${m.servers.server2}', this)">سێرڤەر ٢ (Vidmoly)</button>`;
+            if (m.servers.server3) servers += `<button class="server-btn" onclick="switchServer('${m.servers.server3}', this)">سێرڤەر ٣ (Filemoon)</button>`;
+            if (m.servers.server4) servers += `<button class="server-btn" onclick="switchServer('${m.servers.server4}', this)">سێرڤەر ٤ (MixDrop)</button>`;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-content large">
+                    <span class="close-modal" onclick="this.parentElement.parentElement.remove()">×</span>
+                    <h2>${m.title} ${m.rating ? `<span style="color: #ffd700;">⭐ ${m.rating}</span>` : ''}</h2>
+                    <div style="margin: 15px 0;">
+                        <span class="badge ${m.type}">${m.type === 'subtitle' ? 'ژێرنووسی کوردی' : 'دۆبلاژی کوردی'}</span>
+                        ${isAdmin ? `<span class="badge" style="background: #4CAF50;">👁️ ${(m.views || 0).toLocaleString()}</span>` : ''}
+                    </div>
+                    ${servers ? `<div class="server-tabs">${servers}</div>` : ''}
+                    <iframe id="videoFrame" class="video-player" src="${m.servers.server1}" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+                    <div class="movie-meta">ژانر: ${m.genres} | وڵات: ${m.country || 'نەناسراو'} | ساڵ: ${m.year}</div>
+                    ${m.description ? `<p style="margin-top: 15px;">${m.description}</p>` : ''}
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        };
+
+        window.switchServer = (url, btn) => {
+            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('videoFrame').src = url;
+        };
+
+        window.openSliderModal = () => alert('زیادکردنی Slider - تکایە مۆداڵەکە دروست بکە');
+        window.openMenuModal = () => alert('زیادکردنی Menu - تکایە مۆداڵەکە دروست بکە');
+        window.openCountryModal = () => alert('زیادکردنی وڵات - تکایە مۆداڵەکە دروست بکە');
+        window.openStaffModal = () => alert('زیادکردنی ستاف - تکایە مۆداڵەکە دروست بکە');
+        window.openAddModal = () => alert('زیادکردنی فیلم - تکایە مۆداڵەکە دروست بکە');
+        
+        window.deleteItem = (table, id) => {
+            if (confirm('دڵنیایت؟')) {
+                remove(ref(database, table + '/' + id)).then(() => alert('✅ سڕایەوە!'));
+            }
+        };
     </script>
 </body>
 </html>
