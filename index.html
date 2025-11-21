@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>کورد ڤیژن Pro - زنجیرەکان</title>
+    <title>کورد ڤیژن Pro | Kurdsubtitle Style</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* ===================================================================
-           CSS (ستایلی وێبسایتەکە)
+           CSS (ستایلی گشتی بە شێوازی کوردی سابتایتڵ - تاریکتر و ساردتر)
         =================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-primary: #0a0e27;
-            --bg-secondary: #151b35;
-            --bg-card: #1e2746;
-            --accent-primary: #e50914;
-            --accent-secondary: #b20710;
+            --bg-primary: #0e1217;       /* زۆر تاریک و سارد (هاوشێوەی Kurdsubtitle) */
+            --bg-secondary: #1a202a;     /* تابلۆکان */
+            --bg-card: #212833;          /* بۆ کاردەکان */
+            --accent-primary: #03a9f4;   /* شینێکی ڕووناک بۆ جەختکردنەوە */
+            --accent-secondary: #0288d1; /* شینی تۆختر */
             --text-primary: #ffffff;
             --text-secondary: #b3b3b3;
-            --success: #46d369;
+            --success: #4caf50;
         }
 
         body {
@@ -30,10 +30,17 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
+            direction: rtl; /* دڵنیابوون لەوەی ئاراستەی کۆدی کوردی دروستە */
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--accent-primary);
         }
 
         header {
-            background: linear-gradient(180deg, rgba(10, 14, 39, 1) 0%, rgba(10, 14, 39, 0) 100%);
+            background: rgba(14, 18, 23, 0.9); /* بێلورکردنی سەرەوە */
+            backdrop-filter: blur(5px);
             position: fixed;
             top: 0;
             left: 0;
@@ -43,59 +50,67 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--bg-secondary);
         }
 
         .logo {
             font-size: 1.8em;
-            font-weight: 700;
+            font-weight: 800; /* تۆختر */
             color: var(--accent-primary);
-            text-decoration: none;
         }
 
         .search-icon {
-            font-size: 1.2em;
+            font-size: 1.4em;
             cursor: pointer;
             color: var(--text-primary);
+            transition: color 0.2s;
+        }
+        .search-icon:hover {
+             color: var(--accent-primary);
         }
 
         main {
-            padding-top: 70px; 
+            padding-top: 80px; 
             min-height: calc(100vh - 100px); 
         }
 
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1300px; /* پانتر کردن */
             margin: 0 auto;
             padding: 20px 0;
         }
 
         .section-title {
-            font-size: 1.5em;
+            font-size: 1.7em;
+            font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 20px;
-            border-right: 4px solid var(--accent-primary);
-            padding-right: 10px;
+            margin-bottom: 25px;
+            border-right: 5px solid var(--accent-primary); /* تۆختر */
+            padding-right: 12px;
+            display: inline-block;
         }
 
         .series-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 20px;
+            gap: 25px;
         }
 
         .series-card {
             background: var(--bg-card);
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* سێبەرێکی تاریکتر */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .series-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
         }
 
         .series-poster {
@@ -105,12 +120,12 @@
         }
 
         .series-info {
-            padding: 10px;
+            padding: 10px 10px 15px;
         }
 
         .series-title {
-            font-size: 1em;
-            font-weight: 600;
+            font-size: 1.1em;
+            font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 5px;
             white-space: nowrap;
@@ -119,7 +134,7 @@
         }
 
         .series-year {
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: var(--text-secondary);
         }
 
@@ -131,7 +146,7 @@
 
         .watch-header {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .watch-poster {
@@ -147,7 +162,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.65);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -158,23 +173,27 @@
             background: var(--accent-primary);
             color: var(--text-primary);
             border: none;
-            padding: 15px 30px;
-            font-size: 1.1em;
+            padding: 18px 35px; /* گەورەتر */
+            font-size: 1.2em;
+            font-weight: 700;
             border-radius: 50px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
 
         .trailer-btn:hover {
             background: var(--accent-secondary);
+            transform: scale(1.05);
         }
 
         .video-container {
             width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%; 
             position: relative;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
         }
 
         .video-player {
@@ -187,78 +206,96 @@
         }
 
         .watch-title {
-            font-size: 1.8em;
+            font-size: 2em;
             margin-bottom: 10px;
             color: var(--accent-primary);
         }
 
         .watch-meta span {
-            margin-left: 15px;
+            margin-left: 20px;
             color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+        .watch-meta i {
+            color: var(--accent-primary);
+            margin-left: 5px;
         }
 
         .episode-servers {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 15px;
-            background: var(--bg-card);
-            border-radius: 8px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
         }
 
         .server-title {
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            font-size: 1.3em;
+            margin-bottom: 15px;
             color: var(--text-primary);
+            font-weight: 600;
         }
 
         .server-buttons .server-btn {
-            background: var(--bg-secondary);
+            background: var(--bg-card);
             color: var(--text-primary);
-            border: none;
-            padding: 10px 15px;
+            border: 1px solid var(--bg-primary);
+            padding: 10px 18px;
             margin-left: 10px;
             margin-bottom: 10px;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, color 0.2s;
         }
 
-        .server-buttons .server-btn:hover,
+        .server-buttons .server-btn:hover {
+            background: var(--bg-primary);
+            color: var(--accent-primary);
+        }
         .server-buttons .server-btn.active {
             background: var(--accent-primary);
+            color: var(--bg-primary);
+            font-weight: 600;
         }
 
+
         .episode-list {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 15px;
-            background: var(--bg-card);
-            border-radius: 8px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
         }
 
         .episode-title {
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            font-size: 1.3em;
+            margin-bottom: 15px;
             color: var(--text-primary);
+            font-weight: 600;
         }
 
         .episode-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .episode-buttons .ep-btn {
-            background: var(--bg-secondary);
+            background: var(--bg-card);
             color: var(--text-primary);
-            border: none;
+            border: 1px solid var(--bg-primary);
             padding: 8px 12px;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             transition: background 0.2s ease;
         }
 
-        .episode-buttons .ep-btn:hover,
+        .episode-buttons .ep-btn:hover {
+            background: var(--bg-primary);
+            color: var(--accent-primary);
+        }
         .episode-buttons .ep-btn.active {
             background: var(--accent-primary);
+            color: var(--bg-primary);
+            font-weight: 600;
         }
                 
         /* چاکسازی ستایلی FOOTER (تەنها مافی کۆپی) */
@@ -267,11 +304,11 @@
             padding: 15px 5%; 
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 30px; 
+            margin-top: 40px; 
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
@@ -285,13 +322,13 @@
         /* ===================================================================
            MEDIA QUERIES (باشترکردنی بۆ مۆبایل)
         =================================================================== */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             header {
                 padding: 10px 4%;
             }
 
             .logo {
-                font-size: 1.5em;
+                font-size: 1.6em;
             }
 
             .container {
@@ -300,51 +337,48 @@
             }
 
             .section-title {
-                font-size: 1.3em;
-                margin-bottom: 15px;
+                font-size: 1.5em;
+                margin-bottom: 20px;
             }
 
             .series-list {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-                gap: 10px;
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+                gap: 15px;
             }
 
             .series-title {
-                font-size: 0.9em;
+                font-size: 1em;
+            }
+            .series-info {
+                padding: 8px 5px 10px;
             }
             
             .trailer-btn {
-                padding: 10px 20px;
-                font-size: 1em;
+                padding: 12px 25px;
+                font-size: 1.1em;
             }
             
             .watch-title {
-                font-size: 1.5em;
+                font-size: 1.7em;
             }
             
             .watch-meta span {
                 margin-left: 10px;
-                font-size: 0.9em;
+                font-size: 0.85em;
             }
             
             .episode-servers, .episode-list {
-                padding: 10px;
+                padding: 12px;
             }
             
             .server-buttons .server-btn, .episode-buttons .ep-btn {
-                padding: 6px 10px;
-                font-size: 0.8em;
+                padding: 8px 12px;
+                font-size: 0.9em;
                 margin-left: 5px;
             }
 
             footer {
                 padding: 10px 4%;
-            }
-        }
-
-        @media (min-width: 601px) and (max-width: 900px) {
-            .series-list {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             }
         }
     </style>
@@ -378,7 +412,7 @@
     </footer>
 
     <script>
-        // داتای نموونە بۆ زنجیرەکان
+        // داتای نموونە بۆ زنجیرەکان (هەمان داتای پێشوو)
         const seriesData = [
             {
                 id: 1,
