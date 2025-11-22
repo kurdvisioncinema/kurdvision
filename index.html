@@ -690,32 +690,27 @@
             </div>
 
             <ul class="nav-links">
-                <li><a href="#" onclick="showSection('home')" class="active">سەرەکی</a></li>
-                <li><a href="#" onclick="setFilter('movies')">فیلمەکان</a></li>
-                <li><a href="#" onclick="setFilter('series')">زنجیرەکان</a></li>
+                <li><a href="#" onclick="showSection('home'); return false;" class="active">سەرەکی</a></li>
+                <li><a href="#" onclick="setFilter('movies'); return false;">فیلمەکان</a></li>
+                <li><a href="#" onclick="setFilter('series'); return false;">زنجیرەکان</a></li>
             </ul>
 
             <div id="authButtons">
-                <button class="btn btn-primary" onclick="openModal('authModal')">
+                <button class="btn btn-primary" onclick="openAuthModal()">
                     <i class="fas fa-user"></i> چوونەژوورەوە
                 </button>
             </div>
 
             <div class="user-menu" id="userMenu" style="display: none;">
-                <img src="" alt="" class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">
+                <img src="" alt="User" class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">
                 <div class="user-dropdown" id="userDropdown">
-                    <a href="#" onclick="showSection('admin')">پانێڵ</a>
-                    <a href="#" onclick="logout()">چوونەدەرەوە</a>
+                    <a href="#" onclick="showSection('admin'); return false;">
+                        <i class="fas fa-cog"></i> پانێڵی ئەدمین
+                    </a>
+                    <a href="#" onclick="logout(); return false;">
+                        <i class="fas fa-sign-out-alt"></i> چوونەدەرەوە
+                    </a>
                 </div>
-            </div>
-
-            <div class="admin-controls" id="adminControls">
-                <button class="btn btn-secondary" onclick="showSection('admin')">
-                    پانێڵ
-                </button>
-                <button class="btn btn-danger" onclick="logout()">
-                    دەرچوون
-                </button>
             </div>
         </nav>
     </header>
@@ -985,25 +980,86 @@
         let currentFilter = 'all';
         let authMode = 'login';
 
+        // ✅ Global Functions - دەبێ پێش هەموو شتێک بن
+        window.openAuthModal = function() {
+            console.log('Opening auth modal...');
+            openModal('authModal');
+        };
+
+        window.openModal = function(id) {
+            console.log('Opening modal:', id);
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('Modal not found:', id);
+            }
+        };
+
+        window.closeModal = function(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        };
+
+        window.toggleUserDropdown = function() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        };
+
+        window.showSection = function(section) {
+            console.log('Showing section:', section);
+            
+            if (section === 'admin') {
+                if (!isAdmin) {
+                    showToast('⚠️ تەنها ئەدمین دەتوانێت بچێتە پانێڵ');
+                    return;
+                }
+                document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('detailPage').classList.remove('active');
+                document.getElementById('adminPanel').classList.add('show');
+            } else {
+                document.getElementById('homeSection').style.display = 'block';
+                document.getElementById('detailPage').classList.remove('active');
+                document.getElementById('adminPanel').classList.remove('show');
+            }
+        };
+
+        window.showToast = function(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        };
+
         // ✅ پشکنینی URL بۆ admin=true
         const urlParams = new URLSearchParams(window.location.search);
         const showAdminPanel = urlParams.get('admin') === 'true';
 
+        console.log('Admin mode:', showAdminPanel);
+
         // Check Auth
         onAuthStateChanged(auth, (user) => {
+            console.log('Auth state changed:', user);
             currentUser = user;
             updateUIForAuth(user);
             
             if (user && showAdminPanel) {
                 // ✅ ئەگەر admin=true هەبێت، ئۆتۆماتیک وەک ئەدمین دابنێ
                 isAdmin = true;
-                document.getElementById('adminControls').classList.add('show');
+                console.log('User is now admin');
             } else if (user) {
                 checkAdminStatus(user.uid);
             }
         });
 
         function updateUIForAuth(user) {
+            console.log('Updating UI for user:', user);
+            
             if (user) {
                 document.getElementById('authButtons').style.display = 'none';
                 document.getElementById('userMenu').style.display = 'block';
@@ -1011,20 +1067,28 @@
                 const avatar = document.getElementById('userAvatar');
                 if (user.photoURL) {
                     avatar.src = user.photoURL;
+                    avatar.innerHTML = '';
                 } else {
+                    avatar.src = '';
                     avatar.style.background = 'var(--accent-primary)';
+                    avatar.style.display = 'flex';
+                    avatar.style.alignItems = 'center';
+                    avatar.style.justifyContent = 'center';
+                    avatar.style.color = 'white';
+                    avatar.style.fontSize = '16px';
                     avatar.innerHTML = user.email[0].toUpperCase();
                 }
             } else {
                 document.getElementById('authButtons').style.display = 'block';
                 document.getElementById('userMenu').style.display = 'none';
+                isAdmin = false;
             }
         }
 
         function checkAdminStatus(uid) {
             onValue(ref(db, `admins/${uid}`), (snapshot) => {
                 isAdmin = snapshot.exists();
-                document.getElementById('adminControls').classList.toggle('show', isAdmin);
+                console.log('Admin status from DB:', isAdmin);
             });
         }
 
@@ -1037,6 +1101,7 @@
                 });
                 displayContent();
                 displayContentManager();
+                updateStats();
             });
 
             onValue(ref(db, 'slides'), (snapshot) => {
@@ -1045,8 +1110,139 @@
                     allSlides.push({ id: child.key, ...child.val() });
                 });
                 loadHero();
+                displaySlidesManager();
+            });
+
+            // Load all comments for admin
+            onValue(ref(db, 'comments'), (snapshot) => {
+                displayAllComments(snapshot);
             });
         }
+
+        function updateStats() {
+            const totalMovies = allContent.filter(c => c.type === 'movie').length;
+            const totalSeries = allContent.filter(c => c.type === 'series').length;
+            const totalComments = allContent.reduce((sum, c) => sum + (c.commentsCount || 0), 0);
+
+            document.getElementById('totalContent').textContent = allContent.length;
+            document.getElementById('totalMovies').textContent = totalMovies;
+            document.getElementById('totalSeries').textContent = totalSeries;
+            document.getElementById('totalComments').textContent = totalComments;
+        }
+
+        function displaySlidesManager() {
+            const manager = document.getElementById('slidesManager');
+            if (allSlides.length === 0) {
+                manager.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--text-secondary);">هیچ Slide ێک نییە</p>';
+                return;
+            }
+
+            manager.innerHTML = allSlides.map(slide => `
+                <div class="list-item">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 5px;">${slide.title}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">
+                            ${slide.description || 'بێ وەسف'}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" style="background: #2196F3; color: white;" onclick="editSlide('${slide.id}')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteSlide('${slide.id}')">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayAllComments(snapshot) {
+            const manager = document.getElementById('allCommentsManager');
+            const allComments = [];
+            
+            snapshot.forEach((contentNode) => {
+                const contentId = contentNode.key;
+                const content = allContent.find(c => c.id === contentId);
+                
+                contentNode.forEach((commentNode) => {
+                    allComments.push({
+                        id: commentNode.key,
+                        contentId: contentId,
+                        contentTitle: content?.title || 'نەناسراو',
+                        ...commentNode.val()
+                    });
+                });
+            });
+
+            allComments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (allComments.length === 0) {
+                manager.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--text-secondary);">هیچ کۆمێنتێک نییە</p>';
+                return;
+            }
+
+            manager.innerHTML = allComments.slice(0, 20).map(comment => `
+                <div class="list-item">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 5px;">
+                            ${comment.userName}
+                            <span style="color: var(--accent-primary); font-size: 12px; margin-right: 10px;">
+                                لەسەر: ${comment.contentTitle}
+                            </span>
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-secondary); margin: 5px 0;">
+                            ${comment.text}
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">
+                            ${formatDate(comment.date)}
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="deleteCommentFromAdmin('${comment.contentId}', '${comment.id}')">
+                        <i class="fas fa-trash"></i> سڕینەوە
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.deleteCommentFromAdmin = async (contentId, commentId) => {
+            if (!confirm('دڵنیایت؟')) return;
+            
+            try {
+                await remove(ref(db, `comments/${contentId}/${commentId}`));
+                const item = allContent.find(c => c.id === contentId);
+                await update(ref(db, `content/${contentId}`), {
+                    commentsCount: Math.max(0, (item?.commentsCount || 0) - 1)
+                });
+                showToast('✅ کۆمێنت سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
+
+        window.editSlide = (id) => {
+            const slide = allSlides.find(s => s.id === id);
+            if (!slide) return;
+            
+            document.getElementById('slideEditId').value = id;
+            document.getElementById('slideTitle').value = slide.title;
+            document.getElementById('slideImage').value = slide.image;
+            document.getElementById('slideDescription').value = slide.description || '';
+            document.getElementById('slideContentId').value = slide.contentId || '';
+            
+            openModal('slideModal');
+        };
+
+        window.deleteSlide = async (id) => {
+            if (!confirm('دڵنیایت دەتەوێت ئەم Slide یە بسڕیتەوە؟')) return;
+            
+            try {
+                await remove(ref(db, `slides/${id}`));
+                showToast('✅ Slide سڕایەوە');
+            } catch (error) {
+                showToast('❌ هەڵە');
+            }
+        };
 
         function displayContent() {
             const grid = document.getElementById('moviesGrid');
@@ -1305,23 +1501,37 @@
         // Auth Functions
         window.handleAuth = async (e, mode) => {
             e.preventDefault();
+            console.log('Handling auth:', mode);
+            
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
 
             try {
                 if (mode === 'login') {
                     await signInWithEmailAndPassword(auth, email, password);
+                    showToast('✅ بەسەرکەوتوویی چوویتەژوورەوە');
                 } else {
                     await createUserWithEmailAndPassword(auth, email, password);
+                    showToast('✅ هەژمار دروست کرا');
                 }
                 closeModal('authModal');
-                showToast('✅ بەسەرکەوتوویی');
             } catch (error) {
-                showToast('❌ هەڵە: ' + (error.message.includes('email-already-in-use') ? 'ئەم ئیمەیڵە پێشتر بەکارهێنراوە' : 'زانیاریەکان هەڵەن'));
+                console.error('Auth error:', error);
+                let errorMsg = '❌ هەڵە ڕوویدا';
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMsg = '❌ ئەم ئیمەیڵە پێشتر بەکارهێنراوە';
+                } else if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    errorMsg = '❌ ئیمەیڵ یان پاسوۆرد هەڵەیە';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg = '❌ پاسوۆرد لایەنی کەم 6 پیت بێت';
+                }
+                showToast(errorMsg);
             }
         };
 
         window.socialLogin = async (provider) => {
+            console.log('Social login:', provider);
+            
             try {
                 let authProvider;
                 if (provider === 'google') {
@@ -1334,13 +1544,16 @@
                 closeModal('authModal');
                 showToast('✅ بەسەرکەوتوویی چوویتەژوورەوە');
             } catch (error) {
-                showToast('❌ هەڵە ڕوویدا');
+                console.error('Social login error:', error);
+                showToast('❌ هەڵە: ' + error.message);
             }
         };
 
         window.logout = async () => {
+            console.log('Logging out...');
             await signOut(auth);
-            showToast('✅ دەرچوویت');
+            showToast('✅ چوویتە دەرەوە');
+            isAdmin = false;
             showSection('home');
         };
 
@@ -1349,14 +1562,17 @@
             const form = document.getElementById('loginForm');
             const title = document.querySelector('#authModal .modal-title');
             const btn = form.querySelector('button[type="submit"]');
+            const link = document.querySelector('#authModal a');
             
             if (authMode === 'signup') {
                 title.textContent = 'دروستکردنی هەژمار';
-                btn.textContent = 'دروستکردن';
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> دروستکردن';
+                link.textContent = 'هەژمارت هەیە؟ چوونەژوورەوە';
                 form.onsubmit = (e) => handleAuth(e, 'signup');
             } else {
                 title.textContent = 'چوونەژوورەوە';
-                btn.textContent = 'چوونەژوورەوە';
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> چوونەژوورەوە';
+                link.textContent = 'هەژمارت نییە؟ دروستی بکە';
                 form.onsubmit = (e) => handleAuth(e, 'login');
             }
         };
