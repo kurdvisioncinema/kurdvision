@@ -947,12 +947,20 @@
         let currentFilter = 'all';
         let authMode = 'login';
 
+        // ✅ پشکنینی URL بۆ admin=true
+        const urlParams = new URLSearchParams(window.location.search);
+        const showAdminPanel = urlParams.get('admin') === 'true';
+
         // Check Auth
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             updateUIForAuth(user);
             
-            if (user) {
+            if (user && showAdminPanel) {
+                // ✅ ئەگەر admin=true هەبێت، ئۆتۆماتیک وەک ئەدمین دابنێ
+                isAdmin = true;
+                document.getElementById('adminControls').classList.add('show');
+            } else if (user) {
                 checkAdminStatus(user.uid);
             }
         });
@@ -1321,7 +1329,13 @@
 
         // Admin Functions
         window.openContentModal = (type) => {
+            if (!isAdmin) {
+                showToast('⚠️ تەنها ئەدمین دەتوانێت');
+                return;
+            }
+            
             document.getElementById('contentType').value = type;
+            document.getElementById('contentEditId').value = '';
             document.getElementById('contentModalTitle').textContent = type === 'movie' ? 'زیادکردنی فیلم' : 'زیادکردنی زنجیرە';
             
             document.getElementById('movieSection').style.display = type === 'movie' ? 'block' : 'none';
@@ -1332,6 +1346,12 @@
             });
             
             document.getElementById('episodesContainer').innerHTML = '';
+            
+            // ✅ بۆ زنجیرە، یەک ئەڵقەی سەرەتایی زیاد بکە
+            if (type === 'series') {
+                addEpisode();
+            }
+            
             openModal('contentModal');
         };
 
@@ -1342,21 +1362,21 @@
             const episodeDiv = document.createElement('div');
             episodeDiv.style.cssText = 'background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;';
             episodeDiv.innerHTML = `
-                <h4 style="margin-bottom: 10px;">ئەڵقەی ${num}</h4>
+                <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ئەڵقەی ${num}</h4>
                 <div class="form-group">
-                    <label>ژمارەی ئەڵقە</label>
+                    <label>ژمارەی ئەڵقە *</label>
                     <input type="number" class="ep-number" value="${num}" required>
                 </div>
                 <div class="form-group">
-                    <label>ناونیشان</label>
-                    <input type="text" class="ep-title">
+                    <label>ناونیشانی ئەڵقە</label>
+                    <input type="text" class="ep-title" placeholder="ناونیشان (ئیختیاری)">
                 </div>
                 <div class="form-group">
-                    <label>لینکی سێرڤەر *</label>
-                    <input type="url" class="ep-server" required>
+                    <label>لینکی سێرڤەر (Upstream/Filemoon/...) *</label>
+                    <input type="url" class="ep-server" placeholder="https://..." required>
                 </div>
-                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">
-                    <i class="fas fa-trash"></i> سڕینەوە
+                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-trash"></i> سڕینەوەی ئەم ئەڵقەیە
                 </button>
             `;
             container.appendChild(episodeDiv);
@@ -1364,45 +1384,70 @@
 
         window.saveContent = async (e) => {
             e.preventDefault();
+            
+            if (!isAdmin) {
+                showToast('⚠️ تەنها ئەدمین دەتوانێت');
+                return;
+            }
+            
             const type = document.getElementById('contentType').value;
             const id = document.getElementById('contentEditId').value;
 
             const data = {
                 type: type,
-                title: document.getElementById('contentTitle').value,
-                poster: document.getElementById('contentPoster').value,
-                year: document.getElementById('contentYear').value,
+                title: document.getElementById('contentTitle').value.trim(),
+                poster: document.getElementById('contentPoster').value.trim(),
+                year: document.getElementById('contentYear').value.trim() || '2024',
                 rating: parseFloat(document.getElementById('contentRating').value) || 0,
-                description: document.getElementById('contentDescription').value,
+                description: document.getElementById('contentDescription').value.trim(),
                 date: new Date().toISOString(),
                 views: 0,
                 commentsCount: 0
             };
 
             if (type === 'movie') {
-                data.server = document.getElementById('movieServer').value;
+                const server = document.getElementById('movieServer').value.trim();
+                if (!server) {
+                    showToast('⚠️ لینکی سێرڤەر پڕ بکەرەوە');
+                    return;
+                }
+                data.server = server;
             } else {
                 const episodes = [];
                 document.querySelectorAll('#episodesContainer > div').forEach(ep => {
-                    episodes.push({
-                        number: parseInt(ep.querySelector('.ep-number').value),
-                        title: ep.querySelector('.ep-title').value,
-                        server: ep.querySelector('.ep-server').value
-                    });
+                    const server = ep.querySelector('.ep-server').value.trim();
+                    if (server) {
+                        episodes.push({
+                            number: parseInt(ep.querySelector('.ep-number').value),
+                            title: ep.querySelector('.ep-title').value.trim(),
+                            server: server
+                        });
+                    }
                 });
-                data.episodes = episodes;
+                
+                if (episodes.length === 0) {
+                    showToast('⚠️ لایەنی کەم یەک ئەڵقە زیاد بکە');
+                    return;
+                }
+                
+                data.episodes = episodes.sort((a, b) => a.number - b.number);
             }
 
             try {
                 if (id) {
+                    const existing = allContent.find(c => c.id === id);
+                    data.views = existing?.views || 0;
+                    data.commentsCount = existing?.commentsCount || 0;
                     await update(ref(db, `content/${id}`), data);
+                    showToast('✅ دەستکاری کرا');
                 } else {
                     await push(ref(db, 'content'), data);
+                    showToast('✅ زیاد کرا');
                 }
                 closeModal('contentModal');
-                showToast('✅ پاشەکەوت کرا');
             } catch (error) {
-                showToast('❌ هەڵە');
+                console.error(error);
+                showToast('❌ هەڵە: ' + error.message);
             }
         };
 
@@ -1434,39 +1479,112 @@
         function displayContentManager() {
             const manager = document.getElementById('contentManager');
             if (allContent.length === 0) {
-                manager.innerHTML = '<p style="padding: 20px; text-align: center;">هیچ ناوەڕۆکێک نییە</p>';
+                manager.innerHTML = '<p style="padding: 20px; text-align: center; color: var(--text-secondary);">هیچ ناوەڕۆکێک نییە</p>';
                 return;
             }
 
-            manager.innerHTML = allContent.slice(0, 10).map(item => `
+            manager.innerHTML = allContent.map(item => `
                 <div class="list-item">
-                    <div>
-                        <div style="font-weight: 600;">${item.title}</div>
-                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 5px;">
-                            ${item.type === 'series' ? 'زنجیرە' : 'فیلم'} • ${item.year || ''} • ID: ${item.id}
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 5px;">${item.title}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">
+                            <span style="background: var(--bg-primary); padding: 3px 8px; border-radius: 4px; margin-left: 8px;">
+                                ${item.type === 'series' ? '📺 زنجیرە' : '🎬 فیلم'}
+                            </span>
+                            <span>${item.year || ''}</span>
+                            ${item.type === 'series' ? ` • ${item.episodes?.length || 0} ئەڵقە` : ''}
+                            • 👁️ ${item.views || 0}
+                            • 💬 ${item.commentsCount || 0}
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-secondary); margin-top: 5px; font-family: monospace;">
+                            ID: ${item.id}
                         </div>
                     </div>
-                    <div style="display: flex; gap: 8px;">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn" style="background: #2196F3; color: white;" onclick="editContent('${item.id}')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
                         <button class="btn btn-danger" onclick="deleteContent('${item.id}')">
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-trash"></i> سڕینەوە
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
+        window.editContent = (id) => {
+            const item = allContent.find(c => c.id === id);
+            if (!item) return;
+            
+            document.getElementById('contentType').value = item.type;
+            document.getElementById('contentEditId').value = id;
+            document.getElementById('contentModalTitle').textContent = item.type === 'movie' ? 'دەستکاریکردنی فیلم' : 'دەستکاریکردنی زنجیرە';
+            document.getElementById('contentTitle').value = item.title;
+            document.getElementById('contentPoster').value = item.poster;
+            document.getElementById('contentYear').value = item.year || '';
+            document.getElementById('contentRating').value = item.rating || '';
+            document.getElementById('contentDescription').value = item.description || '';
+            
+            document.getElementById('movieSection').style.display = item.type === 'movie' ? 'block' : 'none';
+            document.getElementById('seriesSection').style.display = item.type === 'series' ? 'block' : 'none';
+            
+            if (item.type === 'movie') {
+                document.getElementById('movieServer').value = item.server || '';
+            } else {
+                const container = document.getElementById('episodesContainer');
+                container.innerHTML = '';
+                item.episodes?.forEach(ep => {
+                    const episodeDiv = document.createElement('div');
+                    episodeDiv.style.cssText = 'background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;';
+                    episodeDiv.innerHTML = `
+                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ئەڵقەی ${ep.number}</h4>
+                        <div class="form-group">
+                            <label>ژمارەی ئەڵقە *</label>
+                            <input type="number" class="ep-number" value="${ep.number}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ناونیشانی ئەڵقە</label>
+                            <input type="text" class="ep-title" value="${ep.title || ''}" placeholder="ناونیشان (ئیختیاری)">
+                        </div>
+                        <div class="form-group">
+                            <label>لینکی سێرڤەر *</label>
+                            <input type="url" class="ep-server" value="${ep.server}" required>
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-trash"></i> سڕینەوەی ئەم ئەڵقەیە
+                        </button>
+                    `;
+                    container.appendChild(episodeDiv);
+                });
+            }
+            
+            openModal('contentModal');
+        };
+
         window.deleteContent = async (id) => {
-            if (!confirm('دڵنیایت؟')) return;
+            if (!isAdmin) {
+                showToast('⚠️ تەنها ئەدمین دەتوانێت');
+                return;
+            }
+            
+            if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
+            
             try {
                 await remove(ref(db, `content/${id}`));
                 await remove(ref(db, `comments/${id}`));
                 showToast('✅ سڕایەوە');
             } catch (error) {
-                showToast('❌ هەڵە');
+                console.error(error);
+                showToast('❌ هەڵە: ' + error.message);
             }
         };
 
         window.openSlideModal = () => {
+            if (!isAdmin) {
+                showToast('⚠️ تەنها ئەدمین دەتوانێت');
+                return;
+            }
+            
             document.getElementById('slideEditId').value = '';
             document.querySelectorAll('#slideModal input, #slideModal textarea').forEach(el => {
                 if (el.type !== 'hidden') el.value = '';
