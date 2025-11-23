@@ -704,7 +704,7 @@
             <div class="user-menu" id="userMenu" style="display: none;">
                 <img src="" alt="User" class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">
                 <div class="user-dropdown" id="userDropdown">
-                    <a href="#" onclick="showSection('admin'); return false;">
+                    <a href="#" onclick="showSection('admin'); return false;" id="adminMenuLink" style="display: none;">
                         <i class="fas fa-cog"></i> پانێڵی ئەدمین
                     </a>
                     <a href="#" onclick="logout(); return false;">
@@ -1005,18 +1005,62 @@
 
                     <!-- بەشی زنجیرە - تەنها بۆ زنجیرەکان -->
                     <div id="seriesSection" style="display: none;">
-                        <h3 style="margin: 20px 0; color: var(--accent-primary);">ئەڵقەکان</h3>
-                        <div id="episodesContainer"></div>
-                        <button type="button" class="btn btn-secondary" onclick="addEpisode()">
-                            <i class="fas fa-plus"></i> زیادکردنی ئەڵقە
+                        <h3 style="margin: 20px 0; color: var(--accent-primary);">وەرزەکان (Seasons)</h3>
+                        <div id="seasonsContainer"></div>
+                        <button type="button" class="btn btn-secondary" onclick="addSeason()" style="margin-top: 15px;">
+                            <i class="fas fa-plus"></i> زیادکردنی وەرزی نوێ
                         </button>
                     </div>
 
                     <!-- بەشی فیلم - تەنها بۆ فیلمەکان -->
                     <div id="movieSection" style="display: none;">
+                        <h3 style="margin: 20px 0; color: var(--accent-primary);">سێرڤەرەکان</h3>
+                        
                         <div class="form-group">
-                            <label>لینکی سێرڤەر</label>
-                            <input type="url" id="movieServer">
+                            <label>🎥 سێرڤەر 1 (Upstream) *</label>
+                            <input type="url" id="movieServer1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>🎥 سێرڤەر 2 (Filemoon)</label>
+                            <input type="url" id="movieServer2">
+                        </div>
+
+                        <div class="form-group">
+                            <label>🎥 سێرڤەر 3 (MixDrop)</label>
+                            <input type="url" id="movieServer3">
+                        </div>
+
+                        <div class="form-group">
+                            <label>🎥 سێرڤەر 4 (VidMoly)</label>
+                            <input type="url" id="movieServer4">
+                        </div>
+
+                        <div class="form-group">
+                            <label>🌟 سێرڤەر 5 (بێ ڕیکلام)</label>
+                            <input type="url" id="movieServer5">
+                        </div>
+
+                        <div class="form-group">
+                            <label>🌟 سێرڤەر 6 (بێ ڕیکلام)</label>
+                            <input type="url" id="movieServer6">
+                        </div>
+
+                        <div class="form-group">
+                            <label>🌟 سێرڤەر 7 (بێ ڕیکلام)</label>
+                            <input type="url" id="movieServer7">
+                        </div>
+
+                        <h3 style="margin: 20px 0; color: var(--accent-primary);">ژێرنووسەکان</h3>
+                        
+                        <div class="form-group">
+                            <label>📄 ژێرنووس 1 (SRT)</label>
+                            <input type="url" id="movieSubtitle1" placeholder="https://...subtitle.srt">
+                        </div>
+
+                        <div class="form-group">
+                            <label>📄 ژێرنووس 2 (SRT)</label>
+                            <input type="url" id="movieSubtitle2" placeholder="https://...subtitle.srt">
                         </div>
                     </div>
 
@@ -1329,17 +1373,12 @@
             currentUser = user;
             updateUIForAuth(user);
             
-            if (user && showAdminPanel) {
-                // ✅ ئەگەر admin=true هەبێت، ئۆتۆماتیک وەک ئەدمین دابنێ
-                isAdmin = true;
-                console.log('User is now admin');
-                
-                // ✅ پیشاندانی پەیامی بەخێربێیت
-                setTimeout(() => {
-                    showToast('👋 بەخێربێیت! دەتوانیت بچیتە پانێڵی ئەدمین');
-                }, 1000);
-            } else if (user) {
+            if (user) {
+                // ✅ پشکنینی ڕاستەقینە لە Firebase
                 checkAdminStatus(user.uid);
+            } else {
+                isAdmin = false;
+                document.getElementById('adminMenuLink').style.display = 'none';
             }
         });
 
@@ -1372,9 +1411,23 @@
         }
 
         function checkAdminStatus(uid) {
+            // ✅ پشکنینی لە Firebase Database
             onValue(ref(db, `admins/${uid}`), (snapshot) => {
                 isAdmin = snapshot.exists();
-                console.log('Admin status from DB:', isAdmin);
+                console.log('Admin status from Firebase:', isAdmin);
+                
+                // ✅ پیشاندانی لینکی پانێڵ تەنها بۆ ئەدمین
+                const adminLink = document.getElementById('adminMenuLink');
+                if (adminLink) {
+                    adminLink.style.display = isAdmin ? 'block' : 'none';
+                }
+                
+                // ✅ پەیامی بەخێربێیت بۆ ئەدمین
+                if (isAdmin && showAdminPanel) {
+                    setTimeout(() => {
+                        showToast('👋 بەخێربێیت ئەدمین! دەتوانیت بچیتە پانێڵ');
+                    }, 1000);
+                }
             });
         }
 
@@ -1989,21 +2042,94 @@
             document.getElementById('adminPanel').classList.remove('show');
             detailPage.classList.add('active');
 
-            let episodesHTML = '';
-            if (item.type === 'series' && item.episodes) {
-                episodesHTML = `
-                    <div class="episodes-grid" id="episodesList">
-                        ${item.episodes.map((ep, i) => `
-                            <div class="episode-card ${i === 0 ? 'active' : ''}" onclick="switchEpisode('${ep.server}', this)">
-                                <h4>ئەڵقەی ${ep.number}</h4>
-                                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">${ep.title || ''}</p>
+            let seasonsHTML = '';
+            let firstServer = '';
+            
+            if (item.type === 'series' && item.seasons) {
+                // ✅ پیشاندانی وەرزەکان
+                firstServer = item.seasons[0]?.episodes[0]?.servers?.server1 || '';
+                
+                seasonsHTML = `
+                    <div style="margin: 30px 0;">
+                        <h3 style="margin-bottom: 15px; color: var(--accent-primary);">
+                            <i class="fas fa-tv"></i> هەڵبژاردنی وەرز
+                        </h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                            ${item.seasons.map((season, i) => `
+                                <button class="season-selector ${i === 0 ? 'active' : ''}" 
+                                        onclick="showSeason(${i})"
+                                        style="padding: 10px 20px; background: ${i === 0 ? 'var(--accent-primary)' : 'var(--bg-card)'}; 
+                                               border: 1px solid var(--accent-primary); border-radius: 8px; 
+                                               color: white; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                                    وەرزی ${season.number}${season.title ? ': ' + season.title : ''}
+                                    <span style="font-size: 12px; opacity: 0.8;"> (${season.episodes.length} ئەڵقە)</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        
+                        ${item.seasons.map((season, seasonIndex) => `
+                            <div class="season-episodes" id="season-${seasonIndex}" style="display: ${seasonIndex === 0 ? 'block' : 'none'};">
+                                <h4 style="margin-bottom: 15px; color: var(--text-secondary);">
+                                    ئەڵقەکانی وەرزی ${season.number}
+                                </h4>
+                                <div class="episodes-grid">
+                                    ${season.episodes.map((ep, epIndex) => `
+                                        <div class="episode-card ${seasonIndex === 0 && epIndex === 0 ? 'active' : ''}" 
+                                             onclick="switchEpisode(${JSON.stringify(ep.servers).replace(/"/g, '&quot;')}, ${JSON.stringify(ep.subtitles || {}).replace(/"/g, '&quot;')}, this)">
+                                            <h4>ئەڵقەی ${ep.number}</h4>
+                                            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">${ep.title || ''}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
                         `).join('')}
                     </div>
                 `;
+            } else {
+                firstServer = item.servers?.server1 || '';
             }
 
-            const firstServer = item.type === 'series' ? item.episodes[0].server : item.server;
+            // سێرڤەرەکان
+            const servers = item.type === 'movie' ? item.servers : item.seasons?.[0]?.episodes[0]?.servers || {};
+            const subtitles = item.type === 'movie' ? item.subtitles : item.seasons?.[0]?.episodes[0]?.subtitles || {};
+            
+            let serverTabsHTML = '';
+            if (servers) {
+                const serverList = [];
+                if (servers.server1) serverList.push({ name: 'سێرڤەر 1', url: servers.server1 });
+                if (servers.server2) serverList.push({ name: 'سێرڤەر 2', url: servers.server2 });
+                if (servers.server3) serverList.push({ name: 'سێرڤەر 3', url: servers.server3 });
+                if (servers.server4) serverList.push({ name: 'سێرڤەر 4', url: servers.server4 });
+                if (servers.server5) serverList.push({ name: 'سێرڤەر 5 (بێ ڕیکلام)', url: servers.server5 });
+                if (servers.server6) serverList.push({ name: 'سێرڤەر 6 (بێ ڕیکلام)', url: servers.server6 });
+                if (servers.server7) serverList.push({ name: 'سێرڤەر 7 (بێ ڕیکلام)', url: servers.server7 });
+                
+                if (serverList.length > 1) {
+                    serverTabsHTML = `
+                        <div class="server-tabs">
+                            ${serverList.map((s, i) => `
+                                <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">
+                                    ${s.name}
+                                </button>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+
+            // ژێرنووسەکان
+            let subtitlesHTML = '';
+            if (subtitles && (subtitles.sub1 || subtitles.sub2)) {
+                subtitlesHTML = `
+                    <div id="subtitlesSection" style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            ${subtitles.sub1 ? `<a href="${subtitles.sub1}" download class="btn btn-secondary">⬇️ داگرتنی ژێرنووس 1</a>` : ''}
+                            ${subtitles.sub2 ? `<a href="${subtitles.sub2}" download class="btn btn-secondary">⬇️ داگرتنی ژێرنووس 2</a>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
 
             detailPage.innerHTML = `
                 <div class="container">
@@ -2019,7 +2145,8 @@
                                 <span>📅 ${item.year || '2024'}</span>
                                 ${item.rating ? `<span>⭐ ${item.rating}/10</span>` : ''}
                                 <span>👁️ ${(item.views || 0).toLocaleString()}</span>
-                                <span>${item.type === 'series' ? 'زنجیرە' : 'فیلم'}</span>
+                                <span>${item.type === 'series' ? '📺 زنجیرە' : '🎬 فیلم'}</span>
+                                ${item.type === 'series' && item.seasons ? `<span>${item.seasons.length} وەرز</span>` : ''}
                             </div>
                             ${item.description ? `<p style="max-width: 700px; margin-top: 15px; line-height: 1.8;">${item.description}</p>` : ''}
                         </div>
@@ -2031,7 +2158,9 @@
                         </div>
                     ` : ''}
 
-                    ${episodesHTML}
+                    ${serverTabsHTML}
+                    ${subtitlesHTML}
+                    ${seasonsHTML}
 
                     <div class="comments-section">
                         <h3 style="margin-bottom: 20px; font-size: 22px;">💬 لێدوانەکان (${item.commentsCount || 0})</h3>
@@ -2046,7 +2175,7 @@
                         ` : `
                             <div style="text-align: center; padding: 20px; background: var(--bg-secondary); border-radius: 8px;">
                                 <p style="margin-bottom: 15px;">تکایە چوونەژوورەوە بکە بۆ نووسینی لێدوان</p>
-                                <button class="btn btn-primary" onclick="openModal('authModal')">
+                                <button class="btn btn-primary" onclick="openAuthModal()">
                                     چوونەژوورەوە
                                 </button>
                             </div>
@@ -2060,14 +2189,62 @@
             loadComments(id);
         };
 
+        // ✅ گۆڕینی وەرز
+        window.showSeason = (seasonIndex) => {
+            // گۆڕینی active بۆ دووگمەکان
+            document.querySelectorAll('.season-selector').forEach((btn, i) => {
+                if (i === seasonIndex) {
+                    btn.classList.add('active');
+                    btn.style.background = 'var(--accent-primary)';
+                } else {
+                    btn.classList.remove('active');
+                    btn.style.background = 'var(--bg-card)';
+                }
+            });
+            
+            // پیشاندانی وەرزی هەڵبژێردراو
+            document.querySelectorAll('.season-episodes').forEach((season, i) => {
+                season.style.display = i === seasonIndex ? 'block' : 'none';
+            });
+        };
+
         window.closeDetail = () => {
             document.getElementById('detailPage').classList.remove('active');
             document.getElementById('homeSection').style.display = 'block';
         };
 
-        window.switchEpisode = (url, card) => {
+        window.switchEpisode = (servers, subtitles, card) => {
             document.querySelectorAll('.episode-card').forEach(c => c.classList.remove('active'));
             card.classList.add('active');
+            
+            // گۆڕینی ڤیدیۆ
+            if (servers.server1) {
+                document.getElementById('videoPlayer').src = servers.server1;
+            }
+            
+            // نوێکردنەوەی سێرڤەر تابەکان
+            const serverList = [];
+            if (servers.server1) serverList.push({ name: 'سێرڤەر 1', url: servers.server1 });
+            if (servers.server2) serverList.push({ name: 'سێرڤەر 2', url: servers.server2 });
+            if (servers.server3) serverList.push({ name: 'سێرڤەر 3', url: servers.server3 });
+            if (servers.server4) serverList.push({ name: 'سێرڤەر 4', url: servers.server4 });
+            if (servers.server5) serverList.push({ name: 'سێرڤەر 5 (بێ ڕیکلام)', url: servers.server5 });
+            if (servers.server6) serverList.push({ name: 'سێرڤەر 6 (بێ ڕیکلام)', url: servers.server6 });
+            if (servers.server7) serverList.push({ name: 'سێرڤەر 7 (بێ ڕیکلام)', url: servers.server7 });
+            
+            const serverTabsContainer = document.querySelector('.server-tabs');
+            if (serverTabsContainer && serverList.length > 1) {
+                serverTabsContainer.innerHTML = serverList.map((s, i) => `
+                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">
+                        ${s.name}
+                    </button>
+                `).join('');
+            }
+        };
+
+        window.switchServer = (url, btn) => {
+            document.querySelectorAll('.server-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             document.getElementById('videoPlayer').src = url;
         };
 
@@ -2349,31 +2526,75 @@
             };
 
             if (type === 'movie') {
-                const server = document.getElementById('movieServer').value.trim();
-                if (!server) {
-                    showToast('⚠️ لینکی سێرڤەر پڕ بکەرەوە');
+                const servers = {};
+                const server1 = document.getElementById('movieServer1').value.trim();
+                if (!server1) {
+                    showToast('⚠️ لایەنی کەم سێرڤەر 1 پڕ بکەرەوە');
                     return;
                 }
-                data.server = server;
+                servers.server1 = server1;
+                if (document.getElementById('movieServer2').value.trim()) servers.server2 = document.getElementById('movieServer2').value.trim();
+                if (document.getElementById('movieServer3').value.trim()) servers.server3 = document.getElementById('movieServer3').value.trim();
+                if (document.getElementById('movieServer4').value.trim()) servers.server4 = document.getElementById('movieServer4').value.trim();
+                if (document.getElementById('movieServer5').value.trim()) servers.server5 = document.getElementById('movieServer5').value.trim();
+                if (document.getElementById('movieServer6').value.trim()) servers.server6 = document.getElementById('movieServer6').value.trim();
+                if (document.getElementById('movieServer7').value.trim()) servers.server7 = document.getElementById('movieServer7').value.trim();
+                
+                data.servers = servers;
+                
+                const subtitles = {};
+                if (document.getElementById('movieSubtitle1').value.trim()) subtitles.sub1 = document.getElementById('movieSubtitle1').value.trim();
+                if (document.getElementById('movieSubtitle2').value.trim()) subtitles.sub2 = document.getElementById('movieSubtitle2').value.trim();
+                data.subtitles = subtitles;
             } else {
-                const episodes = [];
-                document.querySelectorAll('#episodesContainer > div').forEach(ep => {
-                    const server = ep.querySelector('.ep-server').value.trim();
-                    if (server) {
-                        episodes.push({
-                            number: parseInt(ep.querySelector('.ep-number').value),
-                            title: ep.querySelector('.ep-title').value.trim(),
-                            server: server
-                        });
+                // ✅ پاشەکەوتکردنی وەرزەکان
+                const seasons = [];
+                document.querySelectorAll('.season-block').forEach(seasonBlock => {
+                    const seasonData = {
+                        number: parseInt(seasonBlock.querySelector('.season-number').value),
+                        title: seasonBlock.querySelector('.season-title').value.trim(),
+                        episodes: []
+                    };
+                    
+                    seasonBlock.querySelectorAll('.episode-block').forEach(ep => {
+                        const server = ep.querySelector('.ep-server').value.trim();
+                        if (server) {
+                            const epData = {
+                                number: parseInt(ep.querySelector('.ep-number').value),
+                                title: ep.querySelector('.ep-title').value.trim(),
+                                servers: { server1: server }
+                            };
+                            
+                            // سێرڤەرەکانی تر
+                            if (ep.querySelector('.ep-server2')?.value.trim()) epData.servers.server2 = ep.querySelector('.ep-server2').value.trim();
+                            if (ep.querySelector('.ep-server3')?.value.trim()) epData.servers.server3 = ep.querySelector('.ep-server3').value.trim();
+                            if (ep.querySelector('.ep-server4')?.value.trim()) epData.servers.server4 = ep.querySelector('.ep-server4').value.trim();
+                            if (ep.querySelector('.ep-server5')?.value.trim()) epData.servers.server5 = ep.querySelector('.ep-server5').value.trim();
+                            if (ep.querySelector('.ep-server6')?.value.trim()) epData.servers.server6 = ep.querySelector('.ep-server6').value.trim();
+                            if (ep.querySelector('.ep-server7')?.value.trim()) epData.servers.server7 = ep.querySelector('.ep-server7').value.trim();
+                            
+                            // ژێرنووسەکان
+                            const subs = {};
+                            if (ep.querySelector('.ep-subtitle1')?.value.trim()) subs.sub1 = ep.querySelector('.ep-subtitle1').value.trim();
+                            if (ep.querySelector('.ep-subtitle2')?.value.trim()) subs.sub2 = ep.querySelector('.ep-subtitle2').value.trim();
+                            if (Object.keys(subs).length > 0) epData.subtitles = subs;
+                            
+                            seasonData.episodes.push(epData);
+                        }
+                    });
+                    
+                    if (seasonData.episodes.length > 0) {
+                        seasonData.episodes.sort((a, b) => a.number - b.number);
+                        seasons.push(seasonData);
                     }
                 });
                 
-                if (episodes.length === 0) {
-                    showToast('⚠️ لایەنی کەم یەک ئەڵقە زیاد بکە');
+                if (seasons.length === 0) {
+                    showToast('⚠️ لایەنی کەم یەک وەرز بە یەک ئەڵقە زیاد بکە');
                     return;
                 }
                 
-                data.episodes = episodes.sort((a, b) => a.number - b.number);
+                data.seasons = seasons.sort((a, b) => a.number - b.number);
             }
 
             try {
