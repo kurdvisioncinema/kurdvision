@@ -2505,10 +2505,21 @@
         window.saveContent = async (e) => {
             e.preventDefault();
             
+            console.log('🔥 Starting saveContent...');
+            
             if (!isAdmin) {
                 showToast('⚠️ تەنها ئەدمین دەتوانێت');
+                console.error('❌ Not admin');
                 return;
             }
+            
+            if (!currentUser) {
+                showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە');
+                console.error('❌ Not logged in');
+                return;
+            }
+            
+            console.log('✅ User authenticated:', currentUser.email);
             
             const type = document.getElementById('contentType').value;
             const id = document.getElementById('contentEditId').value;
@@ -2524,6 +2535,8 @@
                 views: 0,
                 commentsCount: 0
             };
+
+            console.log('📝 Data prepared:', data);
 
             if (type === 'movie') {
                 const servers = {};
@@ -2541,6 +2554,7 @@
                 if (document.getElementById('movieServer7').value.trim()) servers.server7 = document.getElementById('movieServer7').value.trim();
                 
                 data.servers = servers;
+                console.log('🎬 Movie servers:', servers);
                 
                 const subtitles = {};
                 if (document.getElementById('movieSubtitle1').value.trim()) subtitles.sub1 = document.getElementById('movieSubtitle1').value.trim();
@@ -2595,23 +2609,41 @@
                 }
                 
                 data.seasons = seasons.sort((a, b) => a.number - b.number);
+                console.log('📺 Series seasons:', seasons.length);
             }
 
             try {
+                console.log('💾 Saving to Firebase...');
+                
                 if (id) {
                     const existing = allContent.find(c => c.id === id);
                     data.views = existing?.views || 0;
                     data.commentsCount = existing?.commentsCount || 0;
+                    console.log('🔄 Updating existing content:', id);
                     await update(ref(db, `content/${id}`), data);
                     showToast('✅ دەستکاری کرا');
                 } else {
-                    await push(ref(db, 'content'), data);
+                    console.log('➕ Adding new content');
+                    const newRef = await push(ref(db, 'content'), data);
+                    console.log('✅ New content ID:', newRef.key);
                     showToast('✅ زیاد کرا');
                 }
                 closeModal('contentModal');
             } catch (error) {
-                console.error(error);
-                showToast('❌ هەڵە: ' + error.message);
+                console.error('❌ Firebase Error:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                
+                let errorMsg = '❌ هەڵە: ';
+                if (error.code === 'PERMISSION_DENIED') {
+                    errorMsg += 'مۆڵەت نییە! تکایە Firebase Rules چەک بکە';
+                } else if (error.code === 'NETWORK_ERROR') {
+                    errorMsg += 'کێشەی ئینتەرنێت';
+                } else {
+                    errorMsg += error.message;
+                }
+                
+                showToast(errorMsg);
             }
         };
 
