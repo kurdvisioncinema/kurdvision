@@ -364,10 +364,6 @@
             overflow-y: auto;
         }
 
-        .modal-content.large {
-            max-width: 1200px;
-        }
-
         .modal-close {
             position: absolute;
             top: 15px;
@@ -524,6 +520,30 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .server-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .server-tab {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .server-tab:hover, .server-tab.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
         }
 
         .episodes-grid {
@@ -830,18 +850,6 @@
                 </button>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin: 15px 0;">
                     <div style="background: var(--bg-secondary); padding: 15px; border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ڕیکلامی سەرەوە</h4>
-                        <button class="btn btn-secondary" onclick="openAdModal('top')">
-                            <i class="fas fa-edit"></i> دەستکاری
-                        </button>
-                    </div>
-                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ڕیکلامی لاتەنیشت</h4>
-                        <button class="btn btn-secondary" onclick="openAdModal('sidebar')">
-                            <i class="fas fa-edit"></i> دەستکاری
-                        </button>
-                    </div>
-                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: 8px;">
                         <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ڕیکلامی خوارەوە</h4>
                         <button class="btn btn-secondary" onclick="openAdModal('bottom')">
                             <i class="fas fa-edit"></i> دەستکاری
@@ -972,13 +980,13 @@
 
     <!-- CONTENT MODAL (Movie/Series) -->
     <div class="modal" id="contentModal">
-        <div class="modal-content large">
+        <div class="modal-content">
             <button class="modal-close" onclick="closeModal('contentModal')">×</button>
             <div class="modal-header">
                 <h2 class="modal-title" id="contentModalTitle">زیادکردنی ناوەڕۆک</h2>
             </div>
             <div class="modal-body">
-                <form onsubmit="saveContent(event)" id="contentForm">
+                <form onsubmit="saveContent(event)">
                     <input type="hidden" id="contentType">
                     <input type="hidden" id="contentEditId">
                     
@@ -994,17 +1002,17 @@
 
                     <div class="form-group">
                         <label>ساڵ</label>
-                        <input type="text" id="contentYear" placeholder="2024">
+                        <input type="text" id="contentYear">
                     </div>
 
                     <div class="form-group">
                         <label>ڕەیتینگ (لە 10)</label>
-                        <input type="number" id="contentRating" min="0" max="10" step="0.1" placeholder="8.5">
+                        <input type="number" id="contentRating" min="0" max="10" step="0.1">
                     </div>
 
                     <div class="form-group">
                         <label>وەسف</label>
-                        <textarea id="contentDescription" rows="3"></textarea>
+                        <textarea id="contentDescription"></textarea>
                     </div>
 
                     <!-- بەشی زنجیرە - تەنها بۆ زنجیرەکان -->
@@ -1297,26 +1305,20 @@
         let currentFilter = 'all';
         let authMode = 'login';
 
-        // ✅ Global Functions - دەبێ پێش هەموو شتێک بن
+        // ✅ Global Functions
         window.openAuthModal = function() {
-            console.log('Opening auth modal...');
             openModal('authModal');
         };
 
         window.openModal = function(id) {
-            console.log('Opening modal:', id);
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                console.log('✅ Modal opened:', id);
-            } else {
-                console.error('❌ Modal not found:', id);
             }
         };
 
         window.closeModal = function(id) {
-            console.log('Closing modal:', id);
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.remove('active');
@@ -1330,8 +1332,6 @@
         };
 
         window.showSection = function(section) {
-            console.log('Showing section:', section);
-            
             if (section === 'admin') {
                 if (!currentUser) {
                     showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە');
@@ -1348,7 +1348,6 @@
                 document.getElementById('detailPage').classList.remove('active');
                 document.getElementById('adminPanel').classList.add('show');
                 
-                // ✅ Load admin data
                 displayContentManager();
                 displaySlidesManager();
                 updateStats();
@@ -1367,20 +1366,15 @@
             setTimeout(() => toast.remove(), 3000);
         };
 
-        // ✅ پشکنینی URL بۆ admin=true
         const urlParams = new URLSearchParams(window.location.search);
         const showAdminPanel = urlParams.get('admin') === 'true';
 
-        console.log('Admin mode:', showAdminPanel);
-
         // Check Auth
         onAuthStateChanged(auth, (user) => {
-            console.log('Auth state changed:', user);
             currentUser = user;
             updateUIForAuth(user);
             
             if (user) {
-                // ✅ پشکنینی ڕاستەقینە لە Firebase
                 checkAdminStatus(user.uid);
             } else {
                 isAdmin = false;
@@ -1389,8 +1383,6 @@
         });
 
         function updateUIForAuth(user) {
-            console.log('Updating UI for user:', user);
-            
             if (user) {
                 document.getElementById('authButtons').style.display = 'none';
                 document.getElementById('userMenu').style.display = 'block';
@@ -1398,7 +1390,6 @@
                 const avatar = document.getElementById('userAvatar');
                 if (user.photoURL) {
                     avatar.src = user.photoURL;
-                    avatar.innerHTML = '';
                 } else {
                     avatar.src = '';
                     avatar.style.background = 'var(--accent-primary)';
@@ -1417,18 +1408,14 @@
         }
 
         function checkAdminStatus(uid) {
-            // ✅ پشکنینی لە Firebase Database
             onValue(ref(db, `admins/${uid}`), (snapshot) => {
                 isAdmin = snapshot.exists();
-                console.log('Admin status from Firebase:', isAdmin);
                 
-                // ✅ پیشاندانی لینکی پانێڵ تەنها بۆ ئەدمین
                 const adminLink = document.getElementById('adminMenuLink');
                 if (adminLink) {
                     adminLink.style.display = isAdmin ? 'block' : 'none';
                 }
                 
-                // ✅ پەیامی بەخێربێیت بۆ ئەدمین
                 if (isAdmin && showAdminPanel) {
                     setTimeout(() => {
                         showToast('👋 بەخێربێیت ئەدمین! دەتوانیت بچیتە پانێڵ');
@@ -1485,7 +1472,6 @@
                 applySiteSettings();
             });
 
-            // Load all comments for admin
             onValue(ref(db, 'comments'), (snapshot) => {
                 displayAllComments(snapshot);
             });
@@ -1895,7 +1881,6 @@
                 document.title = siteSettings.siteName;
             }
             
-            // Apply other settings
             if (siteSettings.siteName) document.getElementById('siteName').value = siteSettings.siteName;
             if (siteSettings.siteDescription) document.getElementById('siteDescription').value = siteSettings.siteDescription;
             if (siteSettings.siteLogo) document.getElementById('siteLogo').value = siteSettings.siteLogo;
@@ -1940,7 +1925,6 @@
                 const text = await file.text();
                 const data = JSON.parse(text);
 
-                // Import all data
                 if (data.content) {
                     for (const item of data.content) {
                         await set(ref(db, `content/${item.id}`), item);
@@ -2052,7 +2036,6 @@
             let firstServer = '';
             
             if (item.type === 'series' && item.seasons) {
-                // ✅ پیشاندانی وەرزەکان
                 firstServer = item.seasons[0]?.episodes[0]?.servers?.server1 || '';
                 
                 seasonsHTML = `
@@ -2095,7 +2078,6 @@
                 firstServer = item.servers?.server1 || '';
             }
 
-            // سێرڤەرەکان
             const servers = item.type === 'movie' ? item.servers : item.seasons?.[0]?.episodes[0]?.servers || {};
             const subtitles = item.type === 'movie' ? item.subtitles : item.seasons?.[0]?.episodes[0]?.subtitles || {};
             
@@ -2123,7 +2105,6 @@
                 }
             }
 
-            // ژێرنووسەکان
             let subtitlesHTML = '';
             if (subtitles && (subtitles.sub1 || subtitles.sub2)) {
                 subtitlesHTML = `
@@ -2195,9 +2176,7 @@
             loadComments(id);
         };
 
-        // ✅ گۆڕینی وەرز
         window.showSeason = (seasonIndex) => {
-            // گۆڕینی active بۆ دووگمەکان
             document.querySelectorAll('.season-selector').forEach((btn, i) => {
                 if (i === seasonIndex) {
                     btn.classList.add('active');
@@ -2208,7 +2187,6 @@
                 }
             });
             
-            // پیشاندانی وەرزی هەڵبژێردراو
             document.querySelectorAll('.season-episodes').forEach((season, i) => {
                 season.style.display = i === seasonIndex ? 'block' : 'none';
             });
@@ -2223,12 +2201,10 @@
             document.querySelectorAll('.episode-card').forEach(c => c.classList.remove('active'));
             card.classList.add('active');
             
-            // گۆڕینی ڤیدیۆ
             if (servers.server1) {
                 document.getElementById('videoPlayer').src = servers.server1;
             }
             
-            // نوێکردنەوەی سێرڤەر تابەکان
             const serverList = [];
             if (servers.server1) serverList.push({ name: 'سێرڤەر 1', url: servers.server1 });
             if (servers.server2) serverList.push({ name: 'سێرڤەر 2', url: servers.server2 });
@@ -2246,6 +2222,21 @@
                     </button>
                 `).join('');
             }
+            
+            const subtitlesSection = document.getElementById('subtitlesSection');
+            if (subtitlesSection) {
+                if (subtitles && (subtitles.sub1 || subtitles.sub2)) {
+                    subtitlesSection.innerHTML = `
+                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            ${subtitles.sub1 ? `<a href="${subtitles.sub1}" download class="btn btn-secondary">⬇️ داگرتنی ژێرنووس 1</a>` : ''}
+                            ${subtitles.sub2 ? `<a href="${subtitles.sub2}" download class="btn btn-secondary">⬇️ داگرتنی ژێرنووس 2</a>` : ''}
+                        </div>
+                    `;
+                } else {
+                    subtitlesSection.innerHTML = '';
+                }
+            }
         };
 
         window.switchServer = (url, btn) => {
@@ -2254,7 +2245,6 @@
             document.getElementById('videoPlayer').src = url;
         };
 
-        // Comments
         function loadComments(contentId) {
             onValue(ref(db, `comments/${contentId}`), (snapshot) => {
                 const comments = [];
@@ -2353,7 +2343,6 @@
         // Auth Functions
         window.handleAuth = async (e, mode) => {
             e.preventDefault();
-            console.log('Handling auth:', mode);
             
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
@@ -2368,7 +2357,6 @@
                 }
                 closeModal('authModal');
                 
-                // ✅ ئەگەر admin=true هەبێت، ڕاستەوخۆ بچۆ بۆ پانێڵ
                 if (showAdminPanel) {
                     setTimeout(() => {
                         isAdmin = true;
@@ -2377,7 +2365,6 @@
                     }, 500);
                 }
             } catch (error) {
-                console.error('Auth error:', error);
                 let errorMsg = '❌ هەڵە ڕوویدا';
                 if (error.code === 'auth/email-already-in-use') {
                     errorMsg = '❌ ئەم ئیمەیڵە پێشتر بەکارهێنراوە';
@@ -2393,8 +2380,6 @@
         };
 
         window.socialLogin = async (provider) => {
-            console.log('Social login:', provider);
-            
             try {
                 let authProvider;
                 if (provider === 'google') {
@@ -2407,7 +2392,6 @@
                 closeModal('authModal');
                 showToast('✅ بەسەرکەوتوویی چوویتەژوورەوە');
                 
-                // ✅ ئەگەر admin=true هەبێت، ڕاستەوخۆ بچۆ بۆ پانێڵ
                 if (showAdminPanel) {
                     setTimeout(() => {
                         isAdmin = true;
@@ -2416,13 +2400,11 @@
                     }, 500);
                 }
             } catch (error) {
-                console.error('Social login error:', error);
                 showToast('❌ هەڵە: ' + error.message);
             }
         };
 
         window.logout = async () => {
-            console.log('Logging out...');
             await signOut(auth);
             showToast('✅ چوویتە دەرەوە');
             isAdmin = false;
@@ -2449,8 +2431,126 @@
             }
         };
 
-        window.toggleUserDropdown = () => {
-            document.getElementById('userDropdown').classList.toggle('show');
+        // ✅ زیادکردنی وەرزی نوێ
+        window.addSeason = () => {
+            const container = document.getElementById('seasonsContainer');
+            const seasonNum = container.children.length + 1;
+            
+            const seasonDiv = document.createElement('div');
+            seasonDiv.className = 'season-block';
+            seasonDiv.style.cssText = 'background: var(--bg-secondary); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid var(--accent-primary);';
+            seasonDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="color: var(--accent-primary); margin: 0;">
+                        <i class="fas fa-layer-group"></i> وەرزی ${seasonNum}
+                    </h3>
+                    <button type="button" class="btn btn-danger" onclick="this.closest('.season-block').remove()">
+                        <i class="fas fa-trash"></i> سڕینەوەی وەرز
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label>ژمارەی وەرز *</label>
+                    <input type="number" class="season-number" value="${seasonNum}" required min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label>ناونیشانی وەرز (ئیختیاری)</label>
+                    <input type="text" class="season-title" placeholder="بۆ نموونە: فەسلی یەکەم">
+                </div>
+                
+                <h4 style="margin: 20px 0 10px; color: var(--text-secondary);">ئەڵقەکان:</h4>
+                <div class="episodes-container"></div>
+                
+                <button type="button" class="btn btn-secondary" onclick="addEpisodeToSeason(this)" style="width: 100%; margin-top: 10px;">
+                    <i class="fas fa-plus"></i> زیادکردنی ئەڵقە
+                </button>
+            `;
+            
+            container.appendChild(seasonDiv);
+            
+            const addBtn = seasonDiv.querySelector('button[onclick*="addEpisodeToSeason"]');
+            addEpisodeToSeason(addBtn);
+        };
+
+        // ✅ زیادکردنی ئەڵقە بۆ وەرزێکی دیاریکراو
+        window.addEpisodeToSeason = (button) => {
+            const seasonBlock = button.closest('.season-block');
+            const container = seasonBlock.querySelector('.episodes-container');
+            const epNum = container.children.length + 1;
+            
+            const episodeDiv = document.createElement('div');
+            episodeDiv.className = 'episode-block';
+            episodeDiv.style.cssText = 'background: var(--bg-card); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--accent-primary);';
+            episodeDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 style="color: var(--success); margin: 0;">📺 ئەڵقەی ${epNum}</h4>
+                    <button type="button" class="btn btn-danger" onclick="this.closest('.episode-block').remove()" style="padding: 6px 12px;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label>ژمارەی ئەڵقە *</label>
+                    <input type="number" class="ep-number" value="${epNum}" required min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label>ناونیشانی ئەڵقە</label>
+                    <input type="text" class="ep-title" placeholder="ناونیشان (ئیختیاری)">
+                </div>
+                
+                <h5 style="margin: 15px 0 8px; color: var(--accent-primary); font-size: 14px;">سێرڤەرەکان:</h5>
+                
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 1 (Upstream) *</label>
+                    <input type="url" class="ep-server" placeholder="https://..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 2 (Filemoon)</label>
+                    <input type="url" class="ep-server2" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 3 (MixDrop)</label>
+                    <input type="url" class="ep-server3" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 4 (VidMoly)</label>
+                    <input type="url" class="ep-server4" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>🌟 سێرڤەر 5 (بێ ڕیکلام)</label>
+                    <input type="url" class="ep-server5" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>🌟 سێرڤەر 6 (بێ ڕیکلام)</label>
+                    <input type="url" class="ep-server6" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>🌟 سێرڤەر 7 (بێ ڕیکلام)</label>
+                    <input type="url" class="ep-server7" placeholder="https://...">
+                </div>
+                
+                <h5 style="margin: 15px 0 8px; color: var(--accent-primary); font-size: 14px;">ژێرنووسەکان:</h5>
+                
+                <div class="form-group">
+                    <label>📄 ژێرنووس 1 (SRT)</label>
+                    <input type="url" class="ep-subtitle1" placeholder="https://...subtitle.srt">
+                </div>
+                
+                <div class="form-group">
+                    <label>📄 ژێرنووس 2 (SRT)</label>
+                    <input type="url" class="ep-subtitle2" placeholder="https://...subtitle.srt">
+                </div>
+            `;
+            
+            container.appendChild(episodeDiv);
         };
 
         // Admin Functions
@@ -2471,61 +2571,27 @@
                 if (el.type !== 'hidden') el.value = '';
             });
             
-            document.getElementById('episodesContainer').innerHTML = '';
-            
-            // ✅ بۆ زنجیرە، یەک ئەڵقەی سەرەتایی زیاد بکە
+            // ✅ بۆ زنجیرە، یەک وەرزی سەرەتایی زیاد بکە
             if (type === 'series') {
-                addEpisode();
+                document.getElementById('seasonsContainer').innerHTML = '';
+                addSeason();
             }
             
             openModal('contentModal');
         };
 
-        window.addEpisode = () => {
-            const container = document.getElementById('episodesContainer');
-            const num = container.children.length + 1;
-            
-            const episodeDiv = document.createElement('div');
-            episodeDiv.style.cssText = 'background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;';
-            episodeDiv.innerHTML = `
-                <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ئەڵقەی ${num}</h4>
-                <div class="form-group">
-                    <label>ژمارەی ئەڵقە *</label>
-                    <input type="number" class="ep-number" value="${num}" required>
-                </div>
-                <div class="form-group">
-                    <label>ناونیشانی ئەڵقە</label>
-                    <input type="text" class="ep-title" placeholder="ناونیشان (ئیختیاری)">
-                </div>
-                <div class="form-group">
-                    <label>لینکی سێرڤەر (Upstream/Filemoon/...) *</label>
-                    <input type="url" class="ep-server" placeholder="https://..." required>
-                </div>
-                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()" style="width: 100%; justify-content: center;">
-                    <i class="fas fa-trash"></i> سڕینەوەی ئەم ئەڵقەیە
-                </button>
-            `;
-            container.appendChild(episodeDiv);
-        };
-
         window.saveContent = async (e) => {
             e.preventDefault();
             
-            console.log('🔥 Starting saveContent...');
-            
             if (!isAdmin) {
                 showToast('⚠️ تەنها ئەدمین دەتوانێت');
-                console.error('❌ Not admin');
                 return;
             }
             
             if (!currentUser) {
                 showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە');
-                console.error('❌ Not logged in');
                 return;
             }
-            
-            console.log('✅ User authenticated:', currentUser.email);
             
             const type = document.getElementById('contentType').value;
             const id = document.getElementById('contentEditId').value;
@@ -2541,8 +2607,6 @@
                 views: 0,
                 commentsCount: 0
             };
-
-            console.log('📝 Data prepared:', data);
 
             if (type === 'movie') {
                 const servers = {};
@@ -2560,7 +2624,6 @@
                 if (document.getElementById('movieServer7').value.trim()) servers.server7 = document.getElementById('movieServer7').value.trim();
                 
                 data.servers = servers;
-                console.log('🎬 Movie servers:', servers);
                 
                 const subtitles = {};
                 if (document.getElementById('movieSubtitle1').value.trim()) subtitles.sub1 = document.getElementById('movieSubtitle1').value.trim();
@@ -2585,7 +2648,6 @@
                                 servers: { server1: server }
                             };
                             
-                            // سێرڤەرەکانی تر
                             if (ep.querySelector('.ep-server2')?.value.trim()) epData.servers.server2 = ep.querySelector('.ep-server2').value.trim();
                             if (ep.querySelector('.ep-server3')?.value.trim()) epData.servers.server3 = ep.querySelector('.ep-server3').value.trim();
                             if (ep.querySelector('.ep-server4')?.value.trim()) epData.servers.server4 = ep.querySelector('.ep-server4').value.trim();
@@ -2593,7 +2655,6 @@
                             if (ep.querySelector('.ep-server6')?.value.trim()) epData.servers.server6 = ep.querySelector('.ep-server6').value.trim();
                             if (ep.querySelector('.ep-server7')?.value.trim()) epData.servers.server7 = ep.querySelector('.ep-server7').value.trim();
                             
-                            // ژێرنووسەکان
                             const subs = {};
                             if (ep.querySelector('.ep-subtitle1')?.value.trim()) subs.sub1 = ep.querySelector('.ep-subtitle1').value.trim();
                             if (ep.querySelector('.ep-subtitle2')?.value.trim()) subs.sub2 = ep.querySelector('.ep-subtitle2').value.trim();
@@ -2615,41 +2676,23 @@
                 }
                 
                 data.seasons = seasons.sort((a, b) => a.number - b.number);
-                console.log('📺 Series seasons:', seasons.length);
             }
 
             try {
-                console.log('💾 Saving to Firebase...');
-                
                 if (id) {
                     const existing = allContent.find(c => c.id === id);
                     data.views = existing?.views || 0;
                     data.commentsCount = existing?.commentsCount || 0;
-                    console.log('🔄 Updating existing content:', id);
                     await update(ref(db, `content/${id}`), data);
                     showToast('✅ دەستکاری کرا');
                 } else {
-                    console.log('➕ Adding new content');
-                    const newRef = await push(ref(db, 'content'), data);
-                    console.log('✅ New content ID:', newRef.key);
+                    await push(ref(db, 'content'), data);
                     showToast('✅ زیاد کرا');
                 }
                 closeModal('contentModal');
             } catch (error) {
                 console.error('❌ Firebase Error:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-                
-                let errorMsg = '❌ هەڵە: ';
-                if (error.code === 'PERMISSION_DENIED') {
-                    errorMsg += 'مۆڵەت نییە! تکایە Firebase Rules چەک بکە';
-                } else if (error.code === 'NETWORK_ERROR') {
-                    errorMsg += 'کێشەی ئینتەرنێت';
-                } else {
-                    errorMsg += error.message;
-                }
-                
-                showToast(errorMsg);
+                showToast('❌ هەڵە: ' + error.message);
             }
         };
 
@@ -2694,7 +2737,7 @@
                                 ${item.type === 'series' ? '📺 زنجیرە' : '🎬 فیلم'}
                             </span>
                             <span>${item.year || ''}</span>
-                            ${item.type === 'series' ? ` • ${item.episodes?.length || 0} ئەڵقە` : ''}
+                            ${item.type === 'series' && item.seasons ? ` • ${item.seasons.reduce((sum, s) => sum + s.episodes.length, 0)} ئەڵقە` : ''}
                             • 👁️ ${item.views || 0}
                             • 💬 ${item.commentsCount || 0}
                         </div>
@@ -2731,32 +2774,45 @@
             document.getElementById('seriesSection').style.display = item.type === 'series' ? 'block' : 'none';
             
             if (item.type === 'movie') {
-                document.getElementById('movieServer').value = item.server || '';
+                document.getElementById('movieServer1').value = item.servers?.server1 || '';
+                document.getElementById('movieServer2').value = item.servers?.server2 || '';
+                document.getElementById('movieServer3').value = item.servers?.server3 || '';
+                document.getElementById('movieServer4').value = item.servers?.server4 || '';
+                document.getElementById('movieServer5').value = item.servers?.server5 || '';
+                document.getElementById('movieServer6').value = item.servers?.server6 || '';
+                document.getElementById('movieServer7').value = item.servers?.server7 || '';
+                document.getElementById('movieSubtitle1').value = item.subtitles?.sub1 || '';
+                document.getElementById('movieSubtitle2').value = item.subtitles?.sub2 || '';
             } else {
-                const container = document.getElementById('episodesContainer');
+                const container = document.getElementById('seasonsContainer');
                 container.innerHTML = '';
-                item.episodes?.forEach(ep => {
-                    const episodeDiv = document.createElement('div');
-                    episodeDiv.style.cssText = 'background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;';
-                    episodeDiv.innerHTML = `
-                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ئەڵقەی ${ep.number}</h4>
-                        <div class="form-group">
-                            <label>ژمارەی ئەڵقە *</label>
-                            <input type="number" class="ep-number" value="${ep.number}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>ناونیشانی ئەڵقە</label>
-                            <input type="text" class="ep-title" value="${ep.title || ''}" placeholder="ناونیشان (ئیختیاری)">
-                        </div>
-                        <div class="form-group">
-                            <label>لینکی سێرڤەر *</label>
-                            <input type="url" class="ep-server" value="${ep.server}" required>
-                        </div>
-                        <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()" style="width: 100%; justify-content: center;">
-                            <i class="fas fa-trash"></i> سڕینەوەی ئەم ئەڵقەیە
-                        </button>
-                    `;
-                    container.appendChild(episodeDiv);
+                
+                item.seasons?.forEach(season => {
+                    addSeason();
+                    const seasonBlock = container.lastElementChild;
+                    seasonBlock.querySelector('.season-number').value = season.number;
+                    seasonBlock.querySelector('.season-title').value = season.title || '';
+                    
+                    const episodesContainer = seasonBlock.querySelector('.episodes-container');
+                    episodesContainer.innerHTML = '';
+                    
+                    season.episodes?.forEach(ep => {
+                        const addBtn = seasonBlock.querySelector('button[onclick*="addEpisodeToSeason"]');
+                        addEpisodeToSeason(addBtn);
+                        
+                        const episodeBlock = episodesContainer.lastElementChild;
+                        episodeBlock.querySelector('.ep-number').value = ep.number;
+                        episodeBlock.querySelector('.ep-title').value = ep.title || '';
+                        episodeBlock.querySelector('.ep-server').value = ep.servers?.server1 || '';
+                        if (episodeBlock.querySelector('.ep-server2')) episodeBlock.querySelector('.ep-server2').value = ep.servers?.server2 || '';
+                        if (episodeBlock.querySelector('.ep-server3')) episodeBlock.querySelector('.ep-server3').value = ep.servers?.server3 || '';
+                        if (episodeBlock.querySelector('.ep-server4')) episodeBlock.querySelector('.ep-server4').value = ep.servers?.server4 || '';
+                        if (episodeBlock.querySelector('.ep-server5')) episodeBlock.querySelector('.ep-server5').value = ep.servers?.server5 || '';
+                        if (episodeBlock.querySelector('.ep-server6')) episodeBlock.querySelector('.ep-server6').value = ep.servers?.server6 || '';
+                        if (episodeBlock.querySelector('.ep-server7')) episodeBlock.querySelector('.ep-server7').value = ep.servers?.server7 || '';
+                        if (episodeBlock.querySelector('.ep-subtitle1')) episodeBlock.querySelector('.ep-subtitle1').value = ep.subtitles?.sub1 || '';
+                        if (episodeBlock.querySelector('.ep-subtitle2')) episodeBlock.querySelector('.ep-subtitle2').value = ep.subtitles?.sub2 || '';
+                    });
                 });
             }
             
@@ -2792,29 +2848,6 @@
                 if (el.type !== 'hidden') el.value = '';
             });
             openModal('slideModal');
-        };
-
-        // Modal & UI Functions
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        window.closeModal = (id) => {
-            document.getElementById(id).classList.remove('active');
-            document.body.style.overflow = 'auto';
-        };
-
-        window.showSection = (section) => {
-            if (section === 'admin') {
-                document.getElementById('homeSection').style.display = 'none';
-                document.getElementById('detailPage').classList.remove('active');
-                document.getElementById('adminPanel').classList.add('show');
-            } else {
-                document.getElementById('homeSection').style.display = 'block';
-                document.getElementById('detailPage').classList.remove('active');
-                document.getElementById('adminPanel').classList.remove('show');
-            }
         };
 
         window.setFilter = (filter) => {
@@ -2857,16 +2890,20 @@
             `).join('');
         };
 
-        window.showToast = (message) => {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        };
-
         // Initialize
         loadData();
     </script>
 </body>
-</html>
+</html>margin-bottom: 10px; color: var(--accent-primary);">ڕیکلامی سەرەوە</h4>
+                        <button class="btn btn-secondary" onclick="openAdModal('top')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ڕیکلامی لاتەنیشت</h4>
+                        <button class="btn btn-secondary" onclick="openAdModal('sidebar')">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 15px; border-radius: 8px;">
+                        <h4 style="
