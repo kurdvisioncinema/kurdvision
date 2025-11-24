@@ -364,6 +364,10 @@
             overflow-y: auto;
         }
 
+        .modal-content.large {
+            max-width: 1200px;
+        }
+
         .modal-close {
             position: absolute;
             top: 15px;
@@ -968,13 +972,13 @@
 
     <!-- CONTENT MODAL (Movie/Series) -->
     <div class="modal" id="contentModal">
-        <div class="modal-content">
+        <div class="modal-content large">
             <button class="modal-close" onclick="closeModal('contentModal')">×</button>
             <div class="modal-header">
                 <h2 class="modal-title" id="contentModalTitle">زیادکردنی ناوەڕۆک</h2>
             </div>
             <div class="modal-body">
-                <form onsubmit="saveContent(event)">
+                <form onsubmit="saveContent(event)" id="contentForm">
                     <input type="hidden" id="contentType">
                     <input type="hidden" id="contentEditId">
                     
@@ -990,17 +994,17 @@
 
                     <div class="form-group">
                         <label>ساڵ</label>
-                        <input type="text" id="contentYear">
+                        <input type="text" id="contentYear" placeholder="2024">
                     </div>
 
                     <div class="form-group">
                         <label>ڕەیتینگ (لە 10)</label>
-                        <input type="number" id="contentRating" min="0" max="10" step="0.1">
+                        <input type="number" id="contentRating" min="0" max="10" step="0.1" placeholder="8.5">
                     </div>
 
                     <div class="form-group">
                         <label>وەسف</label>
-                        <textarea id="contentDescription"></textarea>
+                        <textarea id="contentDescription" rows="3"></textarea>
                     </div>
 
                     <!-- بەشی زنجیرە - تەنها بۆ زنجیرەکان -->
@@ -1305,12 +1309,14 @@
             if (modal) {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                console.log('✅ Modal opened:', id);
             } else {
-                console.error('Modal not found:', id);
+                console.error('❌ Modal not found:', id);
             }
         };
 
         window.closeModal = function(id) {
+            console.log('Closing modal:', id);
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.remove('active');
