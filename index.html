@@ -1012,6 +1012,15 @@
                         </button>
                     </div>
 
+                    <!-- بەشی زنجیرە - تەنها بۆ زنجیرەکان -->
+                    <div id="seriesSection" style="display: none;">
+                       <h3 style="margin: 20px 0; color: var(--accent-primary);">وەرزەکان</h3>
+                       <div id="seasonsContainer"></div>
+                       <button type="button" class="btn btn-secondary" onclick="addSeason()">
+                           <i class="fas fa-plus"></i> زیادکردنی وەرزی نوێ
+                       </button>
+                    </div>
+                    
                     <!-- بەشی فیلم - تەنها بۆ فیلمەکان -->
                     <div id="movieSection" style="display: none;">
                         <h3 style="margin: 20px 0; color: var(--accent-primary);">سێرڤەرەکان</h3>
@@ -2428,32 +2437,90 @@
             openModal('contentModal');
         };
 
-        window.addEpisode = () => {
-            const container = document.getElementById('episodesContainer');
-            const num = container.children.length + 1;
-            
-            const episodeDiv = document.createElement('div');
-            episodeDiv.style.cssText = 'background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;';
-            episodeDiv.innerHTML = `
-                <h4 style="margin-bottom: 10px; color: var(--accent-primary);">ئەڵقەی ${num}</h4>
-                <div class="form-group">
-                    <label>ژمارەی ئەڵقە *</label>
-                    <input type="number" class="ep-number" value="${num}" required>
-                </div>
-                <div class="form-group">
-                    <label>ناونیشانی ئەڵقە</label>
-                    <input type="text" class="ep-title" placeholder="ناونیشان (ئیختیاری)">
-                </div>
-                <div class="form-group">
-                    <label>لینکی سێرڤەر (Upstream/Filemoon/...) *</label>
-                    <input type="url" class="ep-server" placeholder="https://..." required>
-                </div>
-                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()" style="width: 100%; justify-content: center;">
-                    <i class="fas fa-trash"></i> سڕینەوەی ئەم ئەڵقەیە
-                </button>
-            `;
-            container.appendChild(episodeDiv);
-        };
+       window.addSeason = () => {
+    const container = document.getElementById('seasonsContainer');
+    const seasonNum = container.children.length + 1;
+    
+    const seasonDiv = document.createElement('div');
+    seasonDiv.style.cssText = 'background: var(--bg-card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid var(--accent-primary);';
+    seasonDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h4 style="color: var(--accent-primary); font-size: 18px;">
+                <i class="fas fa-layer-group"></i> وەرزی ${seasonNum}
+            </h4>
+            <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">
+                <i class="fas fa-trash"></i> سڕینەوەی وەرز
+            </button>
+        </div>
+        <div class="form-group">
+            <label>ژمارەی وەرز *</label>
+            <input type="number" class="season-number" value="${seasonNum}" required style="max-width: 150px;">
+        </div>
+        <div class="form-group">
+            <label>ناوی وەرز (ئیختیاری)</label>
+            <input type="text" class="season-title" placeholder="بۆ نموونە: وەرزی یەکەم">
+        </div>
+        <h5 style="margin: 15px 0; color: var(--text-secondary);">ئەڵقەکانی ئەم وەرزە:</h5>
+        <div class="episodes-container-season"></div>
+        <button type="button" class="btn btn-secondary" onclick="addEpisodeToSeason(this)" style="margin-top: 10px;">
+            <i class="fas fa-plus"></i> زیادکردنی ئەڵقە بۆ ئەم وەرزە
+        </button>
+    `;
+    container.appendChild(seasonDiv);
+    
+    const addBtn = seasonDiv.querySelector('.btn-secondary');
+    addEpisodeToSeason(addBtn);
+};
+
+window.addEpisodeToSeason = (button) => {
+    const seasonDiv = button.closest('[style*="background: var(--bg-card)"]');
+    const episodesContainer = seasonDiv.querySelector('.episodes-container-season');
+    const episodeNum = episodesContainer.children.length + 1;
+    
+    const episodeDiv = document.createElement('div');
+    episodeDiv.style.cssText = 'background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--accent-primary);';
+    episodeDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h5 style="color: var(--text-primary); margin: 0;">ئەڵقەی ${episodeNum}</h5>
+            <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px; font-size: 12px;">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+        <div class="form-group">
+            <label>ژمارەی ئەڵقە *</label>
+            <input type="number" class="ep-number" value="${episodeNum}" required style="max-width: 120px;">
+        </div>
+        <div class="form-group">
+            <label>ناونیشانی ئەڵقە</label>
+            <input type="text" class="ep-title" placeholder="ناونیشان (ئیختیاری)">
+        </div>
+        <div class="form-group">
+            <label>🎥 سێرڤەر 1 (Upstream) *</label>
+            <input type="url" class="ep-server1" placeholder="https://..." required>
+        </div>
+        <div class="form-group">
+            <label>🎥 سێرڤەر 2 (Filemoon)</label>
+            <input type="url" class="ep-server2" placeholder="https://...">
+        </div>
+        <div class="form-group">
+            <label>🎥 سێرڤەر 3 (MixDrop)</label>
+            <input type="url" class="ep-server3" placeholder="https://...">
+        </div>
+        <div class="form-group">
+            <label>🎥 سێرڤەر 4 (بێ ڕیکلام)</label>
+            <input type="url" class="ep-server4" placeholder="https://...">
+        </div>
+        <div class="form-group">
+            <label>📄 ژێرنووس 1 (SRT)</label>
+            <input type="url" class="ep-subtitle1" placeholder="https://...subtitle.srt">
+        </div>
+        <div class="form-group">
+            <label>📄 ژێرنووس 2 (SRT)</label>
+            <input type="url" class="ep-subtitle2" placeholder="https://...subtitle.srt">
+        </div>
+    `;
+    episodesContainer.appendChild(episodeDiv);
+};
 
         window.saveContent = async (e) => {
             e.preventDefault();
@@ -2477,7 +2544,10 @@
                 views: 0,
                 commentsCount: 0
             };
-
+           // ✅ بۆ زنجیرە، یەک وەرزی سەرەتایی زیاد بکە
+            if (type === 'series') {
+                addSeason();
+                }
             if (type === 'movie') {
                 const servers = {};
                 const server1 = document.getElementById('movieServer1').value.trim();
@@ -2499,16 +2569,35 @@
                 if (document.getElementById('movieSubtitle1').value.trim()) subtitles.sub1 = document.getElementById('movieSubtitle1').value.trim();
                 if (document.getElementById('movieSubtitle2').value.trim()) subtitles.sub2 = document.getElementById('movieSubtitle2').value.trim();
                 data.subtitles = subtitles;
-            } else {
-                const episodes = [];
-                document.querySelectorAll('#episodesContainer > div').forEach(ep => {
-                    const server = ep.querySelector('.ep-server').value.trim();
-                    if (server) {
-                        const epData = {
-                            number: parseInt(ep.querySelector('.ep-number').value),
-                            title: ep.querySelector('.ep-title').value.trim(),
-                            servers: { server1: server }
-                        };
+        } else {
+    const seasons = [];
+    document.querySelectorAll('#seasonsContainer > div').forEach(seasonDiv => {
+        const seasonNumber = parseInt(seasonDiv.querySelector('.season-number').value);
+        const seasonTitle = seasonDiv.querySelector('.season-title').value.trim();
+        
+        const episodes = [];
+        seasonDiv.querySelectorAll('.episodes-container-season > div').forEach(ep => {
+            const server1 = ep.querySelector('.ep-server1').value.trim();
+            if (server1) {
+                const epData = {
+                    number: parseInt(ep.querySelector('.ep-number').value),
+                    title: ep.querySelector('.ep-title').value.trim(),
+                    servers: { server1: server1 }
+                };
+                
+                if (ep.querySelector('.ep-server2')?.value.trim()) epData.servers.server2 = ep.querySelector('.ep-server2').value.trim();
+                if (ep.querySelector('.ep-server3')?.value.trim()) epData.servers.server3 = ep.querySelector('.ep-server3').value.trim();
+                if (ep.querySelector('.ep-server4')?.value.trim()) epData.servers.server4 = ep.querySelector('.ep-server4').value.trim();
+                
+                const subs = {};
+                if (ep.querySelector('.ep-subtitle1')?.value.trim()) subs.sub1 = ep.querySelector('.ep-subtitle1').value.trim();
+                if (ep.querySelector('.ep-subtitle2')?.value.trim()) subs.sub2 = ep.querySelector('.ep-subtitle2').value.trim();
+                if (Object.keys(subs).length > 0) epData.subtitles = subs;
+                
+                episodes.push(epData);
+            }
+        });
+        
                         
                         // سێرڤەرەکانی تر
                         if (ep.querySelector('.ep-server2')?.value.trim()) epData.servers.server2 = ep.querySelector('.ep-server2').value.trim();
@@ -2527,7 +2616,32 @@
                         episodes.push(epData);
                     }
                 });
-                
+              
+               if (episodes.length > 0) {
+            seasons.push({
+                seasonNumber: seasonNumber,
+                seasonTitle: seasonTitle || `وەرزی ${seasonNumber}`,
+                episodes: episodes.sort((a, b) => a.number - b.number)
+            });
+        }
+    });
+    
+    if (seasons.length === 0) {
+        showToast('⚠️ لایەنی کەم یەک وەرز و ئەڵقە زیاد بکە');
+        return;
+    }
+    
+    data.seasons = seasons.sort((a, b) => a.seasonNumber - b.seasonNumber);
+    data.totalEpisodes = seasons.reduce((sum, s) => sum + s.episodes.length, 0);
+}
+    
+    if (seasons.length === 0) {
+        showToast('⚠️ لایەنی کەم یەک وەرز و ئەڵقە زیاد بکە');
+        return;
+    }
+    
+    data.seasons = seasons.sort((a, b) => a.seasonNumber - b.seasonNumber);
+    data.totalEpisodes = seasons.reduce((sum, s) => sum + s.episodes.length, 0);
                 if (episodes.length === 0) {
                     showToast('⚠️ لایەنی کەم یەک ئەڵقە زیاد بکە');
                     return;
