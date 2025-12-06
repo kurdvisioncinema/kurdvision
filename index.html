@@ -884,6 +884,74 @@
             .hero { height: 65vh; min-height: 450px; }
             .movies-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
             .nav-search { display: none; }
+            
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                z-index: 999;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+            
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                font-size: 24px;
+                cursor: pointer;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .detail-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-poster-main {
+                max-width: 250px;
+                margin: 0 auto;
+            }
+            
+            .detail-title {
+                font-size: 28px;
+            }
+            
+            .detail-meta-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cast-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            
+            .cast-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 24px;
+            }
+            
+            .episodes-grid,
+            .season-episodes {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+            }
         }
     </style>
 </head>
@@ -1612,7 +1680,38 @@
             document.getElementById('totalMovies').textContent = totalMovies;
             document.getElementById('totalSeries').textContent = totalSeries;
             document.getElementById('totalComments').textContent = totalComments;
+
+            // پیشاندانی UID و ستاتوسی ئەدمین
+            if (currentUser) {
+                const uidElement = document.getElementById('currentUserUID');
+                const statusElement = document.getElementById('adminStatus');
+                
+                if (uidElement) {
+                    uidElement.textContent = currentUser.uid;
+                }
+                
+                if (statusElement) {
+                    if (isAdmin) {
+                        statusElement.innerHTML = '<span style="color: var(--success);">✅ ئەدمینی</span>';
+                    } else {
+                        statusElement.innerHTML = '<span style="color: #ff4444;">❌ ئەدمین نیت - UID ەکەت زیاد بکە لە Firebase</span>';
+                    }
+                }
+            }
         }
+
+        window.copyUID = () => {
+            if (!currentUser) {
+                showToast('⚠️ تکایە چوونەژوورەوە بکە');
+                return;
+            }
+            
+            navigator.clipboard.writeText(currentUser.uid).then(() => {
+                showToast('✅ UID کۆپی کرا!');
+            }).catch(() => {
+                showToast('❌ کۆپیکردن سەرکەوتوو نەبوو');
+            });
+        };
 
         function displayContent() {
             const grid = document.getElementById('moviesGrid');
