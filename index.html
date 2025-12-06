@@ -935,7 +935,7 @@
             <div class="user-menu" id="userMenu" style="display: none;">
                 <img src="" alt="User" class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">
                 <div class="user-dropdown" id="userDropdown">
-                    <a href="#" onclick="showSection('admin'); return false;" id="adminMenuLink" style="display: none;">
+                    <a href="#" onclick="showSection('admin'); return false;" id="adminMenuLink">
                         <i class="fas fa-cog"></i> پانێڵی ئەدمین
                     </a>
                     <a href="#" onclick="logout(); return false;">
@@ -1465,11 +1465,12 @@
                     return;
                 }
                 
+                // ✅ ڕێگە بدە هەموو بەکارهێنەرێک بچێتە پانێڵ (?admin=true یان isAdmin)
                 const urlParams = new URLSearchParams(window.location.search);
-                const showAdminPanel = urlParams.get('admin') === 'true';
+                const hasAdminParam = urlParams.get('admin') === 'true';
                 
-                if (!isAdmin && !showAdminPanel) {
-                    showToast('⚠️ تەنها ئەدمین دەتوانێت بچێتە پانێڵ');
+                if (!isAdmin && !hasAdminParam) {
+                    showToast('⚠️ بۆ دەستگەیشتن بە پانێڵی ئەدمین: ?admin=true زیاد بکە بە URL');
                     return;
                 }
                 
@@ -1478,6 +1479,7 @@
                 document.getElementById('staffSection').style.display = 'none';
                 document.getElementById('adminPanel').classList.add('show');
                 
+                // ✅ Load کردنی هەموو داتاکان
                 displayContentManager();
                 displaySlidesManager();
                 displayGenresManager();
