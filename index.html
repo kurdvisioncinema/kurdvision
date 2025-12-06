@@ -1465,12 +1465,10 @@
                     return;
                 }
                 
-                // ✅ ڕێگە بدە هەموو بەکارهێنەرێک بچێتە پانێڵ (?admin=true یان isAdmin)
-                const urlParams = new URLSearchParams(window.location.search);
-                const hasAdminParam = urlParams.get('admin') === 'true';
-                
-                if (!isAdmin && !hasAdminParam) {
-                    showToast('⚠️ بۆ دەستگەیشتن بە پانێڵی ئەدمین: ?admin=true زیاد بکە بە URL');
+                // ✅ پشکنینی ڕاستەقینە بۆ ئەدمین
+                if (!isAdmin) {
+                    showToast('⚠️ تەنها ئەدمینەکانی دیاریکراو دەتوانن بچنە پانێڵ');
+                    showToast('💡 پێویستە لە Firebase Database وەک Admin زیاد بکرێیت');
                     return;
                 }
                 
@@ -1479,7 +1477,6 @@
                 document.getElementById('staffSection').style.display = 'none';
                 document.getElementById('adminPanel').classList.add('show');
                 
-                // ✅ Load کردنی هەموو داتاکان
                 displayContentManager();
                 displaySlidesManager();
                 displayGenresManager();
@@ -2587,11 +2584,7 @@
         };
 
         window.deleteContent = async (id) => {
-            if (!isAdmin) {
-                showToast('⚠️ تەنها ئەدمین دەتوانێت');
-                return;
-            }
-            
+            if (!isAdmin) return showToast('⚠️ تەنها ئەدمین دەتوانێت');
             if (!confirm('دڵنیایت دەتەوێت بسڕیتەوە؟')) return;
             
             try {
@@ -2599,6 +2592,7 @@
                 await remove(ref(db, `comments/${id}`));
                 showToast('✅ سڕایەوە');
             } catch (error) {
+                console.error('Delete error:', error);
                 showToast('❌ هەڵە: ' + error.message);
             }
         };
