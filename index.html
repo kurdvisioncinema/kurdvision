@@ -2738,6 +2738,73 @@
         };
 
         loadData();
+        window.saveSlide = async (e) => {
+    e.preventDefault();
+    if (!isAdmin) return showToast('⚠️ تەنها ئەدمین');
+
+    const data = {
+        title: document.getElementById('slideTitle').value.trim(),
+        image: document.getElementById('slideImage').value.trim(),
+        description: document.getElementById('slideDescription').value.trim(),
+        contentId: document.getElementById('slideContentId').value.trim(),
+        created: Date.now()
+    };
+
+    if (!data.title || !data.image) {
+        showToast('⚠️ ناونیشان و وێنە پێویستن');
+        return;
+    }
+
+    await push(ref(db, 'slides'), data);
+    showToast('✅ Slide زیاد کرا');
+    closeModal('slideModal');
+};
+window.saveGenre = async (e) => {
+    e.preventDefault();
+    if (!isAdmin) return showToast('⚠️ تەنها ئەدمین');
+
+    const data = {
+        name: document.getElementById('genreName').value.trim(),
+        value: document.getElementById('genreValue').value.trim(),
+        icon: document.getElementById('genreIcon').value.trim()
+    };
+
+    if (!data.name || !data.value) {
+        showToast('⚠️ ژانەر پێویستە');
+        return;
+    }
+
+    await push(ref(db, 'genres'), data);
+    showToast('✅ Genre زیاد کرا');
+    closeModal('genreModal');
+};
+window.saveStaff = async (e) => {
+    e.preventDefault();
+    if (!isAdmin) return showToast('⚠️ تەنها ئەدمین');
+
+    const data = {
+        name: document.getElementById('staffName').value.trim(),
+        role: document.getElementById('staffRole').value.trim(),
+        image: document.getElementById('staffImage').value.trim(),
+        bio: document.getElementById('staffBio').value.trim(),
+        facebook: document.getElementById('staffFacebook').value.trim(),
+        instagram: document.getElementById('staffInstagram').value.trim(),
+        telegram: document.getElementById('staffTelegram').value.trim()
+    };
+
+    if (!data.name || !data.role) {
+        showToast('⚠️ ناو و ڕۆڵ پێویستن');
+        return;
+    }
+
+    await push(ref(db, 'staff'), data);
+    showToast('✅ Staff زیاد کرا');
+    closeModal('staffModal');
+};
+document.getElementById('slideForm')?.addEventListener('submit', saveSlide);
+document.getElementById('genreForm')?.addEventListener('submit', saveGenre);
+document.getElementById('staffForm')?.addEventListener('submit', saveStaff);
+
     </script>
 </body>
 </html>
