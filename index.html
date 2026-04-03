@@ -34,23 +34,30 @@
         h1, h2, h3, h4, h5, h6 { font-family: 'Aref Ruqaa', serif; font-weight: 700; }
 
         header {
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(26, 26, 46, 0.98);
             backdrop-filter: blur(20px);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(233, 69, 96, 0.1);
+        }
+
+        body {
+            padding-top: 60px;
         }
 
         nav {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 20px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            position: relative;
         }
 
         .logo {
@@ -953,17 +960,35 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding-top: 56px;
+            }
+            
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+            }
+            
+            nav {
+                padding: 10px 15px;
+                gap: 12px;
+            }
+            
             .hero { 
-                height: 65vh; 
-                min-height: 450px; 
+                height: 60vh; 
+                min-height: 400px;
+                margin-top: 0;
             }
             
             .hero-title {
-                font-size: 32px;
+                font-size: 28px;
             }
             
             .hero-content {
-                padding: 40px 20px;
+                padding: 30px 15px;
             }
             
             .movies-grid { 
@@ -1029,14 +1054,30 @@
             
             .mobile-menu-btn {
                 display: block;
+                order: 1;
             }
             
             .logo {
-                font-size: 20px;
+                font-size: 18px;
+                order: 2;
+                margin-right: auto;
             }
             
-            nav {
-                padding: 12px 15px;
+            .user-menu {
+                order: 3;
+                flex-shrink: 0;
+            }
+            
+            .mobile-only-auth {
+                display: block;
+            }
+            
+            #authButtons {
+                display: none !important;
+            }
+            
+            .container {
+                padding: 0 15px;
             }
             
             .detail-layout {
@@ -1044,18 +1085,28 @@
                 gap: 20px;
             }
             
+            .detail-header {
+                padding: 20px 15px;
+            }
+            
             .detail-poster-main {
-                max-width: 250px;
+                max-width: 220px;
                 margin: 0 auto;
             }
             
             .detail-title {
-                font-size: 28px;
+                font-size: 24px;
                 text-align: center;
             }
             
             .detail-badges {
                 justify-content: center;
+                gap: 8px;
+            }
+            
+            .detail-badge {
+                font-size: 12px;
+                padding: 4px 10px;
             }
             
             .detail-meta-grid {
@@ -1134,24 +1185,12 @@
                 font-size: 12px;
             }
             
-            #authButtons {
-                display: none !important;
+            .section-header {
+                margin: 20px 0 15px;
             }
             
-            .user-menu {
-                order: -1;
-            }
-            
-            .mobile-only-auth {
-                display: block;
-            }
-            
-            #authButtons {
-                display: none !important;
-            }
-            
-            .user-menu #userMenu {
-                display: block !important;
+            .section-title {
+                font-size: 20px;
             }
         }
 
