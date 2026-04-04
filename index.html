@@ -46,6 +46,25 @@
 
         body {
             padding-top: 60px;
+            position: relative;
+        }
+        
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .menu-overlay.show {
+            display: block;
+            opacity: 1;
         }
 
         nav {
@@ -101,6 +120,7 @@
             gap: 5px;
             list-style: none;
             align-items: center;
+            transition: transform 0.3s ease;
         }
 
         .mobile-menu-btn {
@@ -1056,25 +1076,22 @@
             }
             
             .nav-links {
-                display: none;
+                display: block;
                 position: fixed;
                 top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(15, 15, 30, 0.98);
-                backdrop-filter: blur(10px);
-                flex-direction: column;
-                padding: 80px 20px 20px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-secondary);
+                box-shadow: -5px 0 20px rgba(0,0,0,0.5);
                 z-index: 999;
                 overflow-y: auto;
-                align-items: stretch;
-                gap: 0;
+                padding: 80px 0 20px;
+                transition: right 0.3s ease;
             }
             
             .nav-links.show {
-                display: flex;
+                right: 0;
             }
             
             .nav-links li {
@@ -1336,6 +1353,8 @@
             </div>
         </nav>
     </header>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMobileMenu()"></div>
 
     <div id="homeSection">
         <section class="hero" id="heroSection"></section>
@@ -1825,16 +1844,19 @@
 
         window.toggleMobileMenu = function() {
             const navLinks = document.getElementById('navLinks');
+            const menuOverlay = document.getElementById('menuOverlay');
             const menuIcon = document.getElementById('menuIcon');
             const isOpen = navLinks.classList.contains('show');
             
             if (isOpen) {
                 navLinks.classList.remove('show');
+                menuOverlay.classList.remove('show');
                 menuIcon.classList.remove('fa-times');
                 menuIcon.classList.add('fa-bars');
                 document.body.style.overflow = 'auto';
             } else {
                 navLinks.classList.add('show');
+                menuOverlay.classList.add('show');
                 menuIcon.classList.remove('fa-bars');
                 menuIcon.classList.add('fa-times');
                 document.body.style.overflow = 'hidden';
@@ -1843,8 +1865,10 @@
 
         window.closeMobileMenu = function() {
             const navLinks = document.getElementById('navLinks');
+            const menuOverlay = document.getElementById('menuOverlay');
             const menuIcon = document.getElementById('menuIcon');
             navLinks.classList.remove('show');
+            menuOverlay.classList.remove('show');
             menuIcon.classList.remove('fa-times');
             menuIcon.classList.add('fa-bars');
             document.body.style.overflow = 'auto';
