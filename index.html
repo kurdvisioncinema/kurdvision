@@ -3056,8 +3056,12 @@
                 return;
             }
             
+            console.log('🔍 saveContent started...');
+            
             const type = document.getElementById('contentType').value;
             const id = document.getElementById('contentEditId').value;
+            
+            console.log('Type:', type, 'ID:', id);
 
             const data = {
                 type: type,
@@ -3077,34 +3081,69 @@
                 views: 0,
                 commentsCount: 0
             };
+            
+            console.log('📝 Data:', data);
 
             if (type === 'movie') {
                 const servers = {};
                 const server1 = document.getElementById('movieServer1').value.trim();
+                
+                console.log('🎬 Movie - Server1:', server1);
+                
                 if (!server1) {
                     showToast('⚠️ لایەنی کەم سێرڤەر 1 پڕ بکەرەوە');
                     return;
                 }
+                
                 servers.server1 = server1;
-                if (document.getElementById('movieServer2').value.trim()) servers.server2 = document.getElementById('movieServer2').value.trim();
-                if (document.getElementById('movieServer3').value.trim()) servers.server3 = document.getElementById('movieServer3').value.trim();
-                if (document.getElementById('movieServer4').value.trim()) servers.server4 = document.getElementById('movieServer4').value.trim();
+                if (document.getElementById('movieServer2').value.trim()) {
+                    servers.server2 = document.getElementById('movieServer2').value.trim();
+                }
+                if (document.getElementById('movieServer3').value.trim()) {
+                    servers.server3 = document.getElementById('movieServer3').value.trim();
+                }
+                if (document.getElementById('movieServer4').value.trim()) {
+                    servers.server4 = document.getElementById('movieServer4').value.trim();
+                }
                 
                 data.servers = servers;
                 
                 const subtitles = {};
-                if (document.getElementById('movieSubtitle1').value.trim()) subtitles.sub1 = document.getElementById('movieSubtitle1').value.trim();
-                if (document.getElementById('movieSubtitle2').value.trim()) subtitles.sub2 = document.getElementById('movieSubtitle2').value.trim();
-                data.subtitles = subtitles;
+                if (document.getElementById('movieSubtitle1').value.trim()) {
+                    subtitles.sub1 = document.getElementById('movieSubtitle1').value.trim();
+                }
+                if (document.getElementById('movieSubtitle2').value.trim()) {
+                    subtitles.sub2 = document.getElementById('movieSubtitle2').value.trim();
+                }
+                if (Object.keys(subtitles).length > 0) {
+                    data.subtitles = subtitles;
+                }
+                
+                console.log('✅ Movie data ready:', data);
             } else {
+                console.log('📺 Series - checking seasons...');
+                
                 const seasons = [];
-                document.querySelectorAll('#seasonsContainer > div').forEach(seasonDiv => {
+                const seasonDivs = document.querySelectorAll('#seasonsContainer > div');
+                
+                console.log('Found seasons:', seasonDivs.length);
+                
+                seasonDivs.forEach((seasonDiv, idx) => {
                     const seasonNumber = parseInt(seasonDiv.querySelector('.season-number').value);
                     const seasonTitle = seasonDiv.querySelector('.season-title').value.trim();
                     
+                    console.log(`Season ${idx}:`, seasonNumber, seasonTitle);
+                    
                     const episodes = [];
-                    seasonDiv.querySelectorAll('.episodes-container-season > div').forEach(ep => {
+                    const episodeDivs = seasonDiv.querySelectorAll('.episodes-container-season > div');
+                    
+                    console.log(`  Episodes in season ${idx}:`, episodeDivs.length);
+                    
+                    episodeDivs.forEach((ep, epIdx) => {
                         const server1 = ep.querySelector('.ep-server1').value.trim();
+                        
+                        console.log(`    Episode ${epIdx} server1:`, server1);
+                        
                         if (server1) {
                             const epData = {
                                 number: parseInt(ep.querySelector('.ep-number').value),
@@ -3112,14 +3151,26 @@
                                 servers: { server1: server1 }
                             };
                             
-                            if (ep.querySelector('.ep-server2')?.value.trim()) epData.servers.server2 = ep.querySelector('.ep-server2').value.trim();
-                            if (ep.querySelector('.ep-server3')?.value.trim()) epData.servers.server3 = ep.querySelector('.ep-server3').value.trim();
-                            if (ep.querySelector('.ep-server4')?.value.trim()) epData.servers.server4 = ep.querySelector('.ep-server4').value.trim();
+                            if (ep.querySelector('.ep-server2')?.value.trim()) {
+                                epData.servers.server2 = ep.querySelector('.ep-server2').value.trim();
+                            }
+                            if (ep.querySelector('.ep-server3')?.value.trim()) {
+                                epData.servers.server3 = ep.querySelector('.ep-server3').value.trim();
+                            }
+                            if (ep.querySelector('.ep-server4')?.value.trim()) {
+                                epData.servers.server4 = ep.querySelector('.ep-server4').value.trim();
+                            }
                             
                             const subs = {};
-                            if (ep.querySelector('.ep-subtitle1')?.value.trim()) subs.sub1 = ep.querySelector('.ep-subtitle1').value.trim();
-                            if (ep.querySelector('.ep-subtitle2')?.value.trim()) subs.sub2 = ep.querySelector('.ep-subtitle2').value.trim();
-                            if (Object.keys(subs).length > 0) epData.subtitles = subs;
+                            if (ep.querySelector('.ep-subtitle1')?.value.trim()) {
+                                subs.sub1 = ep.querySelector('.ep-subtitle1').value.trim();
+                            }
+                            if (ep.querySelector('.ep-subtitle2')?.value.trim()) {
+                                subs.sub2 = ep.querySelector('.ep-subtitle2').value.trim();
+                            }
+                            if (Object.keys(subs).length > 0) {
+                                epData.subtitles = subs;
+                            }
                             
                             episodes.push(epData);
                         }
@@ -3134,6 +3185,8 @@
                     }
                 });
                 
+                console.log('📊 Total seasons with episodes:', seasons.length);
+                
                 if (seasons.length === 0) {
                     showToast('⚠️ لایەنی کەم یەک وەرز و ئەڵقە زیاد بکە');
                     return;
@@ -3141,21 +3194,31 @@
                 
                 data.seasons = seasons.sort((a, b) => a.seasonNumber - b.seasonNumber);
                 data.totalEpisodes = seasons.reduce((sum, s) => sum + s.episodes.length, 0);
+                
+                console.log('✅ Series data ready:', data);
             }
 
             try {
+                console.log('💾 Saving to Firebase...');
+                
                 if (id) {
+                    console.log('📝 Updating existing content:', id);
                     const existing = allContent.find(c => c.id === id);
                     data.views = existing?.views || 0;
                     data.commentsCount = existing?.commentsCount || 0;
                     await update(ref(db, `content/${id}`), data);
                     showToast('✅ دەستکاری کرا');
+                    console.log('✅ Updated successfully');
                 } else {
-                    await push(ref(db, 'content'), data);
+                    console.log('➕ Adding new content');
+                    const newRef = await push(ref(db, 'content'), data);
                     showToast('✅ زیاد کرا');
+                    console.log('✅ Added successfully, ID:', newRef.key);
                 }
+                
                 closeModal('contentModal');
             } catch (error) {
+                console.error('❌ Firebase Error:', error);
                 showToast('❌ هەڵە: ' + error.message);
             }
         };
