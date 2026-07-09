@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>کورد ڤیژن Pro</title>
     <title>KurdVision Cinema | بینینی فیلم و دراماکان بە کوردی</title>
 
 <meta name="description" content="کورد ڤیژن سینەما، باشترین پلاتفۆرم بۆ بینینی نوێترین فیلم و دراماکان بە ژێرنووس و دۆبلاژی کوردی.">
 
 <meta name="keywords" content="film kurdi, kurdvision, movie kurdish, فیلمی کوردی, درامای کوردی">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%AC%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -1165,8 +1165,6 @@
             background: var(--accent-primary);
         }
 
-        /* ===== NEW ADDITIONS BELOW ===== */
-
         /* WATCHLIST BUTTON */
         .watchlist-btn {
             padding: 12px 24px;
@@ -1338,6 +1336,61 @@
         }
         .next-ep-overlay button.cancel-next-btn { background: rgba(255,255,255,0.15); }
 
+        /* CONTINUE WATCHING */
+        .continue-watching-row { margin: 10px 0 40px; }
+        .cw-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .cw-card:hover { transform: translateY(-6px); }
+        .cw-progress-bar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 5px;
+            background: rgba(255,255,255,0.2);
+        }
+        .cw-progress-fill {
+            height: 100%;
+            background: var(--accent-primary);
+        }
+        .cw-remove-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.7);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        /* LOAD MORE */
+        .load-more-wrap { display: flex; justify-content: center; margin: 10px 0 50px; }
+        .load-more-btn {
+            padding: 12px 30px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-primary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .load-more-btn:hover { background: var(--accent-primary); }
+
+        /* FORGOT PASSWORD */
+        .forgot-password-link { display: block; text-align: center; margin-top: 12px; font-size: 13px; }
+
         @media (max-width: 768px) {
             .skip-intro-btn, .next-ep-overlay { bottom: 10px; left: 10px; padding: 8px 14px; font-size: 12px; }
             .next-ep-overlay { max-width: 220px; }
@@ -1420,6 +1473,13 @@
     <div id="homeSection">
         <section class="hero" id="heroSection"></section>
         <div class="container">
+            <div class="continue-watching-row" id="continueWatchingRow" style="display:none;">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-history"></i> بەردەوامبوونی بینین</h2>
+                </div>
+                <div class="movies-grid" id="continueWatchingGrid"></div>
+            </div>
+
             <div class="filters" id="filterTabs">
                 <button class="filter-btn active" onclick="setFilter('all', this)">هەموو</button>
                 <button class="filter-btn" onclick="setFilter('movies', this)">فیلمەکان</button>
@@ -1448,6 +1508,9 @@
                 <div style="padding: 60px; text-align: center; color: var(--text-secondary);">
                     چاوەڕێ بکە...
                 </div>
+            </div>
+            <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+                <button class="load-more-btn" onclick="loadMoreContent()"><i class="fas fa-plus"></i> بینینی زیاتر</button>
             </div>
         </div>
     </div>
@@ -1581,6 +1644,9 @@
                         چوونەژوورەوە
                     </button>
                 </form>
+                <a href="#" class="forgot-password-link" onclick="handleForgotPassword(); return false;" style="color: var(--text-secondary); text-decoration: none;">
+                    پاسوۆردت لەبیرچووە؟
+                </a>
                 <div style="text-align: center; margin: 20px 0; color: var(--text-secondary);">یان</div>
                 <div class="social-login">
                     <button class="social-btn google" onclick="socialLogin('google')">
@@ -1850,7 +1916,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getDatabase, ref, push, set, onValue, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyAaE1v9PcHGsSgF1IlnDrygX5TT2-zii8o",
@@ -1878,6 +1944,27 @@
         let currentSeasonIndex = 0;
         let currentEpisodeIndex = 0;
         let nextEpTimer = null;
+
+        // بۆ پەیجینەیشن
+        let displayedCount = 24;
+        const PAGE_SIZE = 24;
+
+        // ==================== SECURITY: HTML ESCAPING ====================
+        // پاراستن لە XSS - هەرگیز دراوی بەکارهێنەر (ناونیشان، وەسف، کۆمێنت...) ڕاستەوخۆ نەخرێتە ناو innerHTML
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // بۆ دانانی دراو بە ئاسایی ناو onclick=""... string ئاتریبیوتەکان
+        function escapeAttr(str) {
+            return escapeHtml(str).replace(/`/g, '&#96;');
+        }
 
         // ==================== MOBILE MENU ====================
         window.toggleMobileMenu = function() {
@@ -1935,7 +2022,7 @@
         };
 
         // ==================== SECTIONS ====================
-        window.showSection = function(section) {
+        window.showSection = function(section, skipHash) {
             clearTimeout(nextEpTimer);
             if (section === 'admin') {
                 if (!currentUser) { showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە'); openAuthModal(); return; }
@@ -1956,6 +2043,9 @@
                 document.getElementById('staffSection').style.display = 'none';
                 document.getElementById('watchlistSection').style.display = 'none';
                 document.getElementById('adminPanel').classList.remove('show');
+            }
+            if (!skipHash && section === 'home' && window.location.hash.startsWith('#/movie/')) {
+                history.pushState('', document.title, window.location.pathname + window.location.search);
             }
         };
 
@@ -2007,9 +2097,9 @@
                 if (mobileAuthBtn) mobileAuthBtn.style.display = 'none';
                 const avatar = document.getElementById('userAvatar');
                 if (user.photoURL) {
-                    avatar.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.innerHTML='${user.email[0].toUpperCase()}'">`;
+                    avatar.innerHTML = `<img src="${escapeAttr(user.photoURL)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.textContent='${escapeAttr((user.email||'?')[0].toUpperCase())}'">`;
                 } else {
-                    avatar.textContent = user.email[0].toUpperCase();
+                    avatar.textContent = (user.email || '?')[0].toUpperCase();
                 }
             } else {
                 document.getElementById('authButtons').style.display = 'block';
@@ -2073,24 +2163,90 @@
             grid.innerHTML = items.map(item => renderMovieCard(item)).join('');
         }
 
+        // ==================== CONTINUE WATCHING (localStorage) ====================
+        // تێبینی: سێرڤەرە دەرەکییەکان (Upstream, Filemoon...) ڕێگا بە کۆدی سایت نادەن کاتی وێنای ڕاستەقینەی
+        // بینین (playback position) بخوێنینەوە، بۆیە ئەم تایبەتمەندییە شوێنی ئەڵقە/فیلمی کۆتایی
+        // بینراو ڕادەگرێت (نەک چرکەی ورد) تاوەکو کاتێک بگەڕێیتەوە بە ئاسانی بەردەوام بیت.
+        const CW_KEY = 'kv_continue_watching';
+
+        function getContinueWatching() {
+            try {
+                const raw = localStorage.getItem(CW_KEY);
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) { return {}; }
+        }
+
+        function saveContinueEntry(contentId, meta) {
+            try {
+                const data = getContinueWatching();
+                data[contentId] = { ...meta, updated: Date.now() };
+                localStorage.setItem(CW_KEY, JSON.stringify(data));
+                renderContinueWatchingRow();
+            } catch (e) { /* localStorage may be unavailable */ }
+        }
+
+        window.removeContinueEntry = function(contentId, event) {
+            if (event) event.stopPropagation();
+            try {
+                const data = getContinueWatching();
+                delete data[contentId];
+                localStorage.setItem(CW_KEY, JSON.stringify(data));
+                renderContinueWatchingRow();
+            } catch (e) {}
+        };
+
+        function renderContinueWatchingRow() {
+            const row = document.getElementById('continueWatchingRow');
+            const grid = document.getElementById('continueWatchingGrid');
+            if (!row || !grid) return;
+            const data = getContinueWatching();
+            const entries = Object.keys(data)
+                .map(id => ({ id, ...data[id] }))
+                .filter(e => allContent.some(c => c.id === e.id))
+                .sort((a, b) => b.updated - a.updated)
+                .slice(0, 12);
+
+            if (entries.length === 0) { row.style.display = 'none'; grid.innerHTML = ''; return; }
+            row.style.display = 'block';
+            grid.innerHTML = entries.map(e => {
+                const item = allContent.find(c => c.id === e.id);
+                const progress = e.progressPercent || 0;
+                const label = e.episodeLabel ? escapeHtml(e.episodeLabel) : '';
+                return `
+                    <div class="movie-card cw-card" onclick="openDetail('${escapeAttr(e.id)}')">
+                        <button class="cw-remove-btn" onclick="removeContinueEntry('${escapeAttr(e.id)}', event)"><i class="fas fa-times"></i></button>
+                        <div class="movie-poster">
+                            <img src="${escapeAttr(item.poster)}" alt="${escapeAttr(item.title)}" loading="lazy">
+                            <div class="play-icon"><i class="fas fa-play"></i></div>
+                            <div class="cw-progress-bar"><div class="cw-progress-fill" style="width:${progress}%;"></div></div>
+                        </div>
+                        <div class="movie-info">
+                            <div class="movie-title">${escapeHtml(item.title)}</div>
+                            <div class="movie-meta"><span>${label}</span></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // ==================== SHARED CARD RENDERER ====================
         function renderMovieCard(item) {
             const inList = userWatchlist.includes(item.id);
             return `
-                <div class="movie-card" onclick="openDetail('${item.id}')">
-                    <button class="card-watchlist-btn ${inList ? 'active' : ''}" data-watchlist-id="${item.id}"
-                            onclick="event.stopPropagation(); toggleWatchlist('${item.id}', this); this.classList.toggle('active'); this.querySelector('i').className = this.classList.contains('active') ? 'fas fa-check' : 'fas fa-plus';">
+                <div class="movie-card" onclick="openDetail('${escapeAttr(item.id)}')">
+                    <button class="card-watchlist-btn ${inList ? 'active' : ''}" data-watchlist-id="${escapeAttr(item.id)}"
+                            onclick="event.stopPropagation(); toggleWatchlist('${escapeAttr(item.id)}', this); this.classList.toggle('active'); this.querySelector('i').className = this.classList.contains('active') ? 'fas fa-check' : 'fas fa-plus';">
                         <i class="fas ${inList ? 'fa-check' : 'fa-plus'}"></i>
                     </button>
                     <div class="movie-poster">
-                        <img src="${item.poster}" alt="${item.title}" loading="lazy">
+                        <img src="${escapeAttr(item.poster)}" alt="${escapeAttr(item.title)}" loading="lazy">
                         <div class="play-icon"><i class="fas fa-play"></i></div>
-                        ${item.rating ? `<div class="movie-badge">⭐ ${item.rating}</div>` : ''}
+                        ${item.rating ? `<div class="movie-badge">⭐ ${escapeHtml(item.rating)}</div>` : ''}
                     </div>
                     <div class="movie-info">
-                        <div class="movie-title">${item.title}</div>
+                        <div class="movie-title">${escapeHtml(item.title)}</div>
                         <div class="movie-meta">
-                            <span>${item.year || '2024'}</span>
+                            <span>${escapeHtml(item.year || '2024')}</span>
                             <span>${item.type === 'series' ? 'زنجیرە' : 'فیلم'}</span>
                         </div>
                     </div>
@@ -2107,6 +2263,8 @@
                 displayContentManager();
                 updateStats();
                 populateAdvancedFilters();
+                renderContinueWatchingRow();
+                handleInitialRoute();
             });
 
             onValue(ref(db, 'slides'), (snapshot) => {
@@ -2133,6 +2291,28 @@
         }
         loadData();
 
+        // ==================== ROUTING (shareable movie/series links) ====================
+        let routeHandled = false;
+        function handleInitialRoute() {
+            if (routeHandled) return;
+            const hash = window.location.hash;
+            const match = hash.match(/^#\/movie\/(.+)$/);
+            if (match && allContent.some(c => c.id === match[1])) {
+                routeHandled = true;
+                openDetail(match[1], true);
+            }
+        }
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash;
+            const match = hash.match(/^#\/movie\/(.+)$/);
+            if (match) {
+                if (allContent.some(c => c.id === match[1])) openDetail(match[1], true);
+            } else if (!hash || hash === '#') {
+                closeDetail(true);
+            }
+        });
+
         function updateStats() {
             document.getElementById('totalContent').textContent = allContent.length;
             document.getElementById('totalMovies').textContent = allContent.filter(c => c.type === 'movie').length;
@@ -2149,14 +2329,14 @@
             const currentYear = yearSelect.value;
             const years = [...new Set(allContent.map(c => c.year).filter(Boolean))].sort((a,b) => b - a);
             yearSelect.innerHTML = '<option value="">هەموو ساڵەکان</option>' +
-                years.map(y => `<option value="${y}">${y}</option>`).join('');
+                years.map(y => `<option value="${escapeAttr(y)}">${escapeHtml(y)}</option>`).join('');
             yearSelect.value = currentYear;
 
             const currentGenre = genreSelect.value;
             const genreList = allGenres.length ? allGenres.map(g => ({value: g.value, name: g.name}))
                 : ['drama','action','fantasy','history','anime','horror','comedy','romance'].map(g => ({value: g, name: g}));
             genreSelect.innerHTML = '<option value="">هەموو ژانەرەکان</option>' +
-                genreList.map(g => `<option value="${g.value}">${g.name}</option>`).join('');
+                genreList.map(g => `<option value="${escapeAttr(g.value)}">${escapeHtml(g.name)}</option>`).join('');
             genreSelect.value = currentGenre;
         }
 
@@ -2173,33 +2353,46 @@
             else if (sort === 'views') filtered.sort((a,b) => (b.views||0) - (a.views||0));
             else filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
 
-            const grid = document.getElementById('moviesGrid');
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div style="padding:60px;text-align:center;color:var(--text-secondary);">هیچ ئەنجامێک نەدۆزرایەوە</div>';
-                return;
-            }
-            grid.innerHTML = filtered.map(item => renderMovieCard(item)).join('');
+            displayedCount = PAGE_SIZE;
+            renderGridWithPagination(filtered);
         };
 
-        // ==================== DISPLAY CONTENT ====================
-        function displayContent() {
-            const grid = document.getElementById('moviesGrid');
+        // ==================== DISPLAY CONTENT (with pagination) ====================
+        function getFilteredContent() {
             let filtered = [...allContent];
-
             if (currentFilter === 'movies') filtered = filtered.filter(c => c.type === 'movie');
             else if (currentFilter === 'series') filtered = filtered.filter(c => c.type === 'series');
             else if (currentFilter === 'subtitled') filtered = filtered.filter(c => c.subType === 'subtitled');
             else if (currentFilter === 'dubbed') filtered = filtered.filter(c => c.subType === 'dubbed');
-            else if (currentFilter === 'latest') filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 20);
+            else if (currentFilter === 'latest') filtered = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 40);
             else if (currentFilter !== 'all') filtered = filtered.filter(c => c.genre === currentFilter);
+            return filtered;
+        }
+
+        function displayContent() {
+            renderGridWithPagination(getFilteredContent());
+        }
+
+        function renderGridWithPagination(filtered) {
+            const grid = document.getElementById('moviesGrid');
+            const loadMoreWrap = document.getElementById('loadMoreWrap');
+            window._lastFilteredContent = filtered;
 
             if (filtered.length === 0) {
                 grid.innerHTML = '<div style="padding: 60px; text-align: center; color: var(--text-secondary);">هیچ ناوەڕۆکێک نەدۆزرایەوە</div>';
+                loadMoreWrap.style.display = 'none';
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => renderMovieCard(item)).join('');
+            const toShow = filtered.slice(0, displayedCount);
+            grid.innerHTML = toShow.map(item => renderMovieCard(item)).join('');
+            loadMoreWrap.style.display = filtered.length > displayedCount ? 'flex' : 'none';
         }
+
+        window.loadMoreContent = function() {
+            displayedCount += PAGE_SIZE;
+            renderGridWithPagination(window._lastFilteredContent || getFilteredContent());
+        };
 
         // ==================== HERO ====================
         function loadHero() {
@@ -2210,13 +2403,13 @@
             const slidesToShow = allSlides.slice(0, 5);
             hero.innerHTML = slidesToShow.map((slide, index) => `
                 <div class="hero-slide ${index === 0 ? 'active' : ''}">
-                    <img src="${slide.image}" class="hero-bg" alt="${slide.title}">
+                    <img src="${escapeAttr(slide.image)}" class="hero-bg" alt="${escapeAttr(slide.title)}">
                     <div class="hero-content">
-                        <h1 class="hero-title">${slide.title}</h1>
-                        ${slide.description ? `<p style="margin-bottom: 20px; max-width: 600px;">${slide.description}</p>` : ''}
+                        <h1 class="hero-title">${escapeHtml(slide.title)}</h1>
+                        ${slide.description ? `<p style="margin-bottom: 20px; max-width: 600px;">${escapeHtml(slide.description)}</p>` : ''}
                         <div style="display:flex; gap:12px;">
-                            ${slide.contentId ? `<button class="btn btn-primary" onclick="openDetail('${slide.contentId}')"><i class="fas fa-play"></i> بینین</button>` : ''}
-                            ${slide.contentId ? `<button class="btn hero-more-info" onclick="openDetail('${slide.contentId}')"><i class="fas fa-info-circle"></i> زانیاری زیاتر</button>` : ''}
+                            ${slide.contentId ? `<button class="btn btn-primary" onclick="openDetail('${escapeAttr(slide.contentId)}')"><i class="fas fa-play"></i> بینین</button>` : ''}
+                            ${slide.contentId ? `<button class="btn hero-more-info" onclick="openDetail('${escapeAttr(slide.contentId)}')"><i class="fas fa-info-circle"></i> زانیاری زیاتر</button>` : ''}
                         </div>
                     </div>
                 </div>
@@ -2265,11 +2458,11 @@
             manager.innerHTML = allSlides.map(slide => `
                 <div class="list-item">
                     <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 5px;">${slide.title}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">${slide.description || 'وەسف نییە'}</div>
+                        <div style="font-weight: 600; margin-bottom: 5px;">${escapeHtml(slide.title)}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${escapeHtml(slide.description || 'وەسف نییە')}</div>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-danger" onclick="deleteSlide('${slide.id}')"><i class="fas fa-trash"></i> سڕینەوە</button>
+                        <button class="btn btn-danger" onclick="deleteSlide('${escapeAttr(slide.id)}')"><i class="fas fa-trash"></i> سڕینەوە</button>
                     </div>
                 </div>
             `).join('');
@@ -2282,11 +2475,11 @@
             manager.innerHTML = allGenres.map(genre => `
                 <div class="list-item">
                     <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 5px;">${genre.icon ? `<i class="fas ${genre.icon}"></i>` : ''} ${genre.name}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">کۆد: ${genre.value}</div>
+                        <div style="font-weight: 600; margin-bottom: 5px;">${genre.icon ? `<i class="fas ${escapeAttr(genre.icon)}"></i>` : ''} ${escapeHtml(genre.name)}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">کۆد: ${escapeHtml(genre.value)}</div>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-danger" onclick="deleteGenre('${genre.id}')"><i class="fas fa-trash"></i> سڕینەوە</button>
+                        <button class="btn btn-danger" onclick="deleteGenre('${escapeAttr(genre.id)}')"><i class="fas fa-trash"></i> سڕینەوە</button>
                     </div>
                 </div>
             `).join('');
@@ -2299,11 +2492,11 @@
             manager.innerHTML = allStaff.map(staff => `
                 <div class="list-item">
                     <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 5px;">${staff.name}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">${staff.role}</div>
+                        <div style="font-weight: 600; margin-bottom: 5px;">${escapeHtml(staff.name)}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${escapeHtml(staff.role)}</div>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-danger" onclick="deleteStaff('${staff.id}')"><i class="fas fa-trash"></i> سڕینەوە</button>
+                        <button class="btn btn-danger" onclick="deleteStaff('${escapeAttr(staff.id)}')"><i class="fas fa-trash"></i> سڕینەوە</button>
                     </div>
                 </div>
             `).join('');
@@ -2319,18 +2512,18 @@
             grid.innerHTML = allStaff.map(staff => `
                 <div class="staff-card">
                     <div class="staff-img-wrapper">
-                        <img src="${staff.image}" alt="${staff.name}"
+                        <img src="${escapeAttr(staff.image)}" alt="${escapeAttr(staff.name)}"
                              onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="staff-img-fallback">${staff.name[0].toUpperCase()}</div>
+                        <div class="staff-img-fallback">${escapeHtml((staff.name || '?')[0].toUpperCase())}</div>
                     </div>
-                    <div class="staff-name">${staff.name}</div>
-                    <div class="staff-role">${staff.role}</div>
-                    ${staff.bio ? `<p style="font-size: 13px; color: var(--text-secondary); margin-top: 10px;">${staff.bio}</p>` : ''}
+                    <div class="staff-name">${escapeHtml(staff.name)}</div>
+                    <div class="staff-role">${escapeHtml(staff.role)}</div>
+                    ${staff.bio ? `<p style="font-size: 13px; color: var(--text-secondary); margin-top: 10px;">${escapeHtml(staff.bio)}</p>` : ''}
                     <div class="staff-social">
-                        ${staff.facebook ? `<a href="${staff.facebook}" target="_blank"><i class="fab fa-facebook"></i></a>` : ''}
-                        ${staff.instagram ? `<a href="${staff.instagram}" target="_blank"><i class="fab fa-instagram"></i></a>` : ''}
-                        ${staff.telegram ? `<a href="${staff.telegram}" target="_blank"><i class="fab fa-telegram"></i></a>` : ''}
+                        ${staff.facebook ? `<a href="${escapeAttr(staff.facebook)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>` : ''}
+                        ${staff.instagram ? `<a href="${escapeAttr(staff.instagram)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>` : ''}
+                        ${staff.telegram ? `<a href="${escapeAttr(staff.telegram)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i></a>` : ''}
                     </div>
                 </div>
             `).join('');
@@ -2353,8 +2546,8 @@
                 return;
             }
             dropdown.innerHTML = allGenres.map(genre => `
-                <a href="#" onclick="setFilter('${genre.value}', null); closeMobileMenu(); return false;">
-                    ${genre.icon ? `<i class="fas ${genre.icon}"></i>` : ''} ${genre.name}
+                <a href="#" onclick="setFilter('${escapeAttr(genre.value)}', null); closeMobileMenu(); return false;">
+                    ${genre.icon ? `<i class="fas ${escapeAttr(genre.icon)}"></i>` : ''} ${escapeHtml(genre.name)}
                 </a>
             `).join('');
         }
@@ -2678,20 +2871,20 @@
             manager.innerHTML = allContent.map(item => `
                 <div class="list-item">
                     <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 5px;">${item.title}</div>
+                        <div style="font-weight: 600; margin-bottom: 5px;">${escapeHtml(item.title)}</div>
                         <div style="font-size: 12px; color: var(--text-secondary);">
                             <span style="background: var(--bg-primary); padding: 3px 8px; border-radius: 4px; margin-left: 8px;">
                                 ${item.type === 'series' ? '📺 زنجیرە' : '🎬 فیلم'}
                             </span>
-                            ${item.year || ''} • 👁️ ${item.views || 0} • 💬 ${item.commentsCount || 0}
+                            ${escapeHtml(item.year || '')} • 👁️ ${item.views || 0} • 💬 ${item.commentsCount || 0}
                             ${item.seasons ? ` • ${item.seasons.length} وەرز • ${item.totalEpisodes || 0} ئەڵقە` : ''}
                         </div>
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="btn" style="background: #2196F3; color: white;" onclick="editContent('${item.id}')">
+                        <button class="btn" style="background: #2196F3; color: white;" onclick="editContent('${escapeAttr(item.id)}')">
                             <i class="fas fa-edit"></i> دەستکاری
                         </button>
-                        <button class="btn btn-danger" onclick="deleteContent('${item.id}')">
+                        <button class="btn btn-danger" onclick="deleteContent('${escapeAttr(item.id)}')">
                             <i class="fas fa-trash"></i> سڕینەوە
                         </button>
                     </div>
@@ -2736,7 +2929,7 @@
                     seasonDiv.style.cssText = 'background: var(--bg-card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid var(--accent-primary);';
                     seasonDiv.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h4 style="color: var(--accent-primary);">${season.seasonTitle}</h4>
+                            <h4 style="color: var(--accent-primary);">${escapeHtml(season.seasonTitle)}</h4>
                             <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">
                                 <i class="fas fa-trash"></i> سڕینەوەی وەرز
                             </button>
@@ -2747,7 +2940,7 @@
                         </div>
                         <div class="form-group">
                             <label>ناوی وەرز</label>
-                            <input type="text" class="season-title" value="${season.seasonTitle}">
+                            <input type="text" class="season-title" value="${escapeAttr(season.seasonTitle)}">
                         </div>
                         <h5 style="margin: 15px 0; color: var(--text-secondary);">ئەڵقەکان:</h5>
                         <div class="episodes-container-season"></div>
@@ -2766,13 +2959,13 @@
                                 <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px; font-size: 12px;"><i class="fas fa-trash"></i></button>
                             </div>
                             <div class="form-group"><label>ژمارە *</label><input type="number" class="ep-number" value="${ep.number}" style="max-width: 120px;"></div>
-                            <div class="form-group"><label>ناونیشان</label><input type="text" class="ep-title" value="${ep.title || ''}"></div>
-                            <div class="form-group"><label>🎥 سێرڤەر 1 *</label><input type="url" class="ep-server1" value="${ep.servers?.server1 || ''}"></div>
-                            <div class="form-group"><label>🎥 سێرڤەر 2</label><input type="url" class="ep-server2" value="${ep.servers?.server2 || ''}"></div>
-                            <div class="form-group"><label>🎥 سێرڤەر 3</label><input type="url" class="ep-server3" value="${ep.servers?.server3 || ''}"></div>
-                            <div class="form-group"><label>🎥 سێرڤەر 4</label><input type="url" class="ep-server4" value="${ep.servers?.server4 || ''}"></div>
-                            <div class="form-group"><label>📄 ژێرنووس 1</label><input type="url" class="ep-subtitle1" value="${ep.subtitles?.sub1 || ''}"></div>
-                            <div class="form-group"><label>📄 ژێرنووس 2</label><input type="url" class="ep-subtitle2" value="${ep.subtitles?.sub2 || ''}"></div>
+                            <div class="form-group"><label>ناونیشان</label><input type="text" class="ep-title" value="${escapeAttr(ep.title || '')}"></div>
+                            <div class="form-group"><label>🎥 سێرڤەر 1 *</label><input type="url" class="ep-server1" value="${escapeAttr(ep.servers?.server1 || '')}"></div>
+                            <div class="form-group"><label>🎥 سێرڤەر 2</label><input type="url" class="ep-server2" value="${escapeAttr(ep.servers?.server2 || '')}"></div>
+                            <div class="form-group"><label>🎥 سێرڤەر 3</label><input type="url" class="ep-server3" value="${escapeAttr(ep.servers?.server3 || '')}"></div>
+                            <div class="form-group"><label>🎥 سێرڤەر 4</label><input type="url" class="ep-server4" value="${escapeAttr(ep.servers?.server4 || '')}"></div>
+                            <div class="form-group"><label>📄 ژێرنووس 1</label><input type="url" class="ep-subtitle1" value="${escapeAttr(ep.subtitles?.sub1 || '')}"></div>
+                            <div class="form-group"><label>📄 ژێرنووس 2</label><input type="url" class="ep-subtitle2" value="${escapeAttr(ep.subtitles?.sub2 || '')}"></div>
                             <div class="form-group"><label>⏭️ کاتی کۆتایی ناساندن (چرکە)</label><input type="number" class="ep-introend" value="${ep.introEnd || ''}"></div>
                             <div class="form-group"><label>⏱️ ماوەی ئەڵقە (خولەک)</label><input type="number" class="ep-duration" value="${ep.duration || ''}"></div>
                         `;
@@ -2796,6 +2989,7 @@
         // ==================== FILTER ====================
         window.setFilter = (filter, btn) => {
             currentFilter = filter;
+            displayedCount = PAGE_SIZE;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
             document.getElementById('filterYear').value = '';
@@ -2808,20 +3002,22 @@
         window.performSearch = () => {
             document.getElementById('searchDropdown').classList.remove('show');
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            displayedCount = PAGE_SIZE;
             if (!term) { currentFilter = 'all'; displayContent(); return; }
-            const grid = document.getElementById('moviesGrid');
             const filtered = allContent.filter(c =>
                 c.title?.toLowerCase().includes(term) || c.description?.toLowerCase().includes(term)
             );
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div style="padding: 60px; text-align: center;">هیچ ئەنجامێک نەدۆزرایەوە</div>';
-                return;
-            }
-            grid.innerHTML = filtered.map(item => renderMovieCard(item)).join('');
+            renderGridWithPagination(filtered);
         };
 
-        // ==================== LIVE SEARCH ====================
+        // ==================== LIVE SEARCH (debounced) ====================
+        let liveSearchTimer = null;
         window.performLiveSearch = function() {
+            clearTimeout(liveSearchTimer);
+            liveSearchTimer = setTimeout(runLiveSearch, 250);
+        };
+
+        function runLiveSearch() {
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
             const dropdown = document.getElementById('searchDropdown');
             if (!term) { dropdown.classList.remove('show'); return; }
@@ -2830,17 +3026,17 @@
                 dropdown.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-secondary);">هیچ ئەنجامێک نەدۆزرایەوە</div>';
             } else {
                 dropdown.innerHTML = results.map(item => `
-                    <div class="search-result-item" onclick="document.getElementById('searchDropdown').classList.remove('show'); document.getElementById('searchInput').value=''; closeMobileMenu(); openDetail('${item.id}')">
-                        <img src="${item.poster}" alt="${item.title}">
+                    <div class="search-result-item" onclick="document.getElementById('searchDropdown').classList.remove('show'); document.getElementById('searchInput').value=''; closeMobileMenu(); openDetail('${escapeAttr(item.id)}')">
+                        <img src="${escapeAttr(item.poster)}" alt="${escapeAttr(item.title)}">
                         <div class="search-result-info">
-                            <div class="sr-title">${item.title}</div>
-                            <div class="sr-meta">${item.year || ''} • ${item.type === 'series' ? 'زنجیرە' : 'فیلم'}</div>
+                            <div class="sr-title">${escapeHtml(item.title)}</div>
+                            <div class="sr-meta">${escapeHtml(item.year || '')} • ${item.type === 'series' ? 'زنجیرە' : 'فیلم'}</div>
                         </div>
                     </div>
                 `).join('');
             }
             dropdown.classList.add('show');
-        };
+        }
 
         document.addEventListener('click', (e) => {
             const dropdown = document.getElementById('searchDropdown');
@@ -2935,16 +3131,36 @@
             }, showAt);
         }
 
+        // ==================== VIEW COUNT (spam-protected via sessionStorage) ====================
+        function registerView(item) {
+            try {
+                const seenKey = 'kv_viewed_session';
+                const seen = JSON.parse(sessionStorage.getItem(seenKey) || '[]');
+                if (seen.includes(item.id)) return;
+                seen.push(item.id);
+                sessionStorage.setItem(seenKey, JSON.stringify(seen));
+                update(ref(db, `content/${item.id}`), { views: (item.views || 0) + 1 });
+            } catch (e) {
+                // sessionStorage نییە، بەبێ ژمێردن بەردەوام دەبین
+                update(ref(db, `content/${item.id}`), { views: (item.views || 0) + 1 });
+            }
+        }
+
         // ==================== DETAIL PAGE ====================
-        window.openDetail = (id) => {
+        window.openDetail = (id, fromRoute) => {
             const item = allContent.find(c => c.id === id);
             if (!item) return;
             clearTimeout(nextEpTimer);
-            update(ref(db, `content/${id}`), { views: (item.views || 0) + 1 });
+            registerView(item);
 
             currentDetailItem = item;
             currentSeasonIndex = 0;
             currentEpisodeIndex = 0;
+
+            if (!fromRoute) {
+                window.location.hash = `#/movie/${id}`;
+            }
+            routeHandled = true;
 
             const detailPage = document.getElementById('detailPage');
             document.getElementById('homeSection').style.display = 'none';
@@ -2967,7 +3183,7 @@
                     <div style="display: flex; gap: 10px; margin: 20px 0; overflow-x: auto; padding: 10px 0;">
                         ${item.seasons.map((season, idx) => `
                             <button class="season-tab ${idx === 0 ? 'active' : ''}" onclick="switchSeason(${idx}, this)">
-                                <i class="fas fa-layer-group"></i> ${season.seasonTitle}
+                                <i class="fas fa-layer-group"></i> ${escapeHtml(season.seasonTitle)}
                                 <span style="opacity: 0.8; font-size: 13px; margin-right: 5px;">(${season.episodes.length} ئەڵقە)</span>
                             </button>
                         `).join('')}
@@ -2978,7 +3194,7 @@
                                 <div class="episode-card ${seasonIdx === 0 && epIdx === 0 ? 'active' : ''}"
                                      onclick="switchEpisode(${seasonIdx}, ${epIdx}, ${JSON.stringify(ep.servers).replace(/"/g, '&quot;')}, ${JSON.stringify(ep.subtitles || {}).replace(/"/g, '&quot;')}, ${ep.introEnd || 0}, ${ep.duration || 0}, this)">
                                     <h4>ئەڵقەی ${ep.number}</h4>
-                                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">${ep.title || ''}</p>
+                                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">${escapeHtml(ep.title || '')}</p>
                                 </div>
                             `).join('')}
                         </div>
@@ -2994,7 +3210,7 @@
                             <div class="episode-card ${i === 0 ? 'active' : ''}"
                                  onclick="switchEpisode(0, ${i}, ${JSON.stringify(ep.servers).replace(/"/g, '&quot;')}, ${JSON.stringify(ep.subtitles || {}).replace(/"/g, '&quot;')}, ${ep.introEnd || 0}, ${ep.duration || 0}, this)">
                                 <h4>ئەڵقەی ${ep.number}</h4>
-                                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">${ep.title || ''}</p>
+                                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">${escapeHtml(ep.title || '')}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -3017,7 +3233,7 @@
                     serverTabsHTML = `
                         <div class="server-tabs">
                             ${serverList.map((s, i) => `
-                                <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">${s.name}</button>
+                                <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${escapeAttr(s.url)}', this)">${s.name}</button>
                             `).join('')}
                         </div>
                     `;
@@ -3030,8 +3246,8 @@
                     <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
                         <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            ${subtitles.sub1 ? `<a href="${subtitles.sub1}" download class="btn btn-secondary">⬇️ ژێرنووس 1</a>` : ''}
-                            ${subtitles.sub2 ? `<a href="${subtitles.sub2}" download class="btn btn-secondary">⬇️ ژێرنووس 2</a>` : ''}
+                            ${subtitles.sub1 ? `<a href="${escapeAttr(subtitles.sub1)}" download class="btn btn-secondary">⬇️ ژێرنووس 1</a>` : ''}
+                            ${subtitles.sub2 ? `<a href="${escapeAttr(subtitles.sub2)}" download class="btn btn-secondary">⬇️ ژێرنووس 2</a>` : ''}
                         </div>
                     </div>
                 `;
@@ -3052,36 +3268,37 @@
                     <div class="detail-header">
                         <div class="detail-layout">
                             <div class="detail-poster-main" onclick="scrollToPlayer()">
-                                <img src="${item.poster}" alt="${item.title}">
+                                <img src="${escapeAttr(item.poster)}" alt="${escapeAttr(item.title)}">
                                 <div class="detail-play-overlay">
                                     <div class="detail-play-btn"><i class="fas fa-play"></i></div>
                                 </div>
                             </div>
                             <div class="detail-info">
-                                <h1 class="detail-title">${item.title}</h1>
+                                <h1 class="detail-title">${escapeHtml(item.title)}</h1>
                                 <div class="detail-badges">
-                                    ${item.rating ? `<div class="detail-rating">⭐ ${item.rating}/10</div>` : ''}
-                                    <div class="detail-badge"><i class="fas fa-calendar"></i> ${item.year || '2024'}</div>
+                                    ${item.rating ? `<div class="detail-rating">⭐ ${escapeHtml(item.rating)}/10</div>` : ''}
+                                    <div class="detail-badge"><i class="fas fa-calendar"></i> ${escapeHtml(item.year || '2024')}</div>
                                     <div class="detail-badge"><i class="fas fa-eye"></i> ${(item.views || 0).toLocaleString()}</div>
                                     ${item.type === 'series' && item.seasons ? `
                                         <div class="detail-badge"><i class="fas fa-layer-group"></i> ${item.seasons.length} وەرز</div>
                                         <div class="detail-badge"><i class="fas fa-film"></i> ${item.totalEpisodes || 0} ئەڵقە</div>
                                     ` : ''}
-                                    ${genreName ? `<div class="detail-badge"><i class="fas fa-tag"></i> ${genreName}</div>` : ''}
-                                    ${subTypeName ? `<div class="detail-badge"><i class="fas fa-language"></i> ${subTypeName}</div>` : ''}
+                                    ${genreName ? `<div class="detail-badge"><i class="fas fa-tag"></i> ${escapeHtml(genreName)}</div>` : ''}
+                                    ${subTypeName ? `<div class="detail-badge"><i class="fas fa-language"></i> ${escapeHtml(subTypeName)}</div>` : ''}
                                 </div>
                                 <div class="detail-actions-row">
-                                    <button class="watchlist-btn ${inWatchlist ? 'active' : ''}" data-watchlist-id="${item.id}"
-                                            onclick="toggleWatchlist('${item.id}', this); this.classList.toggle('active'); this.querySelector('span').textContent = this.classList.contains('active') ? 'لە لیستمدایە' : 'زیادکردن بۆ لیست';">
+                                    <button class="watchlist-btn ${inWatchlist ? 'active' : ''}" data-watchlist-id="${escapeAttr(item.id)}"
+                                            onclick="toggleWatchlist('${escapeAttr(item.id)}', this); this.classList.toggle('active'); this.querySelector('span').textContent = this.classList.contains('active') ? 'لە لیستمدایە' : 'زیادکردن بۆ لیست';">
                                         <i class="fas ${inWatchlist ? 'fa-check' : 'fa-plus'}"></i>
                                         <span>${inWatchlist ? 'لە لیستمدایە' : 'زیادکردن بۆ لیست'}</span>
                                     </button>
+                                    <button class="btn btn-secondary" onclick="shareCurrentLink()"><i class="fas fa-share-alt"></i> هاوبەشکردنی لینک</button>
                                 </div>
-                                ${item.description ? `<p class="detail-description">${item.description}</p>` : ''}
+                                ${item.description ? `<p class="detail-description">${escapeHtml(item.description)}</p>` : ''}
                                 <div class="detail-meta-grid">
-                                    ${item.producer ? `<div class="detail-meta-item"><div class="detail-meta-label">بەرهەمهێنەر:</div><div class="detail-meta-value">${item.producer}</div></div>` : ''}
-                                    ${item.director ? `<div class="detail-meta-item"><div class="detail-meta-label">دەرهێنەر:</div><div class="detail-meta-value">${item.director}</div></div>` : ''}
-                                    ${item.writer ? `<div class="detail-meta-item"><div class="detail-meta-label">نووسەر:</div><div class="detail-meta-value">${item.writer}</div></div>` : ''}
+                                    ${item.producer ? `<div class="detail-meta-item"><div class="detail-meta-label">بەرهەمهێنەر:</div><div class="detail-meta-value">${escapeHtml(item.producer)}</div></div>` : ''}
+                                    ${item.director ? `<div class="detail-meta-item"><div class="detail-meta-label">دەرهێنەر:</div><div class="detail-meta-value">${escapeHtml(item.director)}</div></div>` : ''}
+                                    ${item.writer ? `<div class="detail-meta-item"><div class="detail-meta-label">نووسەر:</div><div class="detail-meta-value">${escapeHtml(item.writer)}</div></div>` : ''}
                                     <div class="detail-meta-item"><div class="detail-meta-label">جۆر:</div><div class="detail-meta-value">${item.type === 'series' ? 'زنجیرە' : 'فیلم'}</div></div>
                                 </div>
                             </div>
@@ -3098,7 +3315,7 @@
                     <div class="detail-tab-content active" data-tab="0" id="playerSection">
                         ${firstServer ? `
                             <div class="video-container">
-                                <iframe id="videoPlayer" class="video-player" src="${firstServer}" data-base-url="${firstServer}" allowfullscreen allow="autoplay"></iframe>
+                                <iframe id="videoPlayer" class="video-player" src="${escapeAttr(firstServer)}" data-base-url="${escapeAttr(firstServer)}" allowfullscreen allow="autoplay"></iframe>
                                 <button class="skip-intro-btn" id="skipIntroBtn"><i class="fas fa-forward"></i> پەڕینەوە لە ناساندن</button>
                                 <div class="next-ep-overlay" id="nextEpOverlay">
                                     <div class="ne-info">
@@ -3119,7 +3336,7 @@
                     ${item.trailer ? `
                         <div class="detail-tab-content" data-tab="1">
                             <div class="video-container">
-                                <iframe class="video-player" src="${item.trailer}" allowfullscreen allow="autoplay"></iframe>
+                                <iframe class="video-player" src="${escapeAttr(item.trailer)}" allowfullscreen allow="autoplay"></iframe>
                             </div>
                         </div>
                     ` : ''}
@@ -3130,8 +3347,8 @@
                             <div class="cast-grid">
                                 ${actors.map(actor => `
                                     <div class="cast-item">
-                                        <div class="cast-avatar">${actor.charAt(0).toUpperCase()}</div>
-                                        <div class="cast-name">${actor}</div>
+                                        <div class="cast-avatar">${escapeHtml((actor || '?').charAt(0).toUpperCase())}</div>
+                                        <div class="cast-name">${escapeHtml(actor)}</div>
                                     </div>
                                 `).join('')}
                             </div>
@@ -3144,7 +3361,7 @@
                             ${currentUser ? `
                                 <div class="comment-form">
                                     <textarea id="commentText" placeholder="لێدوانەکەت بنووسە..."></textarea>
-                                    <button class="btn btn-primary" onclick="postComment('${id}')" style="margin-top: 10px;">
+                                    <button class="btn btn-primary" onclick="postComment('${escapeAttr(id)}')" style="margin-top: 10px;">
                                         <i class="fas fa-paper-plane"></i> ناردن
                                     </button>
                                 </div>
@@ -3164,6 +3381,20 @@
             loadComments(id);
             setupSkipIntro(firstIntroEnd);
             setupNextEpisodeCountdown(item, 0, 0, firstDuration);
+            saveContinueEntry(id, {
+                episodeLabel: (item.type === 'series') ? 'ئەڵقەی 1' : ''
+            });
+        };
+
+        window.shareCurrentLink = function() {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: currentDetailItem?.title || 'KurdVision', url }).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => showToast('✅ لینک کۆپی کرا')).catch(() => showToast(url));
+            } else {
+                showToast(url);
+            }
         };
 
         window.switchDetailTab = (tabIndex, button) => {
@@ -3184,12 +3415,15 @@
             if (p) p.scrollIntoView({ behavior: 'smooth' });
         };
 
-        window.closeDetail = () => {
+        window.closeDetail = (skipHash) => {
             clearTimeout(nextEpTimer);
             document.getElementById('detailPage').classList.remove('active');
             document.getElementById('homeSection').style.display = 'block';
             document.getElementById('staffSection').style.display = 'none';
             document.getElementById('watchlistSection').style.display = 'none';
+            if (!skipHash && window.location.hash.startsWith('#/movie/')) {
+                history.pushState('', document.title, window.location.pathname + window.location.search);
+            }
         };
 
         window.switchSeason = (seasonIndex, btn) => {
@@ -3220,11 +3454,15 @@
             const serverTabsContainer = document.querySelector('.server-tabs');
             if (serverTabsContainer && serverList.length > 1) {
                 serverTabsContainer.innerHTML = serverList.map((s, i) => `
-                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${s.url}', this)">${s.name}</button>
+                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="switchServer('${escapeAttr(s.url)}', this)">${s.name}</button>
                 `).join('');
             }
             setupSkipIntro(introEnd);
-            if (currentDetailItem) setupNextEpisodeCountdown(currentDetailItem, seasonIdx, epIdx, duration);
+            if (currentDetailItem) {
+                setupNextEpisodeCountdown(currentDetailItem, seasonIdx, epIdx, duration);
+                const epNumber = card.querySelector('h4')?.textContent || '';
+                saveContinueEntry(currentDetailItem.id, { episodeLabel: epNumber });
+            }
         };
 
         window.switchServer = (url, btn) => {
@@ -3247,18 +3485,18 @@
                 list.innerHTML = comments.map(comment => `
                     <div class="comment">
                         <div class="comment-header">
-                            <div class="comment-avatar">${comment.userName[0].toUpperCase()}</div>
+                            <div class="comment-avatar">${escapeHtml((comment.userName || '?')[0].toUpperCase())}</div>
                             <div>
-                                <div class="comment-author">${comment.userName}</div>
+                                <div class="comment-author">${escapeHtml(comment.userName)}</div>
                                 <div class="comment-date">${formatDate(comment.date)}</div>
                             </div>
                             ${(currentUser && currentUser.uid === comment.userId) || isAdmin ? `
-                                <button class="btn btn-danger" onclick="deleteComment('${contentId}', '${comment.id}')" style="margin-right: auto; padding: 6px 12px;">
+                                <button class="btn btn-danger" onclick="deleteComment('${escapeAttr(contentId)}', '${escapeAttr(comment.id)}')" style="margin-right: auto; padding: 6px 12px;">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             ` : ''}
                         </div>
-                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-text">${escapeHtml(comment.text)}</div>
                     </div>
                 `).join('');
             });
@@ -3268,6 +3506,7 @@
             if (!currentUser) { showToast('⚠️ تکایە چوونەژوورەوە بکە'); return; }
             const text = document.getElementById('commentText').value.trim();
             if (!text) { showToast('⚠️ لێدوانەکەت بنووسە'); return; }
+            if (text.length > 1000) { showToast('⚠️ لێدوانەکە زۆر درێژە'); return; }
             try {
                 await push(ref(db, `comments/${contentId}`), {
                     text, userId: currentUser.uid,
@@ -3323,6 +3562,20 @@
             }
         };
 
+        window.handleForgotPassword = async function() {
+            const email = document.getElementById('authEmail').value.trim();
+            if (!email) { showToast('⚠️ ئیمەیڵەکەت لە سەرەوە بنووسە پاشان لەسەر ئەم لینکە کرتە بکە'); return; }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showToast('✅ لینکی گۆڕینی پاسوۆرد نێردرا بۆ ئیمەیڵەکەت');
+            } catch (error) {
+                let errorMsg = '❌ هەڵە ڕوویدا';
+                if (error.code === 'auth/user-not-found') errorMsg = '❌ ئیمەیڵ لەلای ئێمە تۆمار نەکراوە';
+                else if (error.code === 'auth/invalid-email') errorMsg = '❌ ئیمەیڵ دروست نییە';
+                showToast(errorMsg);
+            }
+        };
+
         window.socialLogin = async (provider) => {
             try {
                 const authProvider = provider === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
@@ -3347,16 +3600,17 @@
             const title = document.querySelector('#authModal .modal-title');
             const form = document.getElementById('loginForm');
             const btn = form.querySelector('button[type="submit"]');
-            const link = document.querySelector('#authModal a');
+            const link = document.querySelector('#authModal a.forgot-password-link + div a, #authModal > .modal-body > div:last-of-type a');
+            const signupLink = document.querySelectorAll('#authModal a')[1];
             if (authMode === 'signup') {
                 title.textContent = 'دروستکردنی هەژمار';
                 btn.textContent = 'دروستکردن';
-                link.textContent = 'هەژمارت هەیە؟ چوونەژوورەوە';
+                if (signupLink) signupLink.textContent = 'هەژمارت هەیە؟ چوونەژوورەوە';
                 form.onsubmit = (e) => handleAuth(e, 'signup');
             } else {
                 title.textContent = 'چوونەژوورەوە';
                 btn.textContent = 'چوونەژوورەوە';
-                link.textContent = 'هەژمارت نییە؟ دروستی بکە';
+                if (signupLink) signupLink.textContent = 'هەژمارت نییە؟ دروستی بکە';
                 form.onsubmit = (e) => handleAuth(e, 'login');
             }
         };
