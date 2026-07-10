@@ -1254,14 +1254,31 @@
             border-radius: 10px;
         }
         .advanced-filters select {
-            padding: 8px 14px;
-            background: var(--bg-secondary);
+            padding: 8px 34px 8px 14px;
+            background-color: var(--bg-secondary);
             color: var(--text-primary);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 6px;
-            font-family: inherit;
+            font-family: 'Tajawal', 'Noto Naskh Arabic', sans-serif;
             font-size: 13px;
             cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 10px center;
+            background-size: 16px;
+        }
+        .advanced-filters select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        /* دڵنیابوونەوە لەوەی هەموو form-control-ەکان فۆنتی خۆیان بەکاردەهێنن لەسەر iOS/Safari،
+           چونکە بەبێ ئەمە Safari فۆنتی سیستەم بەکاردەهێنێت بۆ select/input/button و شێوازەکە
+           لەگەڵ ڕووکاری سایتەکە جیاواز دەبێت. */
+        select, input, textarea, button {
+            font-family: 'Tajawal', 'Noto Naskh Arabic', sans-serif;
         }
 
         /* HERO DOTS */
