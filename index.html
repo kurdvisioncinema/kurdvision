@@ -1145,7 +1145,8 @@
             .comment-form textarea { font-size: 16px; }
             .staff-card { padding: 20px; }
             .advanced-filters { gap: 8px; }
-            .advanced-filters select { font-size: 12px; padding: 8px 10px; }
+            .advanced-filters select { font-size: 12px; padding: 8px 30px 8px 10px; }
+            .select-wrap::after { left: 10px; }
         }
 
         .season-tab {
@@ -1259,26 +1260,36 @@
             color: var(--text-primary);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 6px;
-            font-family: 'Tajawal', 'Noto Naskh Arabic', sans-serif;
+            font-family: inherit;
             font-size: 13px;
             cursor: pointer;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: left 10px center;
-            background-size: 16px;
+            width: 100%;
         }
         .advanced-filters select:focus {
             outline: none;
             border-color: var(--accent-primary);
         }
-        /* دڵنیابوونەوە لەوەی هەموو form-control-ەکان فۆنتی خۆیان بەکاردەهێنن لەسەر iOS/Safari،
-           چونکە بەبێ ئەمە Safari فۆنتی سیستەم بەکاردەهێنێت بۆ select/input/button و شێوازەکە
-           لەگەڵ ڕووکاری سایتەکە جیاواز دەبێت. */
-        select, input, textarea, button {
-            font-family: 'Tajawal', 'Noto Naskh Arabic', sans-serif;
+        /* Wrapper بۆ دانانی نیشانەی دروستکراو بە CSS خاوی (بەبێ وێنە/SVG) لەبری ئایکۆنی
+           بنەڕەتی سیستەم، چونکە appearance:none لەسەر هەندێک وەشانی iOS Safari بە تەواوی
+           کار ناکات و لەگەڵ وێنەی SVG دەتوانێت دووبارە دەربکەوێت یان بەشێوەیەکی هەڵە دەربکەوێت. */
+        .select-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .select-wrap::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            width: 7px;
+            height: 7px;
+            border-left: 2px solid var(--text-secondary);
+            border-bottom: 2px solid var(--text-secondary);
+            transform: translateY(-75%) rotate(-45deg);
+            pointer-events: none;
         }
 
         /* HERO DOTS */
@@ -1505,17 +1516,23 @@
             </div>
 
             <div class="advanced-filters" id="advancedFilters">
-                <select id="filterYear" onchange="applyAdvancedFilters()">
-                    <option value="">هەموو ساڵەکان</option>
-                </select>
-                <select id="filterGenre" onchange="applyAdvancedFilters()">
-                    <option value="">هەموو ژانەرەکان</option>
-                </select>
-                <select id="filterSort" onchange="applyAdvancedFilters()">
-                    <option value="date">نوێترین</option>
-                    <option value="rating">باشترین ڕەیتینگ</option>
-                    <option value="views">زۆرترین بینین</option>
-                </select>
+                <div class="select-wrap">
+                    <select id="filterYear" onchange="applyAdvancedFilters()">
+                        <option value="">هەموو ساڵەکان</option>
+                    </select>
+                </div>
+                <div class="select-wrap">
+                    <select id="filterGenre" onchange="applyAdvancedFilters()">
+                        <option value="">هەموو ژانەرەکان</option>
+                    </select>
+                </div>
+                <div class="select-wrap">
+                    <select id="filterSort" onchange="applyAdvancedFilters()">
+                        <option value="date">نوێترین</option>
+                        <option value="rating">باشترین ڕەیتینگ</option>
+                        <option value="views">زۆرترین بینین</option>
+                    </select>
+                </div>
             </div>
 
             <div class="section-header">
