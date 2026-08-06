@@ -1195,7 +1195,8 @@
                 <li><a href="#" onclick="setFilter('series', null); showSection('home'); closeMobileMenu(); return false;">زنجیرە</a></li>
                 <li><a href="#" onclick="setFilter('subtitled', null); showSection('home'); closeMobileMenu(); return false;">ژێرنووسکراو</a></li>
                 <li><a href="#" onclick="setFilter('dubbed', null); showSection('home'); closeMobileMenu(); return false;">دۆبلاژکراو</a></li>
-                
+                <li><a href="#" onclick="showPodcastSection(); closeMobileMenu(); return false;">پۆدکاست و چاوپێکەوتن</a></li>
+
                 <li class="dropdown-menu">
                     <a href="#" onclick="toggleGenreDropdown(event); return false;">
                         ژانەر <i class="fas fa-chevron-down" style="font-size: 10px; margin-right: 5px;"></i>
@@ -1283,6 +1284,38 @@
         </div>
     </div>
 
+<!-- PODCAST SECTION -->
+<div id="podcastSection" style="display: none; padding: 40px 0;">
+    <div class="container">
+        <button class="btn btn-secondary" onclick="showSection('home')" style="margin-bottom: 20px;">
+            <i class="fas fa-arrow-right"></i> گەڕانەوە
+        </button>
+        <h1 style="font-size: 36px; margin-bottom: 10px;">
+            <i class="fas fa-podcast"></i> پۆدکاست، چاوپێکەوتن و ڤلۆگ
+        </h1>
+        <p style="color: var(--text-secondary); margin-bottom: 30px;">نوێترین ڤیدیۆکانی یوتوب</p>
+        <div class="filters">
+            <button class="filter-btn active" onclick="setPodcastFilter('all', this)">هەموو</button>
+            <button class="filter-btn" onclick="setPodcastFilter('podcast', this)">پۆدکاست</button>
+            <button class="filter-btn" onclick="setPodcastFilter('interview', this)">چاوپێکەوتن</button>
+            <button class="filter-btn" onclick="setPodcastFilter('vlog', this)">ڤلۆگ</button>
+        </div>
+        <div class="movies-grid" id="podcastGrid">
+            <div style="padding: 60px; text-align: center; color: var(--text-secondary);">چاوەڕێ بکە...</div>
+        </div>
+    </div>
+</div>
+
+<!-- PODCAST PLAYER PAGE -->
+<div id="podcastDetailPage" class="detail-page">
+    <div class="container">
+        <button class="btn btn-secondary" onclick="closePodcastDetail()" style="margin-bottom: 20px;">
+            <i class="fas fa-arrow-right"></i> گەڕانەوە
+        </button>
+        <div id="podcastDetailContent"></div>
+    </div>
+</div>
+
     <!-- ADMIN PANEL -->
     <div class="admin-panel" id="adminPanel">
         <div class="container">
@@ -1351,6 +1384,14 @@
                 </button>
                 <div id="staffManager"></div>
             </div>
+
+                         <div class="admin-section">
+                     <h3><i class="fas fa-podcast"></i> بەڕێوەبردنی پۆدکاست و ڤیدیۆکان</h3>
+                     <button class="btn btn-primary" onclick="openPodcastModal()" style="margin: 15px 0;">
+                  <i class="fas fa-plus"></i> زیادکردنی ڤیدیۆی نوێ
+                    </button>
+                    <div id="podcastManager"></div>
+                 </div>
         </div>
     </div>
 
@@ -1632,6 +1673,69 @@
                     <div style="margin-top: 20px; display: flex; gap: 10px;">
                         <button type="button" class="btn btn-secondary" onclick="closeModal('staffModal')">هەڵوەشاندنەوە</button>
                         <button type="button" class="btn btn-primary" onclick="saveStaff()">پاشەکەوتکردن</button>
+<!-- PODCAST MODAL -->
+<div class="modal" id="podcastModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal('podcastModal')">×</button>
+        <div class="modal-header">
+            <h2 class="modal-title" id="podcastModalTitle">زیادکردنی ڤیدیۆ</h2>
+        </div>
+        <div class="modal-body">
+            <div>
+                <input type="hidden" id="podcastEditId">
+                <div class="form-group">
+                    <label>ناونیشان *</label>
+                    <input type="text" id="podcastTitle">
+                </div>
+                <div class="form-group">
+                    <label>لینکی وێنەی بەرگ (Thumbnail) *</label>
+                    <input type="url" id="podcastThumbnail">
+                </div>
+                <div class="form-group">
+                    <label>جۆر</label>
+                    <select id="podcastCategory">
+                        <option value="podcast">پۆدکاست</option>
+                        <option value="interview">چاوپێکەوتن</option>
+                        <option value="vlog">ڤلۆگ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>وەسف</label>
+                    <textarea id="podcastDescription" rows="3"></textarea>
+                </div>
+
+                <h3 style="margin: 20px 0; color: var(--accent-primary);">سێرڤەرەکان</h3>
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 1 (Upstream) *</label>
+                    <input type="url" id="podcastServer1">
+                </div>
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 2 (Filemoon)</label>
+                    <input type="url" id="podcastServer2">
+                </div>
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 3 (MixDrop)</label>
+                    <input type="url" id="podcastServer3">
+                </div>
+                <div class="form-group">
+                    <label>🎥 سێرڤەر 4 (VidMoly)</label>
+                    <input type="url" id="podcastServer4">
+                </div>
+
+                <h3 style="margin: 20px 0; color: var(--accent-primary);">ژێرنووسەکان</h3>
+                <div class="form-group">
+                    <label>📄 ژێرنووس 1 (SRT)</label>
+                    <input type="url" id="podcastSubtitle1">
+                </div>
+                <div class="form-group">
+                    <label>📄 ژێرنووس 2 (SRT)</label>
+                    <input type="url" id="podcastSubtitle2">
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('podcastModal')">هەڵوەشاندنەوە</button>
+                    <button type="button" class="btn btn-primary" onclick="savePodcast()">پاشەکەوتکردن</button>
+  
                     </div>
                 </div>
             </div>
@@ -1662,6 +1766,216 @@
         let isAdmin = false;
         let currentFilter = 'all';
         let authMode = 'login';
+// ==================== PODCAST SECTION ====================
+window.showPodcastSection = function() {
+    document.getElementById('homeSection').style.display = 'none';
+    document.getElementById('detailPage').classList.remove('active');
+    document.getElementById('staffSection').style.display = 'none';
+    document.getElementById('adminPanel').classList.remove('show');
+    document.getElementById('podcastDetailPage').classList.remove('active');
+    document.getElementById('podcastSection').style.display = 'block';
+    displayPodcasts();
+};
+
+window.closePodcastDetail = function() {
+    document.getElementById('podcastDetailPage').classList.remove('active');
+    document.getElementById('podcastSection').style.display = 'block';
+};
+
+window.setPodcastFilter = function(filter, btn) {
+    currentPodcastFilter = filter;
+    document.querySelectorAll('#podcastSection .filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    displayPodcasts();
+};
+
+function displayPodcasts() {
+    const grid = document.getElementById('podcastGrid');
+    if (!grid) return;
+    let filtered = [...allPodcasts];
+    if (currentPodcastFilter !== 'all') filtered = filtered.filter(p => p.category === currentPodcastFilter);
+    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div style="padding: 60px; text-align: center; color: var(--text-secondary); grid-column: 1/-1;">هیچ ڤیدیۆیەک نییە</div>';
+        return;
+    }
+    const catNames = { podcast: 'پۆدکاست', interview: 'چاوپێکەوتن', vlog: 'ڤلۆگ' };
+    grid.innerHTML = filtered.map(item => `
+        <div class="movie-card" onclick="openPodcastDetail('${item.id}')">
+            <div class="movie-poster">
+                <img src="${item.thumbnail}" alt="${item.title}" loading="lazy">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="movie-badge">${catNames[item.category] || ''}</div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-title">${item.title}</div>
+                <div class="movie-meta"><span>👁️ ${item.views || 0}</span></div>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.openPodcastDetail = function(id) {
+    const item = allPodcasts.find(p => p.id === id);
+    if (!item) return;
+    update(ref(db, `podcasts/${id}`), { views: (item.views || 0) + 1 });
+    document.getElementById('podcastSection').style.display = 'none';
+    document.getElementById('podcastDetailPage').classList.add('active');
+    const catNames = { podcast: 'پۆدکاست', interview: 'چاوپێکەوتن', vlog: 'ڤلۆگ' };
+
+    const servers = item.servers || {};
+    const serverList = [];
+    if (servers.server1) serverList.push({ name: 'سێرڤەر 1', url: servers.server1 });
+    if (servers.server2) serverList.push({ name: 'سێرڤەر 2', url: servers.server2 });
+    if (servers.server3) serverList.push({ name: 'سێرڤەر 3', url: servers.server3 });
+    if (servers.server4) serverList.push({ name: 'سێرڤەر 4', url: servers.server4 });
+
+    let serverTabsHTML = '';
+    if (serverList.length > 1) {
+        serverTabsHTML = `
+            <div class="server-tabs">
+                ${serverList.map((s, i) => `
+                    <button class="server-tab ${i === 0 ? 'active' : ''}" onclick="podcastSwitchServer('${s.url}', this)">${s.name}</button>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    const subtitles = item.subtitles || {};
+    let subtitlesHTML = '';
+    if (subtitles.sub1 || subtitles.sub2) {
+        subtitlesHTML = `
+            <div style="margin: 20px 0; padding: 15px; background: var(--bg-card); border-radius: 8px;">
+                <h4 style="margin-bottom: 10px; color: var(--accent-primary);">📄 ژێرنووسەکان:</h4>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    ${subtitles.sub1 ? `<a href="${subtitles.sub1}" download class="btn btn-secondary">⬇️ ژێرنووس 1</a>` : ''}
+                    ${subtitles.sub2 ? `<a href="${subtitles.sub2}" download class="btn btn-secondary">⬇️ ژێرنووس 2</a>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    document.getElementById('podcastDetailContent').innerHTML = `
+        ${serverList.length ? `
+            <div class="video-container">
+                <iframe id="podcastVideoPlayer" class="video-player" src="${serverList[0].url}" allowfullscreen allow="autoplay"></iframe>
+            </div>
+        ` : '<p style="text-align: center; padding: 40px; color: var(--text-secondary);">هیچ سێرڤەرێک زیاد نەکراوە</p>'}
+        ${serverTabsHTML}
+        ${subtitlesHTML}
+        <h1 class="detail-title" style="font-size: 28px; margin: 20px 0 10px;">${item.title}</h1>
+        <div class="detail-badges">
+            <div class="detail-badge"><i class="fas fa-tag"></i> ${catNames[item.category] || ''}</div>
+            <div class="detail-badge"><i class="fas fa-eye"></i> ${(item.views || 0).toLocaleString()}</div>
+        </div>
+        ${item.description ? `<p class="detail-description">${item.description}</p>` : ''}
+    `;
+};
+
+window.podcastSwitchServer = function(url, btn) {
+    document.querySelectorAll('#podcastDetailContent .server-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('podcastVideoPlayer').src = url;
+};
+
+// --- ئەدمین: زیادکردن/دەستکاری/سڕینەوە ---
+window.openPodcastModal = function() {
+    if (!isAdmin) return showToast('⚠️ تەنها ئەدمین');
+    ['podcastEditId','podcastTitle','podcastThumbnail','podcastDescription',
+     'podcastServer1','podcastServer2','podcastServer3','podcastServer4',
+     'podcastSubtitle1','podcastSubtitle2'
+    ].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('podcastCategory').value = 'podcast';
+    document.getElementById('podcastModalTitle').textContent = 'زیادکردنی ڤیدیۆ';
+    openModal('podcastModal');
+};
+
+window.savePodcast = async function() {
+    if (!isAdmin) return showToast('⚠️ تەنها ئەدمین');
+    const id = document.getElementById('podcastEditId').value;
+    const title = document.getElementById('podcastTitle').value.trim();
+    const thumbnail = document.getElementById('podcastThumbnail').value.trim();
+    const server1 = document.getElementById('podcastServer1').value.trim();
+    if (!title || !thumbnail) { showToast('⚠️ ناونیشان و وێنە پێویستن'); return; }
+    if (!server1) { showToast('⚠️ لایەنی کەم سێرڤەر 1 پڕ بکەرەوە'); return; }
+
+    const servers = { server1 };
+    if (document.getElementById('podcastServer2').value.trim()) servers.server2 = document.getElementById('podcastServer2').value.trim();
+    if (document.getElementById('podcastServer3').value.trim()) servers.server3 = document.getElementById('podcastServer3').value.trim();
+    if (document.getElementById('podcastServer4').value.trim()) servers.server4 = document.getElementById('podcastServer4').value.trim();
+
+    const subtitles = {};
+    if (document.getElementById('podcastSubtitle1').value.trim()) subtitles.sub1 = document.getElementById('podcastSubtitle1').value.trim();
+    if (document.getElementById('podcastSubtitle2').value.trim()) subtitles.sub2 = document.getElementById('podcastSubtitle2').value.trim();
+
+    const data = {
+        title,
+        thumbnail,
+        category: document.getElementById('podcastCategory').value,
+        description: document.getElementById('podcastDescription').value.trim(),
+        servers,
+        date: new Date().toISOString()
+    };
+    if (Object.keys(subtitles).length > 0) data.subtitles = subtitles;
+
+    try {
+        if (id) {
+            const existing = allPodcasts.find(p => p.id === id);
+            data.views = existing?.views || 0;
+            await update(ref(db, `podcasts/${id}`), data);
+            showToast('✅ دەستکاری کرا');
+        } else {
+            data.views = 0;
+            await push(ref(db, 'podcasts'), data);
+            showToast('✅ زیاد کرا');
+        }
+        closeModal('podcastModal');
+    } catch (error) { showToast('❌ هەڵە: ' + error.message); }
+};
+
+window.editPodcast = function(id) {
+    const item = allPodcasts.find(p => p.id === id);
+    if (!item) return;
+    document.getElementById('podcastEditId').value = id;
+    document.getElementById('podcastTitle').value = item.title;
+    document.getElementById('podcastThumbnail').value = item.thumbnail;
+    document.getElementById('podcastCategory').value = item.category || 'podcast';
+    document.getElementById('podcastDescription').value = item.description || '';
+    document.getElementById('podcastServer1').value = item.servers?.server1 || '';
+    document.getElementById('podcastServer2').value = item.servers?.server2 || '';
+    document.getElementById('podcastServer3').value = item.servers?.server3 || '';
+    document.getElementById('podcastServer4').value = item.servers?.server4 || '';
+    document.getElementById('podcastSubtitle1').value = item.subtitles?.sub1 || '';
+    document.getElementById('podcastSubtitle2').value = item.subtitles?.sub2 || '';
+    document.getElementById('podcastModalTitle').textContent = 'دەستکاریکردنی ڤیدیۆ';
+    openModal('podcastModal');
+};
+
+window.deletePodcast = async function(id) {
+    if (!isAdmin) return showToast('⚠️ تەنها ئەدمین');
+    if (!confirm('دڵنیایت؟')) return;
+    try { await remove(ref(db, `podcasts/${id}`)); showToast('✅ سڕایەوە'); }
+    catch (error) { showToast('❌ هەڵە'); }
+};
+
+function displayPodcastManager() {
+    const manager = document.getElementById('podcastManager');
+    if (!manager) return;
+    if (allPodcasts.length === 0) { manager.innerHTML = '<p style="padding:20px;text-align:center;color:var(--text-secondary);">هیچ ڤیدیۆیەک نییە</p>'; return; }
+    const catNames = { podcast: 'پۆدکاست', interview: 'چاوپێکەوتن', vlog: 'ڤلۆگ' };
+    manager.innerHTML = allPodcasts.map(item => `
+        <div class="list-item">
+            <div style="flex: 1;">
+                <div style="font-weight: 600; margin-bottom: 5px;">${item.title}</div>
+                <div style="font-size: 12px; color: var(--text-secondary);">${catNames[item.category] || ''} • 👁️ ${item.views || 0}</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn" style="background: #2196F3; color: white;" onclick="editPodcast('${item.id}')"><i class="fas fa-edit"></i> دەستکاری</button>
+                <button class="btn btn-danger" onclick="deletePodcast('${item.id}')"><i class="fas fa-trash"></i> سڕینەوە</button>
+            </div>
+        </div>
+    `).join('');
+}
 
         // ==================== MOBILE MENU ====================
         window.toggleMobileMenu = function() {
@@ -1726,6 +2040,8 @@
                 document.getElementById('homeSection').style.display = 'none';
                 document.getElementById('detailPage').classList.remove('active');
                 document.getElementById('staffSection').style.display = 'none';
+                document.getElementById('podcastSection').style.display = 'none';
+                document.getElementById('podcastDetailPage').classList.remove('active');
                 document.getElementById('adminPanel').classList.add('show');
                 displayContentManager();
                 displaySlidesManager();
@@ -1736,6 +2052,8 @@
                 document.getElementById('homeSection').style.display = 'block';
                 document.getElementById('detailPage').classList.remove('active');
                 document.getElementById('staffSection').style.display = 'none';
+                document.getElementById('podcastSection').style.display = 'none';
+                document.getElementById('podcastDetailPage').classList.remove('active');
                 document.getElementById('adminPanel').classList.remove('show');
             }
         };
@@ -1745,6 +2063,8 @@
             document.getElementById('detailPage').classList.remove('active');
             document.getElementById('adminPanel').classList.remove('show');
             document.getElementById('staffSection').style.display = 'block';
+            document.getElementById('podcastSection').style.display = 'none';
+            document.getElementById('podcastDetailPage').classList.remove('active');
             displayStaffPage();
         };
 
@@ -2466,6 +2786,8 @@
             document.getElementById('homeSection').style.display = 'none';
             document.getElementById('staffSection').style.display = 'none';
             document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('podcastSection').style.display = 'none';
+            document.getElementById('podcastDetailPage').classList.remove('active');
             detailPage.classList.add('active');
 
             let episodesHTML = '';
