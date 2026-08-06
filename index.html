@@ -395,6 +395,56 @@
             border-radius: 4px;
             font-size: 11px;
         }
+.favorite-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 34px;
+            height: 34px;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: all 0.3s;
+        }
+        .favorite-btn:hover { background: var(--accent-primary); transform: scale(1.1); }
+        .favorite-btn.active { background: var(--accent-primary); color: white; }
+
+        .continue-watching-row {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+        .continue-watching-row .movie-card {
+            flex: 0 0 180px;
+        }
+
+        .detail-favorite-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .detail-favorite-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
 
         .movie-info {
             padding: 12px;
@@ -1196,6 +1246,8 @@
                 <li><a href="#" onclick="setFilter('subtitled', null); showSection('home'); closeMobileMenu(); return false;">ژێرنووسکراو</a></li>
                 <li><a href="#" onclick="setFilter('dubbed', null); showSection('home'); closeMobileMenu(); return false;">دۆبلاژکراو</a></li>
 <li><a href="#" onclick="setFilter('podcast', null); showSection('home'); closeMobileMenu(); return false;">پۆدکاست و ڤیدیۆ</a></li>
+<li><a href="#" onclick="showFavoritesSection(); closeMobileMenu(); return false;">دڵخوازەکان</a></li>
+                <li><a href="#" onclick="showHistorySection(); closeMobileMenu(); return false;">بینراوەکان</a></li>
                 
                 <li class="dropdown-menu">
                     <a href="#" onclick="toggleGenreDropdown(event); return false;">
@@ -1247,6 +1299,12 @@
     <div id="homeSection">
         <section class="hero" id="heroSection"></section>
         <div class="container">
+            <div id="continueWatchingSection" style="display:none;">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-history"></i> بەردەوام بووە لە بینین</h2>
+                </div>
+                <div class="continue-watching-row" id="continueWatchingRow"></div>
+            </div>
             <div class="filters" id="filterTabs">
                 <button class="filter-btn active" onclick="setFilter('all', this)">هەموو</button>
                 <button class="filter-btn" onclick="setFilter('movies', this)">فیلمەکان</button>
@@ -1280,6 +1338,36 @@
                 تیمی پیشەییمان بۆ پێشکەشکردنی باشترین خزمەتگوزاری
             </p>
             <div id="staffGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+                <div style="padding: 60px; text-align: center; color: var(--text-secondary);">چاوەڕێ بکە...</div>
+            </div>
+        </div>
+    </div>
+<!-- FAVORITES SECTION -->
+    <div id="favoritesSection" style="display: none; padding: 60px 0;">
+        <div class="container">
+            <button class="btn btn-secondary" onclick="showSection('home')" style="margin-bottom: 30px;">
+                <i class="fas fa-arrow-right"></i> گەڕانەوە
+            </button>
+            <h1 style="font-size: 36px; margin-bottom: 30px;"><i class="fas fa-heart" style="color: var(--accent-primary);"></i> دڵخوازەکانم</h1>
+            <div class="movies-grid" id="favoritesGrid">
+                <div style="padding: 60px; text-align: center; color: var(--text-secondary);">چاوەڕێ بکە...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY SECTION -->
+    <div id="historySection" style="display: none; padding: 60px 0;">
+        <div class="container">
+            <div style="display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px;">
+                <button class="btn btn-secondary" onclick="showSection('home')">
+                    <i class="fas fa-arrow-right"></i> گەڕانەوە
+                </button>
+                <button class="btn btn-danger" onclick="clearHistory()">
+                    <i class="fas fa-trash"></i> سڕینەوەی هەموو مێژوو
+                </button>
+            </div>
+            <h1 style="font-size: 36px; margin-bottom: 30px;"><i class="fas fa-clock-rotate-left" style="color: var(--accent-primary);"></i> ئەوانەی سەیرم کردوون</h1>
+            <div class="movies-grid" id="historyGrid">
                 <div style="padding: 60px; text-align: center; color: var(--text-secondary);">چاوەڕێ بکە...</div>
             </div>
         </div>
@@ -1681,6 +1769,8 @@
         let isAdmin = false;
         let currentFilter = 'all';
         let authMode = 'login';
+        let userFavorites = {};
+        let userHistory = {};
 
         // ==================== MOBILE MENU ====================
         window.toggleMobileMenu = function() {
@@ -1745,6 +1835,8 @@
                 document.getElementById('homeSection').style.display = 'none';
                 document.getElementById('detailPage').classList.remove('active');
                 document.getElementById('staffSection').style.display = 'none';
+                document.getElementById('favoritesSection').style.display = 'none';
+                document.getElementById('historySection').style.display = 'none';
                 document.getElementById('adminPanel').classList.add('show');
                 displayContentManager();
                 displaySlidesManager();
@@ -1755,7 +1847,10 @@
                 document.getElementById('homeSection').style.display = 'block';
                 document.getElementById('detailPage').classList.remove('active');
                 document.getElementById('staffSection').style.display = 'none';
+                document.getElementById('favoritesSection').style.display = 'none';
+                document.getElementById('historySection').style.display = 'none';
                 document.getElementById('adminPanel').classList.remove('show');
+                displayContinueWatching();
             }
         };
 
@@ -1763,6 +1858,8 @@
             document.getElementById('homeSection').style.display = 'none';
             document.getElementById('detailPage').classList.remove('active');
             document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('favoritesSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
             document.getElementById('staffSection').style.display = 'block';
             displayStaffPage();
         };
@@ -1782,8 +1879,38 @@
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             updateUIForAuth(user);
-            if (user) { checkAdminStatus(user.uid); }
-            else { isAdmin = false; document.getElementById('adminMenuLink').style.display = 'none'; }
+            if (user) {
+                checkAdminStatus(user.uid);
+                loadUserFavorites(user.uid);
+                loadUserHistory(user.uid);
+            } else {
+                isAdmin = false;
+                userFavorites = {};
+                userHistory = {};
+                document.getElementById('adminMenuLink').style.display = 'none';
+                const cw = document.getElementById('continueWatchingSection');
+                if (cw) cw.style.display = 'none';
+            }
+        });
+
+        function loadUserFavorites(uid) {
+            onValue(ref(db, `favorites/${uid}`), (snapshot) => {
+                userFavorites = snapshot.val() || {};
+                document.querySelectorAll('.favorite-btn').forEach(btn => {
+                    const cid = btn.dataset.id;
+                    btn.classList.toggle('active', !!userFavorites[cid]);
+                });
+                if (document.getElementById('favoritesSection')?.style.display !== 'none') displayFavorites();
+            });
+        }
+
+        function loadUserHistory(uid) {
+            onValue(ref(db, `history/${uid}`), (snapshot) => {
+                userHistory = snapshot.val() || {};
+                displayContinueWatching();
+                if (document.getElementById('historySection')?.style.display !== 'none') displayHistory();
+            });
+        }
         });
 
         function updateUIForAuth(user) {
@@ -1876,22 +2003,7 @@ else if (currentFilter === 'podcast') filtered = filtered.filter(c => c.type ===
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => `
-                <div class="movie-card" onclick="openDetail('${item.id}')">
-                    <div class="movie-poster">
-                        <img src="${item.poster}" alt="${item.title}" loading="lazy">
-                        <div class="play-icon"><i class="fas fa-play"></i></div>
-                        ${item.rating ? `<div class="movie-badge">⭐ ${item.rating}</div>` : ''}
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">${item.title}</div>
-                        <div class="movie-meta">
-                            <span>${item.year || '2024'}</span>
-<span>${item.type === 'series' ? 'زنجیرە' : item.type === 'podcast' ? mediaTypeLabel(item.mediaType) : 'فیلم'}</span>   
-                     </div>
-                    </div>
-                </div>
-            `).join('');
+            grid.innerHTML = filtered.map(item => renderMovieCard(item)).join('');
         }
 
         // ==================== HERO ====================
@@ -2493,6 +2605,7 @@ if (item.type === 'movie' || item.type === 'podcast') {
             const item = allContent.find(c => c.id === id);
             if (!item) return;
             update(ref(db, `content/${id}`), { views: (item.views || 0) + 1 });
+recordHistory(id);
 
             const detailPage = document.getElementById('detailPage');
             document.getElementById('homeSection').style.display = 'none';
@@ -2598,6 +2711,9 @@ const subtitles = (item.type === 'movie' || item.type === 'podcast') ? item.subt
                             </div>
                             <div class="detail-info">
                                 <h1 class="detail-title">${item.title}</h1>
+                                <button class="detail-favorite-btn ${userFavorites[item.id] ? 'active' : ''}" onclick="toggleFavorite('${item.id}', this)" style="margin-bottom: 20px;">
+                                    <i class="fas fa-heart"></i> <span>${userFavorites[item.id] ? 'لابردن لە دڵخوازەکان' : 'زیادکردن بۆ دڵخوازەکان'}</span>
+                                </button>
                                 <div class="detail-badges">
                                     ${item.rating ? `<div class="detail-rating">⭐ ${item.rating}/10</div>` : ''}
                                     <div class="detail-badge"><i class="fas fa-calendar"></i> ${item.year || '2024'}</div>
@@ -2700,6 +2816,7 @@ const subtitles = (item.type === 'movie' || item.type === 'podcast') ? item.subt
             document.getElementById('detailPage').classList.remove('active');
             document.getElementById('homeSection').style.display = 'block';
             document.getElementById('staffSection').style.display = 'none';
+            displayContinueWatching();
         };
 
         window.switchSeason = (seasonIndex, btn) => {
@@ -2789,7 +2906,124 @@ const subtitles = (item.type === 'movie' || item.type === 'podcast') ? item.subt
                 showToast('✅ سڕایەوە');
             } catch (error) { showToast('❌ هەڵە'); }
         };
+// ==================== FAVORITES ====================
+        window.toggleFavorite = async (contentId, btnEl) => {
+            if (!currentUser) { showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە'); openAuthModal(); return; }
+            const isFav = !!userFavorites[contentId];
+            try {
+                if (isFav) {
+                    await remove(ref(db, `favorites/${currentUser.uid}/${contentId}`));
+                    showToast('💔 لابرا لە دڵخوازەکان');
+                } else {
+                    await set(ref(db, `favorites/${currentUser.uid}/${contentId}`), Date.now());
+                    showToast('❤️ زیاد کرا بۆ دڵخوازەکان');
+                }
+                if (btnEl) {
+                    btnEl.classList.toggle('active', !isFav);
+                    const label = btnEl.querySelector('span');
+                    if (label) label.textContent = !isFav ? 'لابردن لە دڵخوازەکان' : 'زیادکردن بۆ دڵخوازەکان';
+                }
+            } catch (error) { showToast('❌ هەڵە: ' + error.message); }
+        };
 
+        function displayFavorites() {
+            const grid = document.getElementById('favoritesGrid');
+            if (!grid) return;
+            const ids = Object.keys(userFavorites);
+            const items = allContent.filter(c => ids.includes(c.id));
+            if (items.length === 0) {
+                grid.innerHTML = '<div style="padding: 60px; text-align: center; color: var(--text-secondary); grid-column: 1/-1;">هیچ شتێکت نەکردووەتە دڵخواز</div>';
+                return;
+            }
+            grid.innerHTML = items.map(item => renderMovieCard(item)).join('');
+        }
+
+        window.showFavoritesSection = () => {
+            if (!currentUser) { showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە'); openAuthModal(); return; }
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('detailPage').classList.remove('active');
+            document.getElementById('staffSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+            document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('favoritesSection').style.display = 'block';
+            displayFavorites();
+        };
+
+        // ==================== HISTORY / CONTINUE WATCHING ====================
+        async function recordHistory(contentId) {
+            if (!currentUser) return;
+            try {
+                await set(ref(db, `history/${currentUser.uid}/${contentId}`), Date.now());
+            } catch (error) { /* ساکت */ }
+        }
+
+        function displayHistory() {
+            const grid = document.getElementById('historyGrid');
+            if (!grid) return;
+            const entries = Object.entries(userHistory).sort((a, b) => b[1] - a[1]);
+            const items = entries.map(([id]) => allContent.find(c => c.id === id)).filter(Boolean);
+            if (items.length === 0) {
+                grid.innerHTML = '<div style="padding: 60px; text-align: center; color: var(--text-secondary); grid-column: 1/-1;">هیچ شتێکت سەیر نەکردووە</div>';
+                return;
+            }
+            grid.innerHTML = items.map(item => renderMovieCard(item)).join('');
+        }
+
+        window.showHistorySection = () => {
+            if (!currentUser) { showToast('⚠️ تکایە یەکەم چوونەژوورەوە بکە'); openAuthModal(); return; }
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('detailPage').classList.remove('active');
+            document.getElementById('staffSection').style.display = 'none';
+            document.getElementById('favoritesSection').style.display = 'none';
+            document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('historySection').style.display = 'block';
+            displayHistory();
+        };
+
+        window.clearHistory = async () => {
+            if (!currentUser) return;
+            if (!confirm('دڵنیایت دەتەوێت هەموو مێژووەکە بسڕیتەوە؟')) return;
+            try {
+                await remove(ref(db, `history/${currentUser.uid}`));
+                showToast('✅ مێژوو سڕایەوە');
+            } catch (error) { showToast('❌ هەڵە'); }
+        };
+
+        function displayContinueWatching() {
+            const section = document.getElementById('continueWatchingSection');
+            const row = document.getElementById('continueWatchingRow');
+            if (!section || !row) return;
+            if (!currentUser) { section.style.display = 'none'; return; }
+            const entries = Object.entries(userHistory).sort((a, b) => b[1] - a[1]).slice(0, 15);
+            const items = entries.map(([id]) => allContent.find(c => c.id === id)).filter(Boolean);
+            if (items.length === 0) { section.style.display = 'none'; return; }
+            section.style.display = 'block';
+            row.innerHTML = items.map(item => renderMovieCard(item)).join('');
+        }
+
+        // کارتی هاوبەش بۆ فیلم/زنجیرە/پۆدکاست، لە چەند شوێن بەکاردێت
+        function renderMovieCard(item) {
+            const isFav = !!userFavorites[item.id];
+            return `
+                <div class="movie-card" onclick="openDetail('${item.id}')">
+                    <div class="movie-poster">
+                        <img src="${item.poster}" alt="${item.title}" loading="lazy">
+                        <div class="play-icon"><i class="fas fa-play"></i></div>
+                        ${item.rating ? `<div class="movie-badge">⭐ ${item.rating}</div>` : ''}
+                        <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${item.id}" onclick="event.stopPropagation(); toggleFavorite('${item.id}', this)">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${item.title}</div>
+                        <div class="movie-meta">
+                            <span>${item.year || '2024'}</span>
+                            <span>${item.type === 'series' ? 'زنجیرە' : item.type === 'podcast' ? mediaTypeLabel(item.mediaType) : 'فیلم'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
         function formatDate(dateStr) {
             const date = new Date(dateStr);
             const now = new Date();
@@ -2798,12 +3032,13 @@ const subtitles = (item.type === 'movie' || item.type === 'podcast') ? item.subt
             if (diff < 3600) return Math.floor(diff / 60) + ' خولەک پێش ئێستا';
             if (diff < 86400) return Math.floor(diff / 3600) + ' کاتژمێر پێش ئێستا';
             return Math.floor(diff / 86400) + ' ڕۆژ پێش ئێستا';
-function mediaTypeLabel(mt) {
-    const labels = { podcast: 'پۆدکاست', interview: 'چاوپێکەوتن', youtube: 'یوتیوب', vlog: 'ڤڵۆگ' };
-    return labels[mt] || 'ڤیدیۆ';
-}
-window.mediaTypeLabel = mediaTypeLabel;
         }
+
+        function mediaTypeLabel(mt) {
+            const labels = { podcast: 'پۆدکاست', interview: 'چاوپێکەوتن', youtube: 'یوتیوب', vlog: 'ڤڵۆگ' };
+            return labels[mt] || 'ڤیدیۆ';
+        }
+        window.mediaTypeLabel = mediaTypeLabel;
 
         // ==================== AUTH FUNCTIONS ====================
         window.handleAuth = async (e, mode) => {
