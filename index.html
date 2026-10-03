@@ -2,6 +2,7 @@
 <html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('kv_theme')||'red'}catch(e){document.documentElement.dataset.theme='red'}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>کورد ڤیژن Pro</title>
     <title>KurdVision Cinema | بینینی فیلم و دراماکان بە کوردی</title>
@@ -1290,6 +1291,52 @@ header{top:var(--strip-h)!important;background:rgba(10,10,16,.78)!important;bord
   .ad-banners{grid-template-columns:1fr}
   .ad-strip{font-size:12px;padding:0 38px}
 }
+/* ===== v3 ===== */
+.h-row{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px;margin-bottom:18px;scroll-snap-type:x proximity}
+.h-row .movie-card,.h-row .top-item,.h-row .sk{flex:0 0 160px;scroll-snap-align:start}
+.top-item{position:relative}
+.top-item .movie-card{width:100%}
+.rank{position:absolute;bottom:64px;right:2px;z-index:3;font-size:64px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:2px #fff;text-shadow:0 4px 18px rgba(0,0,0,.6);pointer-events:none}
+.sk{aspect-ratio:2/3.5;border-radius:16px;background:linear-gradient(100deg,#15151d 30%,#1f1f2b 50%,#15151d 70%);background-size:200% 100%;animation:sk 1.4s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}}
+.ep-nav{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+@media(max-width:768px){.h-row .movie-card,.h-row .top-item,.h-row .sk{flex-basis:130px}.rank{font-size:52px;bottom:58px}}
+
+/* ===== themes ===== */
+html[data-theme="red"]{--bg-primary:#0f0f1e;--bg-secondary:#1a1a2e;--bg-card:#16213e;--accent-primary:#e94560;--accent-2:#c22d47;--accent-text:#ff8fa3;--accent-soft:rgba(233,69,96,.16);--accent-glow:rgba(233,69,96,.3);--text-secondary:#a0a0a0}
+html[data-theme="purple"]{--bg-primary:#09090f;--bg-secondary:#111119;--bg-card:#17171f;--accent-primary:#8b5cf6;--accent-2:#6d28d9;--accent-text:#c4b5fd;--accent-soft:rgba(139,92,246,.16);--accent-glow:rgba(139,92,246,.3);--text-secondary:#9a9aae}
+
+body{background:radial-gradient(900px 500px at 85% -5%,var(--accent-soft),transparent 60%),var(--bg-primary)}
+header{background:color-mix(in srgb,var(--bg-secondary) 80%,transparent)!important}
+.hero-content{background:linear-gradient(to top,var(--bg-primary) 0%,color-mix(in srgb,var(--bg-primary) 60%,transparent) 55%,transparent)}
+.btn-primary,.filter-btn:hover,.filter-btn.active{background:linear-gradient(135deg,var(--accent-primary),var(--accent-2))}
+.btn-primary{box-shadow:0 8px 24px var(--accent-glow)}
+.btn-primary:hover{background:linear-gradient(135deg,var(--accent-primary),var(--accent-2));filter:brightness(1.12)}
+.hero-content .btn-primary,.hero-content .btn-primary:hover{background:#fff;color:#111;box-shadow:none}
+.nav-links a:hover,.nav-links a.active{color:var(--accent-text);background:var(--accent-soft)}
+.user-dropdown a:hover,.dropdown-content a:hover{background:var(--accent-soft)!important}
+.movie-card:hover{box-shadow:0 18px 40px var(--accent-glow);border-color:var(--accent-primary)}
+.staff-card:hover{box-shadow:0 20px 40px var(--accent-glow)}
+.play-icon{background:var(--accent-primary)}
+.episode-card.active{background:var(--accent-soft)}
+.ad-strip{background:linear-gradient(90deg,var(--accent-2),var(--accent-primary))}
+.modal-content{background:var(--bg-secondary)}
+.detail-header{background:linear-gradient(180deg,var(--bg-card),var(--bg-secondary))}
+
+/* دوگمە و پەنجەرەی هەڵبژاردن */
+.theme-btn{width:40px;height:40px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text-primary);cursor:pointer;font-size:16px}
+.theme-btn:hover{background:var(--accent-soft);color:var(--accent-text)}
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:6px 0}
+.theme-opt{cursor:pointer;border:2px solid var(--line);border-radius:16px;padding:10px;background:rgba(255,255,255,.03);color:var(--text-primary);font-family:inherit;font-size:15px;font-weight:700;transition:border-color .2s}
+.theme-opt:hover,.theme-opt.on{border-color:var(--accent-primary)}
+.theme-opt .sw{display:block;position:relative;height:90px;border-radius:10px;margin-bottom:10px;overflow:hidden}
+.theme-opt .sw::after{content:'';position:absolute;left:12px;bottom:12px;width:44px;height:14px;border-radius:99px}
+.theme-opt[data-theme="red"] .sw{background:linear-gradient(135deg,#1a1a2e,#16213e)}
+.theme-opt[data-theme="red"] .sw::after{background:#e94560}
+.theme-opt[data-theme="purple"] .sw{background:linear-gradient(135deg,#09090f,#17171f)}
+.theme-opt[data-theme="purple"] .sw::after{background:#8b5cf6}
+@media(max-width:768px){.theme-btn{order:3}}
     </style>
 </head>
 <body>
@@ -1343,6 +1390,7 @@ header{top:var(--strip-h)!important;background:rgba(10,10,16,.78)!important;bord
                     </button>
                 </li>
             </ul>
+<button type="button" class="theme-btn" onclick="openThemePicker()" aria-label="ڕەنگی سایتەکە"><i class="fas fa-palette"></i></button>
 
             <div id="authButtons">
                 <button class="btn btn-primary" onclick="openAuthModal()">
@@ -1381,6 +1429,7 @@ header{top:var(--strip-h)!important;background:rgba(10,10,16,.78)!important;bord
                 </div>
                 <div class="continue-watching-row" id="continueWatchingRow"></div>
             </div>
+<div id="homeRows"><div class="h-row"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
             <div class="filters" id="filterTabs">
                 <button class="filter-btn active" onclick="setFilter('all', this)">هەموو</button>
                 <button class="filter-btn" onclick="setFilter('movies', this)">فیلمەکان</button>
@@ -1853,6 +1902,18 @@ header{top:var(--strip-h)!important;background:rgba(10,10,16,.78)!important;bord
         </div>
     </div>
 <footer class="site-footer">© کورد ڤیژن · فیلم و زنجیرەکان بە ژێرنووسی کوردی</footer>
+<div class="modal" id="themeModal">
+    <div class="modal-content" style="max-width:460px">
+        <div class="modal-header"><h2 class="modal-title">ڕەنگی سایتەکە هەڵبژێرە</h2></div>
+        <div class="modal-body">
+            <div class="theme-grid">
+                <button type="button" class="theme-opt" data-theme="red" onclick="setTheme('red')"><span class="sw"></span>سوور و نیلی</button>
+                <button type="button" class="theme-opt" data-theme="purple" onclick="setTheme('purple')"><span class="sw"></span>مۆر و ڕەش</button>
+            </div>
+            <p style="color:var(--text-secondary);font-size:13px;margin-top:12px;text-align:center">دواتر دەتوانیت بە دوگمەی <i class="fas fa-palette"></i> لە سەرەوە بیگۆڕیت.</p>
+        </div>
+    </div>
+</div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -2971,9 +3032,9 @@ const subtitles = (item.type === 'movie' || item.type === 'podcast') ? item.subt
                 list.innerHTML = comments.map(comment => `
                     <div class="comment">
                         <div class="comment-header">
-                            <div class="comment-avatar">${comment.userName[0].toUpperCase()}</div>
+                            <div class="comment-avatar">${esc((comment.userName || '?')[0].toUpperCase())}</div>
                             <div>
-                                <div class="comment-author">${comment.userName}</div>
+                                <div class="comment-author">${esc(comment.userName)}</div>
                                 <div class="comment-date">${formatDate(comment.date)}</div>
                             </div>
                             ${(currentUser && currentUser.uid === comment.userId) || isAdmin ? `
@@ -2982,7 +3043,7 @@ const subtitles = (item.type === 'movie' || item.type === 'podcast') ? item.subt
                                 </button>
                             ` : ''}
                         </div>
-                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-text">${esc(comment.text)}</div>
                     </div>
                 `).join('');
             });
@@ -3295,6 +3356,127 @@ setInterval(() => {
     s.forEach((x, i) => d.children[i].classList.toggle('on', x.classList.contains('active')));
 }, 600);
         };
+// ==================== v3 ====================
+const g = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const BASE_TITLE = document.title;
+const lsGet = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+const DEF_GENRES = [{value:'drama',name:'درامی'},{value:'action',name:'ئاکشن'},{value:'fantasy',name:'خەیاڵی'},{value:'history',name:'مێژووی'},{value:'anime',name:'ئەنیمی'},{value:'horror',name:'تۆقێنەر'},{value:'comedy',name:'کۆمیدی'},{value:'romance',name:'ڕۆمانسی'}];
+const byNew = (a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0);
+
+// ---------- ڕیزەکانی لاپەڕەی سەرەکی ----------
+function rowHTML(title, icon, items, top) {
+    if (!items.length) return '';
+    return `<div class="section-header"><h2 class="section-title"><i class="fas ${icon}"></i> ${esc(title)}</h2></div><div class="h-row">` +
+        items.map((it, i) => top ? `<div class="top-item"><span class="rank">${i + 1}</span>${renderMovieCard(it)}</div>` : renderMovieCard(it)).join('') + '</div>';
+}
+function syncRows() {
+    const box = g('homeRows');
+    if (box) box.style.display = (currentFilter === 'all' && !g('searchInput').value.trim()) ? 'block' : 'none';
+}
+function renderRows() {
+    const box = g('homeRows');
+    if (!box || !allContent.length) return;
+    let h = rowHTML('نوێترین', 'fa-fire', [...allContent].sort(byNew).slice(0, 16));
+    h += rowHTML('بەرزترین ١٠', 'fa-trophy', [...allContent].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 10), true);
+    (allGenres.length ? allGenres : DEF_GENRES).forEach(gn => {
+        const items = allContent.filter(c => c.genre === gn.value).sort(byNew).slice(0, 16);
+        if (items.length >= 2) h += rowHTML(gn.name, gn.icon || 'fa-film', items);
+    });
+    box.innerHTML = h;
+    syncRows();
+}
+const _setFilter = window.setFilter;
+window.setFilter = (f, b) => { _setFilter(f, b); syncRows(); };
+const _search = window.performSearch;
+window.performSearch = () => { _search(); syncRows(); };
+
+// ---------- بەستەری تایبەت بۆ هەر فیلمێک ----------
+const _open = window.openDetail, _close = window.closeDetail;
+let curId = null, routed = false;
+
+function doClose() { _close(); curId = null; document.title = BASE_TITLE; }
+
+window.openDetail = (id) => {
+    _open(id);
+    const item = allContent.find(c => c.id === id);
+    if (!item) return;
+    curId = id;
+    if (location.hash !== '#/t/' + id) history.pushState('kv', '', '#/t/' + id);
+    document.title = item.title + ' | KurdVision';
+    decorateDetail(item);
+};
+window.closeDetail = () => {
+    if (history.state === 'kv') history.back();
+    else { doClose(); history.replaceState(null, '', location.pathname + location.search); }
+};
+function route() {
+    const m = location.hash.match(/^#\/t\/(.+)$/);
+    if (m && m[1] !== curId && allContent.some(c => c.id === m[1])) window.openDetail(m[1]);
+    else if (!m && curId) doClose();
+}
+window.addEventListener('popstate', route);
+
+onValue(ref(db, 'content'), () => { renderRows(); if (!routed) { routed = true; route(); } });
+onValue(ref(db, 'genres'), () => renderRows());
+
+window.shareTitle = async () => {
+    try {
+        if (navigator.share) await navigator.share({ title: document.title, url: location.href });
+        else { await navigator.clipboard.writeText(location.href); showToast('🔗 لینکەکە کۆپی کرا'); }
+    } catch (e) {}
+};
+
+// ---------- ئەڵقەی دواتر + بیرهێنانەوەی کۆتا ئەڵقە ----------
+function decorateDetail(item) {
+    const info = document.querySelector('.detail-info');
+    if (info) info.insertAdjacentHTML('beforeend', '<button class="detail-favorite-btn" style="margin-top:14px" onclick="shareTitle()"><i class="fas fa-share-nodes"></i> <span>هاوبەشکردن</span></button>');
+    if (item.type !== 'series') return;
+    const vc = document.querySelector('#playerSection .video-container');
+    if (vc) vc.insertAdjacentHTML('afterend', '<div class="ep-nav"><button class="btn btn-primary" onclick="nextEpisode(1)">ئەڵقەی دواتر <i class="fas fa-arrow-left"></i></button><button class="btn btn-secondary" onclick="nextEpisode(-1)"><i class="fas fa-arrow-right"></i> پێشوو</button></div>');
+    const last = lsGet('kv_last_' + item.id);
+    if (!last) return;
+    const tabs = document.querySelectorAll('.season-tab');
+    if (tabs[last.s]) window.switchSeason(last.s, tabs[last.s]);
+    const cards = document.querySelectorAll(`.season-episodes[data-season="${last.s}"] .episode-card`);
+    if (cards[last.e]) { cards[last.e].click(); showToast('▶️ بەردەوام بە لە ئەڵقەی ' + (last.e + 1)); }
+}
+
+const _sw = window.switchEpisode;
+window.switchEpisode = (sv, sb, card) => {
+    _sw(sv, sb, card);
+    const box = card.closest('.season-episodes');
+    if (box && curId) lsSet('kv_last_' + curId, { s: +box.dataset.season, e: [...box.children].indexOf(card) });
+};
+
+window.nextEpisode = (d) => {
+    const all = [...document.querySelectorAll('.episode-card')];
+    const t = all[all.findIndex(c => c.classList.contains('active')) + d];
+    if (!t) return showToast(d > 0 ? '🏁 ئەمە کۆتا ئەڵقەیە' : 'ئەمە یەکەم ئەڵقەیە');
+    const box = t.closest('.season-episodes');
+    if (box && getComputedStyle(box).display === 'none') {
+        const s = +box.dataset.season;
+        window.switchSeason(s, document.querySelectorAll('.season-tab')[s]);
+    }
+    t.click();
+    t.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+};
+// ==================== theme picker ====================
+function markTheme() {
+    const t = document.documentElement.dataset.theme;
+    document.querySelectorAll('.theme-opt').forEach(b => b.classList.toggle('on', b.dataset.theme === t));
+}
+window.openThemePicker = () => { markTheme(); openModal('themeModal'); };
+window.setTheme = (t) => {
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('kv_theme', t); } catch (e) {}
+    markTheme();
+    closeModal('themeModal');
+};
+let hasTheme = false;
+try { hasTheme = !!localStorage.getItem('kv_theme'); } catch (e) {}
+if (!hasTheme) window.openThemePicker();
     </script>
 </body>
 </html>
